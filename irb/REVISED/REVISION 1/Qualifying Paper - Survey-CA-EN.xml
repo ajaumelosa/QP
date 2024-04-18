@@ -1,0 +1,1327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<surveyText surveyId="SV_b4s0Ik5fZRBSayy">
+	<QID2_QuestionText>
+		<CA>Amb quin gènere s'identifica vostè?</CA>
+		<EN>What gender do you identify with?</EN>
+	</QID2_QuestionText>
+	<QID2_Choice1>
+		<CA>Masculí</CA>
+		<EN>Male</EN>
+	</QID2_Choice1>
+	<QID2_Choice2>
+		<CA>Femení</CA>
+		<EN>Female</EN>
+	</QID2_Choice2>
+	<QID2_Choice3>
+		<CA>No binari</CA>
+		<EN>Non-binary</EN>
+	</QID2_Choice3>
+	<QID2_Choice4>
+		<CA>Preferesc no dir</CA>
+		<EN>I prefer not to say</EN>
+	</QID2_Choice4>
+	<QID2_Choice5>
+		<CA>Altre</CA>
+		<EN>Other</EN>
+	</QID2_Choice5>
+	<QID3_QuestionText>
+		<CA>Quina edat té?</CA>
+		<EN>How old are you?</EN>
+	</QID3_QuestionText>
+	<QID5_QuestionText>
+		<CA>País de naixement</CA>
+		<EN>Country of birth</EN>
+	</QID5_QuestionText>
+	<QID5_Choice1>
+		<CA>Espanya</CA>
+		<EN>Spain</EN>
+	</QID5_Choice1>
+	<QID5_Choice2>
+		<CA>Altre</CA>
+		<EN>Other</EN>
+	</QID5_Choice2>
+	<QID16_QuestionText>
+		<CA>Quin és el seu país de naixement?</CA>
+		<EN>What is your country of birth?</EN>
+	</QID16_QuestionText>
+	<QID17_QuestionText>
+		<CA>A quina edat arribà a Espanya?</CA>
+		<EN>At what age did you arrive in Spain?</EN>
+	</QID17_QuestionText>
+	<QID14_QuestionText>
+		<CA>Comunitat Autònoma de naixement</CA>
+		<EN>Autonomous Community of birth</EN>
+	</QID14_QuestionText>
+	<QID14_Choice1>
+		<CA>Andalusia</CA>
+		<EN>Andalusia</EN>
+	</QID14_Choice1>
+	<QID14_Choice2>
+		<CA>Aragó</CA>
+		<EN>Aragon</EN>
+	</QID14_Choice2>
+	<QID14_Choice3>
+		<CA>Illes Balears</CA>
+		<EN>Balearic islands</EN>
+	</QID14_Choice3>
+	<QID14_Choice4>
+		<CA>Illes Canàries</CA>
+		<EN>Canary Islands</EN>
+	</QID14_Choice4>
+	<QID14_Choice5>
+		<CA>Cantàbria</CA>
+		<EN>Cantabria</EN>
+	</QID14_Choice5>
+	<QID14_Choice6>
+		<CA>Castella - la Manxa</CA>
+		<EN>Castile - La Mancha</EN>
+	</QID14_Choice6>
+	<QID14_Choice7>
+		<CA>Castella i Lleó</CA>
+		<EN>Castile and Leon</EN>
+	</QID14_Choice7>
+	<QID14_Choice8>
+		<CA>Catalunya</CA>
+		<EN>Catalonia</EN>
+	</QID14_Choice8>
+	<QID14_Choice9>
+		<CA>Comunitat de Madrid</CA>
+		<EN>Community of Madrid</EN>
+	</QID14_Choice9>
+	<QID14_Choice10>
+		<CA>Comunitat Foral de Navarra</CA>
+		<EN>Community of Navarre</EN>
+	</QID14_Choice10>
+	<QID14_Choice11>
+		<CA>Comunitat Valenciana</CA>
+		<EN>Valencian Community</EN>
+	</QID14_Choice11>
+	<QID14_Choice12>
+		<CA>Extremadura</CA>
+		<EN>Extremadura</EN>
+	</QID14_Choice12>
+	<QID14_Choice13>
+		<CA>Galícia</CA>
+		<EN>Galicia</EN>
+	</QID14_Choice13>
+	<QID14_Choice14>
+		<CA>País Basc</CA>
+		<EN>Basque Country</EN>
+	</QID14_Choice14>
+	<QID14_Choice15>
+		<CA>Principat d'Astúries</CA>
+		<EN>Principality of Asturias</EN>
+	</QID14_Choice15>
+	<QID14_Choice16>
+		<CA>Regió de Múrcia</CA>
+		<EN>Region of Murcia</EN>
+	</QID14_Choice16>
+	<QID14_Choice17>
+		<CA>La Rioja</CA>
+		<EN>La Rioja</EN>
+	</QID14_Choice17>
+	<QID14_Choice18>
+		<CA>Ceuta</CA>
+		<EN>Ceuta</EN>
+	</QID14_Choice18>
+	<QID14_Choice19>
+		<CA>Melilla</CA>
+		<EN>Melilla</EN>
+	</QID14_Choice19>
+	<QID4_QuestionText>
+		<CA>Quin és el seu orígen ètnic? Seleccioni totes les opcions que corresponguin&amp;nbsp;</CA>
+		<EN>What is your ethnic origin? Select all the options that apply</EN>
+	</QID4_QuestionText>
+	<QID4_Choice1>
+		<CA>Europa occidental / Europa occidental</CA>
+		<EN>Western Europe</EN>
+	</QID4_Choice1>
+	<QID4_Choice2>
+		<CA>Europa de l'est</CA>
+		<EN>Eastern Europe</EN>
+	</QID4_Choice2>
+	<QID4_Choice3>
+		<CA>Amèrica del Nord</CA>
+		<EN>North America</EN>
+	</QID4_Choice3>
+	<QID4_Choice4>
+		<CA>Amèrica del Sud</CA>
+		<EN>South America</EN>
+	</QID4_Choice4>
+	<QID4_Choice5>
+		<CA>Amèrica central</CA>
+		<EN>Central America</EN>
+	</QID4_Choice5>
+	<QID4_Choice6>
+		<CA>Àfrica</CA>
+		<EN>Africa</EN>
+	</QID4_Choice6>
+	<QID4_Choice7>
+		<CA>Àsia</CA>
+		<EN>Asia</EN>
+	</QID4_Choice7>
+	<QID4_Choice8>
+		<CA>Oceania</CA>
+		<EN>Oceania</EN>
+	</QID4_Choice8>
+	<QID4_Choice9>
+		<CA>Apàtrides</CA>
+		<EN>Stateless</EN>
+	</QID4_Choice9>
+	<QID28_QuestionText>
+		<CA>Quina és la seva identitat nacional? Seleccioni totes les opcions que correspongui&amp;nbsp;</CA>
+		<EN>What is your national identity? Select all the options that apply</EN>
+	</QID28_QuestionText>
+	<QID28_Choice1>
+		<CA>Palmesà / Palmesano</CA>
+		<EN>Palmesan</EN>
+	</QID28_Choice1>
+	<QID28_Choice2>
+		<CA>Mallorquí</CA>
+		<EN>Mallorcan</EN>
+	</QID28_Choice2>
+	<QID28_Choice3>
+		<CA>Balear</CA>
+		<EN>Balearic</EN>
+	</QID28_Choice3>
+	<QID28_Choice4>
+		<CA>Català</CA>
+		<EN>Catalan</EN>
+	</QID28_Choice4>
+	<QID28_Choice5>
+		<CA>Països Catalans</CA>
+		<EN>Catalan countries</EN>
+	</QID28_Choice5>
+	<QID28_Choice6>
+		<CA>Espanyol</CA>
+		<EN>Spanish</EN>
+	</QID28_Choice6>
+	<QID28_Choice7>
+		<CA>Europeu</CA>
+		<EN>European</EN>
+	</QID28_Choice7>
+	<QID28_Choice8>
+		<CA>Altres</CA>
+		<EN>Others</EN>
+	</QID28_Choice8>
+	<QID6_QuestionText>
+		<CA>Barri de residència</CA>
+		<EN>Neighborhood of residence</EN>
+	</QID6_QuestionText>
+	<QID6_Choice1>
+		<CA>El Puig de Sant Pere</CA>
+		<EN>El Puig de Sant Pere</EN>
+	</QID6_Choice1>
+	<QID6_Choice2>
+		<CA>Jaume III</CA>
+		<EN>Jaume III</EN>
+	</QID6_Choice2>
+	<QID6_Choice3>
+		<CA>La Llotja - Born</CA>
+		<EN>La Llotja - Born</EN>
+	</QID6_Choice3>
+	<QID6_Choice4>
+		<CA>Sant Jaume</CA>
+		<EN>Sant Jaume</EN>
+	</QID6_Choice4>
+	<QID6_Choice5>
+		<CA>Sant Nicolau</CA>
+		<EN>Sant Nicolau</EN>
+	</QID6_Choice5>
+	<QID6_Choice6>
+		<CA>Cort</CA>
+		<EN>Cort</EN>
+	</QID6_Choice6>
+	<QID6_Choice7>
+		<CA>La Seu</CA>
+		<EN>La Seu</EN>
+	</QID6_Choice7>
+	<QID6_Choice8>
+		<CA>Monti-Sion</CA>
+		<EN>Monti-Sion</EN>
+	</QID6_Choice8>
+	<QID6_Choice9>
+		<CA>La Calatrava</CA>
+		<EN>La Calatrava</EN>
+	</QID6_Choice9>
+	<QID6_Choice10>
+		<CA>El Sindicat</CA>
+		<EN>El Sindicat</EN>
+	</QID6_Choice10>
+	<QID6_Choice11>
+		<CA>El Mercat</CA>
+		<EN>El Mercat</EN>
+	</QID6_Choice11>
+	<QID6_Choice12>
+		<CA>La Missió</CA>
+		<EN>La Missió</EN>
+	</QID6_Choice12>
+	<QID6_Choice13>
+		<CA>Plaça dels Patins</CA>
+		<EN>Plaça dels Patins</EN>
+	</QID6_Choice13>
+	<QID6_Choice14>
+		<CA>Sant Agustí</CA>
+		<EN>Sant Agustí</EN>
+	</QID6_Choice14>
+	<QID6_Choice15>
+		<CA>Cala Major</CA>
+		<EN>Cala Major</EN>
+	</QID6_Choice15>
+	<QID6_Choice16>
+		<CA>Portopí</CA>
+		<EN>Portopí</EN>
+	</QID6_Choice16>
+	<QID6_Choice17>
+		<CA>La Bonanova</CA>
+		<EN>La Bonanova</EN>
+	</QID6_Choice17>
+	<QID6_Choice18>
+		<CA>Gènova</CA>
+		<EN>Gènova</EN>
+	</QID6_Choice18>
+	<QID6_Choice19>
+		<CA>El Terreno</CA>
+		<EN>El Terreno</EN>
+	</QID6_Choice19>
+	<QID6_Choice20>
+		<CA>Bellver</CA>
+		<EN>Bellver</EN>
+	</QID6_Choice20>
+	<QID6_Choice21>
+		<CA>Son Armadans</CA>
+		<EN>Son Armadans</EN>
+	</QID6_Choice21>
+	<QID6_Choice22>
+		<CA>La Teulera</CA>
+		<EN>La Teulera</EN>
+	</QID6_Choice22>
+	<QID6_Choice23>
+		<CA>Son Espanyolet</CA>
+		<EN>Son Espanyolet</EN>
+	</QID6_Choice23>
+	<QID6_Choice24>
+		<CA>Son Dureta</CA>
+		<EN>Son Dureta</EN>
+	</QID6_Choice24>
+	<QID6_Choice25>
+		<CA>Santa Catalina</CA>
+		<EN>Santa Catalina</EN>
+	</QID6_Choice25>
+	<QID6_Choice26>
+		<CA>El Jonquet</CA>
+		<EN>El Jonquet</EN>
+	</QID6_Choice26>
+	<QID6_Choice27>
+		<CA>Son Peretó</CA>
+		<EN>Son Peretó</EN>
+	</QID6_Choice27>
+	<QID6_Choice28>
+		<CA>Son Flor</CA>
+		<EN>Son Flor</EN>
+	</QID6_Choice28>
+	<QID6_Choice29>
+		<CA>Son Serra - La Vileta</CA>
+		<EN>Son Serra - La Vileta</EN>
+	</QID6_Choice29>
+	<QID6_Choice30>
+		<CA>Son Roca</CA>
+		<EN>Son Roca</EN>
+	</QID6_Choice30>
+	<QID6_Choice31>
+		<CA>Son Ximelis</CA>
+		<EN>Son Ximelis</EN>
+	</QID6_Choice31>
+	<QID6_Choice32>
+		<CA>Son Anglada</CA>
+		<EN>Son Anglada</EN>
+	</QID6_Choice32>
+	<QID6_Choice33>
+		<CA>Son Rapinya</CA>
+		<EN>Son Rapinya</EN>
+	</QID6_Choice33>
+	<QID6_Choice34>
+		<CA>Los Almendros - Son Pacs</CA>
+		<EN>Los Almendros - Son Pacs</EN>
+	</QID6_Choice34>
+	<QID6_Choice35>
+		<CA>Son Xigala</CA>
+		<EN>Son Xigala</EN>
+	</QID6_Choice35>
+	<QID6_Choice36>
+		<CA>Son Vida</CA>
+		<EN>Son Vida</EN>
+	</QID6_Choice36>
+	<QID6_Choice37>
+		<CA>Son Cotoner</CA>
+		<EN>Son Cotoner</EN>
+	</QID6_Choice37>
+	<QID6_Choice38>
+		<CA>Son Dameto</CA>
+		<EN>Son Dameto</EN>
+	</QID6_Choice38>
+	<QID6_Choice39>
+		<CA>El Camp d'en Serralta</CA>
+		<EN>El Camp d'en Serralta</EN>
+	</QID6_Choice39>
+	<QID6_Choice40>
+		<CA>El Fortí</CA>
+		<EN>El Fortí</EN>
+	</QID6_Choice40>
+	<QID6_Choice41>
+		<CA>El Secar de la Real</CA>
+		<EN>El Secar de la Real</EN>
+	</QID6_Choice41>
+	<QID6_Choice42>
+		<CA>Establiments</CA>
+		<EN>Establiments</EN>
+	</QID6_Choice42>
+	<QID6_Choice43>
+		<CA>Son Espanyol</CA>
+		<EN>Son Espanyol</EN>
+	</QID6_Choice43>
+	<QID6_Choice44>
+		<CA>Son Sardina</CA>
+		<EN>Son Sardina</EN>
+	</QID6_Choice44>
+	<QID6_Choice45>
+		<CA>Cal Capiscol</CA>
+		<EN>Cas Capiscol</EN>
+	</QID6_Choice45>
+	<QID6_Choice46>
+		<CA>Camp Redó</CA>
+		<EN>Camp Redó</EN>
+	</QID6_Choice46>
+	<QID6_Choice47>
+		<CA>Bons Aires</CA>
+		<EN>Bons Aires</EN>
+	</QID6_Choice47>
+	<QID6_Choice48>
+		<CA>Plaça de Toros</CA>
+		<EN>Plaça de Toros</EN>
+	</QID6_Choice48>
+	<QID6_Choice49>
+		<CA>Son Oliva</CA>
+		<EN>Son Oliva</EN>
+	</QID6_Choice49>
+	<QID6_Choice50>
+		<CA>Amanecer</CA>
+		<EN>Amanecer</EN>
+	</QID6_Choice50>
+	<QID6_Choice51>
+		<CA>L'Olivera</CA>
+		<EN>L'Olivera</EN>
+	</QID6_Choice51>
+	<QID6_Choice52>
+		<CA>La Indioteria (Urbà)</CA>
+		<EN>La Indioteria (Urbà)</EN>
+	</QID6_Choice52>
+	<QID6_Choice53>
+		<CA>La indioteria (Rural)</CA>
+		<EN>La indioteria (Rural)</EN>
+	</QID6_Choice53>
+	<QID6_Choice54>
+		<CA>Arxiduc</CA>
+		<EN>Arxiduc</EN>
+	</QID6_Choice54>
+	<QID6_Choice55>
+		<CA>Marquès de la Fontsanta</CA>
+		<EN>Marquès de la Fontsanta</EN>
+	</QID6_Choice55>
+	<QID6_Choice56>
+		<CA>Son Rutlan</CA>
+		<EN>Son Rutlan</EN>
+	</QID6_Choice56>
+	<QID6_Choice57>
+		<CA>Verge de Lluc</CA>
+		<EN>Verge de Lluc</EN>
+	</QID6_Choice57>
+	<QID6_Choice58>
+		<CA>Son Cladera</CA>
+		<EN>Son Cladera</EN>
+	</QID6_Choice58>
+	<QID6_Choice59>
+		<CA>El Viver</CA>
+		<EN>El Viverr</EN>
+	</QID6_Choice59>
+	<QID6_Choice60>
+		<CA>El Rafal Nou</CA>
+		<EN>El Rafal Nou</EN>
+	</QID6_Choice60>
+	<QID6_Choice61>
+		<CA>El Rafal Vell</CA>
+		<EN>El Rafal Vell</EN>
+	</QID6_Choice61>
+	<QID6_Choice62>
+		<CA>Son Fortesa (Nord)</CA>
+		<EN>Son Fortesa (Nord)</EN>
+	</QID6_Choice62>
+	<QID6_Choice63>
+		<CA>Els Hostalets</CA>
+		<EN>Els Hostalets</EN>
+	</QID6_Choice63>
+	<QID6_Choice64>
+		<CA>Son Fortesa (Sud)</CA>
+		<EN>Son Fortesa (Sud)</EN>
+	</QID6_Choice64>
+	<QID6_Choice65>
+		<CA>Son Gotleu</CA>
+		<EN>Son Gotleu</EN>
+	</QID6_Choice65>
+	<QID6_Choice66>
+		<CA>Can Capes</CA>
+		<EN>Can Capes</EN>
+	</QID6_Choice66>
+	<QID6_Choice67>
+		<CA>Son Canals</CA>
+		<EN>Son Canals</EN>
+	</QID6_Choice67>
+	<QID6_Choice68>
+		<CA>La Soledad (Nord)</CA>
+		<EN>La Soledad (Nord)</EN>
+	</QID6_Choice68>
+	<QID6_Choice69>
+		<CA>Estadi Balear</CA>
+		<EN>Estadi Balear</EN>
+	</QID6_Choice69>
+	<QID6_Choice70>
+		<CA>Pere Garau</CA>
+		<EN>Pere Garau</EN>
+	</QID6_Choice70>
+	<QID6_Choice71>
+		<CA>Foners</CA>
+		<EN>Forners</EN>
+	</QID6_Choice71>
+	<QID6_Choice72>
+		<CA>Nou Llevant</CA>
+		<EN>Nou Llevant</EN>
+	</QID6_Choice72>
+	<QID6_Choice73>
+		<CA>La Soledat (Sud)</CA>
+		<EN>La Soledat (Sud)</EN>
+	</QID6_Choice73>
+	<QID6_Choice74>
+		<CA>Son Malferit</CA>
+		<EN>Son Malferit</EN>
+	</QID6_Choice74>
+	<QID6_Choice75>
+		<CA>Can Pere Antoni</CA>
+		<EN>Can Pere Antoni</EN>
+	</QID6_Choice75>
+	<QID6_Choice76>
+		<CA>El Molinar</CA>
+		<EN>El Molinar</EN>
+	</QID6_Choice76>
+	<QID6_Choice77>
+		<CA>El Coll d'en Rabassa</CA>
+		<EN>El Coll d'en Rabassa</EN>
+	</QID6_Choice77>
+	<QID6_Choice78>
+		<CA>Son Riera</CA>
+		<EN>Son Riera</EN>
+	</QID6_Choice78>
+	<QID6_Choice79>
+		<CA>Can Pastilla</CA>
+		<EN>Can Pastilla</EN>
+	</QID6_Choice79>
+	<QID6_Choice80>
+		<CA>Aeroport</CA>
+		<EN>Aeroport</EN>
+	</QID6_Choice80>
+	<QID6_Choice81>
+		<CA>Les Meravelles</CA>
+		<EN>Les Maravelles</EN>
+	</QID6_Choice81>
+	<QID6_Choice82>
+		<CA>L'Arenal</CA>
+		<EN>L'Arenal</EN>
+	</QID6_Choice82>
+	<QID6_Choice83>
+		<CA>El Pil·larí</CA>
+		<EN>El Pil·larí</EN>
+	</QID6_Choice83>
+	<QID6_Choice84>
+		<CA>Son Ferriol</CA>
+		<EN>Son Ferriol</EN>
+	</QID6_Choice84>
+	<QID6_Choice85>
+		<CA>L'Aranjassa</CA>
+		<EN>L'Aranjassa</EN>
+	</QID6_Choice85>
+	<QID6_Choice86>
+		<CA>Sant Jordi</CA>
+		<EN>Sant Jordi</EN>
+	</QID6_Choice86>
+	<QID6_Choice87>
+		<CA>La Casa Blanca</CA>
+		<EN>La Casa Blanca</EN>
+	</QID6_Choice87>
+	<QID6_Choice88>
+		<CA>Zona Portuària</CA>
+		<EN>Zona Portuària</EN>
+	</QID6_Choice88>
+	<QID6_Choice89>
+		<CA>Subarxipèlag de Cabrera</CA>
+		<EN>Subarxipèlag de Cabrera</EN>
+	</QID6_Choice89>
+	<QID7_QuestionText>
+		<CA>Nivell d'estudis</CA>
+		<EN>Level of studies</EN>
+	</QID7_QuestionText>
+	<QID7_Choice1>
+		<CA>Sense estudis</CA>
+		<EN>No studies</EN>
+	</QID7_Choice1>
+	<QID7_Choice2>
+		<CA>Estudis primaris o equivalents</CA>
+		<EN>Primary studies or equivalent</EN>
+	</QID7_Choice2>
+	<QID7_Choice3>
+		<CA>Estudis secundaris o equivalents</CA>
+		<EN>Secondary studies or equivalent</EN>
+	</QID7_Choice3>
+	<QID7_Choice4>
+		<CA>Formació Professional</CA>
+		<EN>Professional Training</EN>
+	</QID7_Choice4>
+	<QID7_Choice5>
+		<CA>Estudis universitaris o equivalents</CA>
+		<EN>University studies or equivalent</EN>
+	</QID7_Choice5>
+	<QID9_QuestionText>
+		<CA>Situació laboral</CA>
+		<EN>Work situation</EN>
+	</QID9_QuestionText>
+	<QID9_Choice1>
+		<CA>Ocupació a temps parcial</CA>
+		<EN>Part-time employment</EN>
+	</QID9_Choice1>
+	<QID9_Choice2>
+		<CA>Ocupació a templs complet</CA>
+		<EN>Full time employment</EN>
+	</QID9_Choice2>
+	<QID9_Choice3>
+		<CA>Autònom</CA>
+		<EN>Self employed</EN>
+	</QID9_Choice3>
+	<QID9_Choice4>
+		<CA>Estudiant</CA>
+		<EN>Student</EN>
+	</QID9_Choice4>
+	<QID9_Choice5>
+		<CA>Jubilat</CA>
+		<EN>Retired</EN>
+	</QID9_Choice5>
+	<QID9_Choice6>
+		<CA>Atur</CA>
+		<EN>Unemployment</EN>
+	</QID9_Choice6>
+	<QID9_Choice7>
+		<CA>La meva condició personal no em permet fer feina</CA>
+		<EN>My personal condition does not allow me to work</EN>
+	</QID9_Choice7>
+	<QID15_QuestionText>
+		<CA>En quin tipus de centre educatiu estudia o va estudiar vostè?</CA>
+		<EN>In what type of educational center do you study or did you study?</EN>
+	</QID15_QuestionText>
+	<QID15_Choice1>
+		<CA>Públic</CA>
+		<EN>Public</EN>
+	</QID15_Choice1>
+	<QID15_Choice2>
+		<CA>Concertat</CA>
+		<EN>Semi-Private</EN>
+	</QID15_Choice2>
+	<QID15_Choice3>
+		<CA>Privat</CA>
+		<EN>Private</EN>
+	</QID15_Choice3>
+	<QID10_QuestionText>
+		<CA>Renda familiar</CA>
+		<EN>Family income</EN>
+	</QID10_QuestionText>
+	<QID10_Choice1>
+		<CA>Menys de 12.450 EUR</CA>
+		<EN>Less than 12,450 EUR</EN>
+	</QID10_Choice1>
+	<QID10_Choice2>
+		<CA>Entre 12.450 i 20.199 EUR</CA>
+		<EN>Between 12,450 and 20,199 EUR</EN>
+	</QID10_Choice2>
+	<QID10_Choice3>
+		<CA>Entre 20.200 i 35.199 EUR</CA>
+		<EN>Between 20,200 and 35,199 EUR</EN>
+	</QID10_Choice3>
+	<QID10_Choice4>
+		<CA>Entre 35.200 i 59.999 EUR</CA>
+		<EN>Between 35,200 and 59,999 EUR</EN>
+	</QID10_Choice4>
+	<QID10_Choice5>
+		<CA>Entre 60.000 i 299.999 EUR</CA>
+		<EN>Between 60,000 and 299,999 EUR</EN>
+	</QID10_Choice5>
+	<QID10_Choice6>
+		<CA>Més de 300.000 EUR</CA>
+		<EN>More than 300,000 EUR</EN>
+	</QID10_Choice6>
+	<QID10_Choice7>
+		<CA>Preferesc no dir</CA>
+		<EN>I prefer not to say</EN>
+	</QID10_Choice7>
+	<QID12_QuestionText>
+		<CA>Orientació política</CA>
+		<EN>Political orientation</EN>
+	</QID12_QuestionText>
+	<QID12_Choice1>
+		<CA>Extrema esquerra</CA>
+		<EN>Far left</EN>
+	</QID12_Choice1>
+	<QID12_Choice2>
+		<CA>Esquerra</CA>
+		<EN>Left</EN>
+	</QID12_Choice2>
+	<QID12_Choice3>
+		<CA>Centre-Esquerra</CA>
+		<EN>Center-Left</EN>
+	</QID12_Choice3>
+	<QID12_Choice4>
+		<CA>Centre</CA>
+		<EN>Centre</EN>
+	</QID12_Choice4>
+	<QID12_Choice5>
+		<CA>Centre-Dreta</CA>
+		<EN>Center-Right</EN>
+	</QID12_Choice5>
+	<QID12_Choice6>
+		<CA>Dreta</CA>
+		<EN>Right</EN>
+	</QID12_Choice6>
+	<QID12_Choice7>
+		<CA>Extrema dreta</CA>
+		<EN>Far right</EN>
+	</QID12_Choice7>
+	<QID13_QuestionText>
+		<CA>Amb quin partit polític s'identifica més vostè?</CA>
+		<EN>Which political party do you identify with the most?</EN>
+	</QID13_QuestionText>
+	<QID18_QuestionText>
+		<CA>Quina és la seva llengua materna?</CA>
+		<EN>What is your mother tongue?</EN>
+	</QID18_QuestionText>
+	<QID18_Choice1>
+		<CA>Català</CA>
+		<EN>Catalan</EN>
+	</QID18_Choice1>
+	<QID18_Choice2>
+		<CA>Espanyol</CA>
+		<EN>Spanish</EN>
+	</QID18_Choice2>
+	<QID18_Choice3>
+		<CA>Ambdues</CA>
+		<EN>Both</EN>
+	</QID18_Choice3>
+	<QID18_Choice4>
+		<CA>Altra(es)</CA>
+		<EN>Other(s)</EN>
+	</QID18_Choice4>
+	<QID24_QuestionText>
+		<CA>Coneixements de català</CA>
+		<EN>Proficiency in Catalan</EN>
+	</QID24_QuestionText>
+	<QID24_Choice1>
+		<CA>Entendre</CA>
+		<EN>To understand</EN>
+	</QID24_Choice1>
+	<QID24_Choice2>
+		<CA>Saber parlar</CA>
+		<EN>To speak</EN>
+	</QID24_Choice2>
+	<QID24_Choice3>
+		<CA>Saber llegir</CA>
+		<EN>To read</EN>
+	</QID24_Choice3>
+	<QID24_Choice4>
+		<CA>Saber escriure</CA>
+		<EN>To write</EN>
+	</QID24_Choice4>
+	<QID24_Answer1>
+		<CA>Gens</CA>
+		<EN>Not at all</EN>
+	</QID24_Answer1>
+	<QID24_Answer2>
+		<CA>Amb dificultat</CA>
+		<EN>With difficulty</EN>
+	</QID24_Answer2>
+	<QID24_Answer3>
+		<CA>Bé</CA>
+		<EN>Well</EN>
+	</QID24_Answer3>
+	<QID26_QuestionText>
+		<CA>Coneixements d'espanyol</CA>
+		<EN>Proficiency in Spanish</EN>
+	</QID26_QuestionText>
+	<QID26_Choice1>
+		<CA>Entendre</CA>
+		<EN>To understand</EN>
+	</QID26_Choice1>
+	<QID26_Choice2>
+		<CA>Saber parlar</CA>
+		<EN>To speak</EN>
+	</QID26_Choice2>
+	<QID26_Choice3>
+		<CA>Saber llegir</CA>
+		<EN>To read</EN>
+	</QID26_Choice3>
+	<QID26_Choice4>
+		<CA>Saber escriure</CA>
+		<EN>To write</EN>
+	</QID26_Choice4>
+	<QID26_Answer1>
+		<CA>Gens</CA>
+		<EN>Not at all</EN>
+	</QID26_Answer1>
+	<QID26_Answer2>
+		<CA>Amb dificultat</CA>
+		<EN>With difficulty</EN>
+	</QID26_Answer2>
+	<QID26_Answer3>
+		<CA>Bé</CA>
+		<EN>Well</EN>
+	</QID26_Answer3>
+	<QID21_QuestionText>
+		<CA>A més de la seva(es) llengua(ües) materna(es), quantes llengües ha estudiat?</CA>
+		<EN>In addition to your mother tongue(s), how many languages ​​have you studied?</EN>
+	</QID21_QuestionText>
+	<QID21_Choice1>
+		<CA>0</CA>
+		<EN>0</EN>
+	</QID21_Choice1>
+	<QID21_Choice2>
+		<CA>1</CA>
+		<EN>1</EN>
+	</QID21_Choice2>
+	<QID21_Choice3>
+		<CA>2</CA>
+		<EN>2</EN>
+	</QID21_Choice3>
+	<QID21_Choice4>
+		<CA>3 o més</CA>
+		<EN>3 or more</EN>
+	</QID21_Choice4>
+	<QID22_QuestionText>
+		<CA>Quina llengua fa o feia servir amb cadascun d'aquests grups socials?</CA>
+		<EN>What language do or did you use with each of these social groups?</EN>
+	</QID22_QuestionText>
+	<QID22_Choice1>
+		<CA>Pare</CA>
+		<EN>Father</EN>
+	</QID22_Choice1>
+	<QID22_Choice2>
+		<CA>Mare</CA>
+		<EN>Mother</EN>
+	</QID22_Choice2>
+	<QID22_Choice3>
+		<CA>Germans</CA>
+		<EN>Brothers</EN>
+	</QID22_Choice3>
+	<QID22_Choice4>
+		<CA>Padrins</CA>
+		<EN>Grandparents</EN>
+	</QID22_Choice4>
+	<QID22_Choice5>
+		<CA>Amics</CA>
+		<EN>Friends</EN>
+	</QID22_Choice5>
+	<QID22_Choice6>
+		<CA>Veïns</CA>
+		<EN>Neighbours</EN>
+	</QID22_Choice6>
+	<QID22_Choice7>
+		<CA>Parella</CA>
+		<EN>Partner</EN>
+	</QID22_Choice7>
+	<QID22_Choice8>
+		<CA>Parents (ties, oncles, cosins, etc.)</CA>
+		<EN>Relatives (aunts, uncles, cousins, etc.)</EN>
+	</QID22_Choice8>
+	<QID22_Choice9>
+		<CA>Professors</CA>
+		<EN>Teachers</EN>
+	</QID22_Choice9>
+	<QID22_Choice10>
+		<CA>Companys de classe o estudi</CA>
+		<EN>Classmates or study buddies</EN>
+	</QID22_Choice10>
+	<QID22_Choice11>
+		<CA>Companys de feina</CA>
+		<EN>Coworkers</EN>
+	</QID22_Choice11>
+	<QID22_Choice12>
+		<CA>Immigrants</CA>
+		<EN>Immigrants</EN>
+	</QID22_Choice12>
+	<QID22_Answer1>
+		<CA>Només català (100%)</CA>
+		<EN>Catalan only (100%)</EN>
+	</QID22_Answer1>
+	<QID22_Answer2>
+		<CA>Més català que espanyol (75%)</CA>
+		<EN>More Catalan than Spanish (75%)</EN>
+	</QID22_Answer2>
+	<QID22_Answer3>
+		<CA>Català i espanyol (50%)</CA>
+		<EN>Catalan and Spanish (50%)</EN>
+	</QID22_Answer3>
+	<QID22_Answer4>
+		<CA>Més espanyol que català (75%)</CA>
+		<EN>More Spanish than Catalan (75%)</EN>
+	</QID22_Answer4>
+	<QID22_Answer5>
+		<CA>Només espanyol (100%)</CA>
+		<EN>Spanish only (100%)</EN>
+	</QID22_Answer5>
+	<QID22_Answer6>
+		<CA>Altres</CA>
+		<EN>Others</EN>
+	</QID22_Answer6>
+	<QID22_Answer7>
+		<CA>N/A</CA>
+		<EN>N/A</EN>
+	</QID22_Answer7>
+	<QID23_QuestionText>
+		<CA>Quina llengua fa o feia servir en cadascun dels següents contextos?</CA>
+		<EN>Which language do or did you use in each of the following contexts?</EN>
+	</QID23_QuestionText>
+	<QID23_Choice1>
+		<CA>Mirar la TV</CA>
+		<EN>Watch TV</EN>
+	</QID23_Choice1>
+	<QID23_Choice2>
+		<CA>Llegir</CA>
+		<EN>To read</EN>
+	</QID23_Choice2>
+	<QID23_Choice3>
+		<CA>Escoltar música</CA>
+		<EN>Listen to music</EN>
+	</QID23_Choice3>
+	<QID23_Choice4>
+		<CA>Escoltar la ràdio</CA>
+		<EN>Listen to the radio</EN>
+	</QID23_Choice4>
+	<QID23_Choice5>
+		<CA>Mirar pel·lícules o sèries</CA>
+		<EN>Watch movies or series</EN>
+	</QID23_Choice5>
+	<QID23_Choice6>
+		<CA>Petit comerç (local)</CA>
+		<EN>Small business (local)</EN>
+	</QID23_Choice6>
+	<QID23_Choice7>
+		<CA>Gran comerç</CA>
+		<EN>Large store</EN>
+	</QID23_Choice7>
+	<QID23_Choice8>
+		<CA>Entitats financeres</CA>
+		<EN>Financial entities</EN>
+	</QID23_Choice8>
+	<QID23_Choice9>
+		<CA>Administració</CA>
+		<EN>Administration</EN>
+	</QID23_Choice9>
+	<QID23_Choice10>
+		<CA>Hospitals, centres de salut, etc.</CA>
+		<EN>Hospitals, health centers, etc.</EN>
+	</QID23_Choice10>
+	<QID23_Choice11>
+		<CA>A casa</CA>
+		<EN>At home</EN>
+	</QID23_Choice11>
+	<QID23_Choice12>
+		<CA>Feina</CA>
+		<EN>Work</EN>
+	</QID23_Choice12>
+	<QID23_Choice13>
+		<CA>Escola</CA>
+		<EN>School</EN>
+	</QID23_Choice13>
+	<QID23_Choice14>
+		<CA>Contar numéricamente</CA>
+		<EN>To count</EN>
+	</QID23_Choice14>
+	<QID23_Choice15>
+		<CA>Quan s'enfada</CA>
+		<EN>When you get angry</EN>
+	</QID23_Choice15>
+	<QID23_Choice16>
+		<CA>Xarxes socials</CA>
+		<EN>Social Networks</EN>
+	</QID23_Choice16>
+	<QID23_Choice17>
+		<CA>Transport públic</CA>
+		<EN>Public transportation</EN>
+	</QID23_Choice17>
+	<QID23_Choice18>
+		<CA>Quan contesta el telèfon</CA>
+		<EN>When you answer the phone</EN>
+	</QID23_Choice18>
+	<QID23_Choice19>
+		<CA>Quan pren notes o apunts</CA>
+		<EN>When taking notes</EN>
+	</QID23_Choice19>
+	<QID23_Choice20>
+		<CA>Cossos i forces de seguretat</CA>
+		<EN>Law enforcement</EN>
+	</QID23_Choice20>
+	<QID23_Answer1>
+		<CA>Només català (100%)</CA>
+		<EN>Catalan only (100%)</EN>
+	</QID23_Answer1>
+	<QID23_Answer2>
+		<CA>Més català que espanyol (75%)</CA>
+		<EN>More Catalan than Spanish (75%)</EN>
+	</QID23_Answer2>
+	<QID23_Answer3>
+		<CA>Català i espanyol (50%)</CA>
+		<EN>Catalan and Spanish (50%)</EN>
+	</QID23_Answer3>
+	<QID23_Answer4>
+		<CA>Més espanyol que català (75%)</CA>
+		<EN>More Spanish than Catalan (75%)</EN>
+	</QID23_Answer4>
+	<QID23_Answer5>
+		<CA>Només espanyol (100%)</CA>
+		<EN>Spanish only (100%)</EN>
+	</QID23_Answer5>
+	<QID23_Answer6>
+		<CA>Altres</CA>
+		<EN>Others</EN>
+	</QID23_Answer6>
+	<QID23_Answer7>
+		<CA>N/A</CA>
+		<EN>N/A</EN>
+	</QID23_Answer7>
+	<QID27_QuestionText>
+		<CA>Completi les següents frases amb l'opció que consideri més adient</CA>
+		<EN>Complete the following sentences with the option you consider most appropriate</EN>
+	</QID27_QuestionText>
+	<QID27_Choice1>
+		<CA>La llengua pròpia de les Balears és el ...</CA>
+		<EN>The native language of the Balearic Islands is ...</EN>
+	</QID27_Choice1>
+	<QID27_Choice2>
+		<CA>La llengua oficial de les Balears hauria de ser ...</CA>
+		<EN>The official language of the Balearic Islands should be...</EN>
+	</QID27_Choice2>
+	<QID27_Choice3>
+		<CA>A Balears s'hauria de parlar ...</CA>
+		<EN>In the Balearic Islands we should talk...</EN>
+	</QID27_Choice3>
+	<QID27_Choice4>
+		<CA>La llengua de l'administració pública a Balears hauria de ser el ...</CA>
+		<EN>The language of public administration in the Balearic Islands should be...</EN>
+	</QID27_Choice4>
+	<QID27_Choice5>
+		<CA>La llengua de la sanitat pública a Balears hauria de ser el ...</CA>
+		<EN>The language of public health in the Balearic Islands should be...</EN>
+	</QID27_Choice5>
+	<QID27_Choice6>
+		<CA>La llengua vehicular de la educació pública a Balears hauria de ser el ...</CA>
+		<EN>The vehicular language of public education in the Balearic Islands should be...</EN>
+	</QID27_Choice6>
+	<QID27_Choice7>
+		<CA>La llengua dels mitjans de comunicació de Balears hauria de ser el ...</CA>
+		<EN>The language of the Balearic media should be ...</EN>
+	</QID27_Choice7>
+	<QID27_Choice8>
+		<CA>La llengua dels actes institucionals a Balears hauria de ser ...</CA>
+		<EN>The language of institutional acts in the Balearic Islands should be...</EN>
+	</QID27_Choice8>
+	<QID27_Choice9>
+		<CA>La llengua d'acollida de la población immigrant a Balears hauria de ser el ...</CA>
+		<EN>The host language of the immigrant population in the Balearic Islands should be...</EN>
+	</QID27_Choice9>
+	<QID27_Choice10>
+		<CA>Els residents de les Balears haurien d'aprendre ...</CA>
+		<EN>Residents of the Balearic Islands should learn...</EN>
+	</QID27_Choice10>
+	<QID27_Answer1>
+		<CA>Català</CA>
+		<EN>Catalan</EN>
+	</QID27_Answer1>
+	<QID27_Answer2>
+		<CA>Ambdues llengües</CA>
+		<EN>Both languages</EN>
+	</QID27_Answer2>
+	<QID27_Answer3>
+		<CA>Espanyol</CA>
+		<EN>Spanish</EN>
+	</QID27_Answer3>
+	<QID29_QuestionText>
+		<CA>Indiqui el seu grau d'acord o desacord amb les afirmacions següents</CA>
+		<EN>Indicate your degree of agreement or disagreement with the following statements</EN>
+	</QID29_QuestionText>
+	<QID29_Choice1>
+		<CA>M'agrada que la gent utilitzi el català</CA>
+		<EN>I like that people use Catalan</EN>
+	</QID29_Choice1>
+	<QID29_Choice2>
+		<CA>M'agrada que la gent utilitzi l'espanyol</CA>
+		<EN>I like that people use Spanish</EN>
+	</QID29_Choice2>
+	<QID29_Choice3>
+		<CA>M'agrada escoltar català</CA>
+		<EN>I like listening to Catalan</EN>
+	</QID29_Choice3>
+	<QID29_Choice4>
+		<CA>M'agrada escoltar espanyol</CA>
+		<EN>I like listening to Spanish</EN>
+	</QID29_Choice4>
+	<QID29_Choice5>
+		<CA>M'agrada utilitzar el català</CA>
+		<EN>I like to use Catalan</EN>
+	</QID29_Choice5>
+	<QID29_Choice6>
+		<CA>M'agrada utilitzar l'espanyol</CA>
+		<EN>I like to use Spanish</EN>
+	</QID29_Choice6>
+	<QID29_Choice7>
+		<CA>El català és una llengua difícil d'aprendre</CA>
+		<EN>Catalan is a difficult language to learn</EN>
+	</QID29_Choice7>
+	<QID29_Choice8>
+		<CA>L'espanyol és una llengua difñicil d'aprendre</CA>
+		<EN>Spanish is a difficult language to learn</EN>
+	</QID29_Choice8>
+	<QID29_Choice9>
+		<CA>El català és una llengua bonica</CA>
+		<EN>Catalan is a beautiful language</EN>
+	</QID29_Choice9>
+	<QID29_Choice10>
+		<CA>L'espanyol és una llengua bonica</CA>
+		<EN>Spanish is a beautiful language</EN>
+	</QID29_Choice10>
+	<QID29_Choice11>
+		<CA>Intent utilitzar el català sempre que puc</CA>
+		<EN>I try to use Catalan whenever I can</EN>
+	</QID29_Choice11>
+	<QID29_Choice12>
+		<CA>Intent utilitzar l'espanyol sempre que puc</CA>
+		<EN>I try to use Spanish whenever I can</EN>
+	</QID29_Choice12>
+	<QID29_Choice13>
+		<CA>Val la pena aprendre català</CA>
+		<EN>It is worth learning Catalan</EN>
+	</QID29_Choice13>
+	<QID29_Choice14>
+		<CA>Val la pena aprendre espanyol</CA>
+		<EN>It is worth learning Spanish</EN>
+	</QID29_Choice14>
+	<QID29_Choice15>
+		<CA>El català està en perill de desaparèixer a les Balears</CA>
+		<EN>Catalan is in danger of disappearing in the Balearic Islands</EN>
+	</QID29_Choice15>
+	<QID29_Choice16>
+		<CA>L'espanyol està en perill de desaparéixer a les Balears</CA>
+		<EN>Spanish is in danger of disappearing in the Balearic Islands</EN>
+	</QID29_Choice16>
+	<QID29_Choice17>
+		<CA>Totes les llengües són importants, de manera que no té sentit dir que l'espanyol és més important que el català i viceversa</CA>
+		<EN>All languages ​​are important, so it makes no sense to say that Spanish is more important than Catalan and vice versa</EN>
+	</QID29_Choice17>
+	<QID29_Choice18>
+		<CA>El català pot arribar a ser una llengua important en el context europeu</CA>
+		<EN>Catalan can become an important language in the European context</EN>
+	</QID29_Choice18>
+	<QID29_Choice19>
+		<CA>L'espanyol pot arribar a ser una llengua important en el context europeu</CA>
+		<EN>Spanish can become an important language in the European context</EN>
+	</QID29_Choice19>
+	<QID29_Choice20>
+		<CA>A vegades em sent obligat a utilitzar el català</CA>
+		<EN>Sometimes I feel compelled to use Catalan</EN>
+	</QID29_Choice20>
+	<QID29_Choice21>
+		<CA>A vegades em sent obligat a utilitzar l'espanyol</CA>
+		<EN>Sometimes I feel compelled to use Spanish</EN>
+	</QID29_Choice21>
+	<QID29_Choice22>
+		<CA>És desagradable aprendre català</CA>
+		<EN>It is unpleasant to learn Catalan</EN>
+	</QID29_Choice22>
+	<QID29_Choice23>
+		<CA>És desagradable aprendre espanyol</CA>
+		<EN>It&amp;#39;s unpleasant to learn Spanish</EN>
+	</QID29_Choice23>
+	<QID29_Choice24>
+		<CA>És avorrit aprendre català</CA>
+		<EN>It&amp;#39;s boring to learn Catalan</EN>
+	</QID29_Choice24>
+	<QID29_Choice25>
+		<CA>És avorrit aprendre espanyol</CA>
+		<EN>Learning Spanish is boring</EN>
+	</QID29_Choice25>
+	<QID29_Choice26>
+		<CA>La gent hauria d'esforçar-se més en utilitzar el català</CA>
+		<EN>People should put more effort into using Catalan</EN>
+	</QID29_Choice26>
+	<QID29_Choice27>
+		<CA>La gent hauria d'esforçar-se més en utilitzar l'espanyol</CA>
+		<EN>People should put more effort into using Spanish</EN>
+	</QID29_Choice27>
+	<QID29_Choice28>
+		<CA>Visc a Balears i, per això, he de conèixer, estudiar i utilitzar el català</CA>
+		<EN>I live in the Balearic Islands and, therefore, I have to know, study and use Catalan</EN>
+	</QID29_Choice28>
+	<QID29_Choice29>
+		<CA>Visc a Balears i, per això, he de conèixer, estudiar i utilitzar l'espanyol</CA>
+		<EN>I live in the Balearic Islands and, therefore, I have to know, study and use Spanish</EN>
+	</QID29_Choice29>
+	<QID29_Choice30>
+		<CA>El català és una llengua que sona malament</CA>
+		<EN>Catalan is a language that sounds bad</EN>
+	</QID29_Choice30>
+	<QID29_Choice31>
+		<CA>L'espanyol és una llengua que sona malament</CA>
+		<EN>Spanish is a language that sounds bad</EN>
+	</QID29_Choice31>
+	<QID29_Choice32>
+		<CA>Em molesta que un desconegut em xerri en català</CA>
+		<EN>It bothers me when a stranger chats with me in Catalan</EN>
+	</QID29_Choice32>
+	<QID29_Choice33>
+		<CA>Em molesta que un desconegut em xerri en espanyol</CA>
+		<EN>It bothers me when a stranger chats with me in Spanish</EN>
+	</QID29_Choice33>
+	<QID29_Choice34>
+		<CA>No és de bona educació respondre en català a algú que et xerra en espanyol</CA>
+		<EN>It is not good manners to answer in Catalan to someone who speaks to you in Spanish</EN>
+	</QID29_Choice34>
+	<QID29_Choice35>
+		<CA>No és de bona educació respondre en español a algú que et xerra català</CA>
+		<EN>It is not good manners to answer in Spanish to someone who speaks Catalan</EN>
+	</QID29_Choice35>
+	<QID29_Choice36>
+		<CA>El català és tan important com l'anglès</CA>
+		<EN>Catalan is as important as English</EN>
+	</QID29_Choice36>
+	<QID29_Choice37>
+		<CA>L'espanyol és tan important com l'anglès</CA>
+		<EN>Spanish is as important as English</EN>
+	</QID29_Choice37>
+	<QID29_Choice38>
+		<CA>Si tenc fills, m'agradaria que xerresin català</CA>
+		<EN>If I have children, I would like them to speak Catalan</EN>
+	</QID29_Choice38>
+	<QID29_Choice39>
+		<CA>Si tenc fills, m'agradaria que xerresin espanyol</CA>
+		<EN>If I have children, I would like them to speak Spanish</EN>
+	</QID29_Choice39>
+	<QID29_Choice40>
+		<CA>Com tots xerram espanyol, no és necessari que la gent que ve d'altres CC.AA. o països de parla hispana aprenguin el català</CA>
+		<EN>As we all speak Spanish, it is not necessary that people who come from other Autonomous Communities or Spanish-speaking countries learn Catalan</EN>
+	</QID29_Choice40>
+	<QID29_Choice41>
+		<CA>Hauria de ser obligatori que tots els alumnes de Balears cursassin, com a mínim, el 50% de les assignatures en català</CA>
+		<EN>It should be mandatory for all students from the Balearic Islands to take at least 50% of their subjects in Catalan</EN>
+	</QID29_Choice41>
+	<QID29_Choice42>
+		<CA>Hauria de ser obligatori que tots els estudiants de Balears cursassin, com a mínim, el 50% de les assignatures en espanyol</CA>
+		<EN>It should be mandatory for all Balearic students to take at least 50% of the subjects in Spanish</EN>
+	</QID29_Choice42>
+	<QID29_Choice43>
+		<CA>El català és una llengua rural, poc interessant en l'àmbit urbà</CA>
+		<EN>Catalan is a rural language, not very interesting in the urban area</EN>
+	</QID29_Choice43>
+	<QID29_Choice44>
+		<CA>L'espanyol és una llengua que està més de moda que el català</CA>
+		<EN>Spanish is a language that is more fashionable than Catalan</EN>
+	</QID29_Choice44>
+	<QID29_Choice45>
+		<CA>Per al personal sanitari, és més important saber català que espanyol</CA>
+		<EN>For healthcare staff, it is more important to know Catalan than Spanish</EN>
+	</QID29_Choice45>
+	<QID29_Choice46>
+		<CA>Per al personal sanitari, és més important saber espanyol que català</CA>
+		<EN>For healthcare staff, it is more important to know Spanish than Catalan</EN>
+	</QID29_Choice46>
+	<QID29_Choice47>
+		<CA>Estudiar català em resultarà molt útil en el futur per trobar feina</CA>
+		<EN>Studying Catalan will be very useful for me in the future to find a job</EN>
+	</QID29_Choice47>
+	<QID29_Choice48>
+		<CA>Estudiar espanyol em resultarà més útil en el futur per trobar feina</CA>
+		<EN>Studying Spanish will be more useful for me in the future to find a job</EN>
+	</QID29_Choice48>
+	<QID29_Choice49>
+		<CA>És necessari aprendre català per integrar-se totalment a les Balears</CA>
+		<EN>It is necessary to learn Catalan to fully integrate in the Balearic Islands</EN>
+	</QID29_Choice49>
+	<QID29_Choice50>
+		<CA>A la llarga, el català és la llengua que hauria de predominar a les Balears</CA>
+		<EN>In the long run, Catalan is the language that should predominate in the Balearic Islands</EN>
+	</QID29_Choice50>
+	<QID29_Choice51>
+		<CA>A la llarga, l'espanyol és la llengua que hauria de predominar a les Balears</CA>
+		<EN>In the long run, Spanish is the language that should predominate in the Balearic Islands</EN>
+	</QID29_Choice51>
+	<QID29_Choice52>
+		<CA>El català hauria de ser una assignatura voluntària a les escoles i instituts de les Balears</CA>
+		<EN>Catalan should be a voluntary subject in schools and high schools in the Balearic Islands</EN>
+	</QID29_Choice52>
+	<QID29_Choice53>
+		<CA>L'espanyol hauria de ser una asignatura voluntària a les escoles i instituts de Balears</CA>
+		<EN>Spanish should be a voluntary subject in schools and high schools in the Balearic Islands</EN>
+	</QID29_Choice53>
+	<QID29_Choice54>
+		<CA>A una persona de fora, que no coneix ni el català ni l'espanyol, li costarà menys aprendre l'espanyol que el català</CA>
+		<EN>An outsider, who knows neither Catalan nor Spanish, will find it less difficult to learn Spanish than Catalan</EN>
+	</QID29_Choice54>
+	<QID29_Choice55>
+		<CA>Totes les persones que viuen a Balears haurien de saber català i espanyol</CA>
+		<EN>All people living in the Balearic Islands should know Catalan and Spanish</EN>
+	</QID29_Choice55>
+	<QID29_Choice56>
+		<CA>De cada vegada hi ha menys gent que sàpiga català</CA>
+		<EN>Fewer and fewer people know Catalan</EN>
+	</QID29_Choice56>
+	<QID29_Choice57>
+		<CA>De cada vegada hi ha menys gent que sàpiga espanyol</CA>
+		<EN>Fewer and fewer people know Spanish</EN>
+	</QID29_Choice57>
+	<QID29_Choice58>
+		<CA>El català serveix per a uns àmbits i l'espanyol per a uns altres</CA>
+		<EN>Catalan serves for some areas and Spanish for others</EN>
+	</QID29_Choice58>
+	<QID29_Choice59>
+		<CA>El català ha de ser un requisit per ocupar un lloc de feina a l'administració pública</CA>
+		<EN>Catalan must be a requirement to hold a job in the public administration</EN>
+	</QID29_Choice59>
+	<QID29_Choice60>
+		<CA>El català és un element identitari de les Balears</CA>
+		<EN>Catalan is an identity element of the Balearic Islands</EN>
+	</QID29_Choice60>
+	<QID31_QuestionText>
+		<CA>Com li agradaria que li féssim arribar el pagament per haver participat en aquest estudi?</CA>
+		<EN>How would you like to be paid for participating in this study?</EN>
+	</QID31_QuestionText>
+	<QID31_Choice1>
+		<CA>PayPal</CA>
+		<EN>PayPal</EN>
+	</QID31_Choice1>
+	<QID31_Choice2>
+		<CA>Targeta regal d'Amazon</CA>
+		<EN>Amazon gift card</EN>
+	</QID31_Choice2>
+	<QID30_QuestionText>
+		<CA>Indiqui la seva adreça electrònica</CA>
+		<EN>Enter your email address</EN>
+	</QID30_QuestionText>
+	<SurveyTitle>
+		<CA>Encuesta de Qualtrics | Gestión de la experiencia de Qualtrics</CA>
+		<EN/>
+	</SurveyTitle>
+	<SurveyDescription>
+		<CA>La manera más poderosa, simple y confiada de recopilar datos de experiencia. Comience su viaje con Experience Management y pruebe una cuenta gratis hoy.</CA>
+		<EN/>
+	</SurveyDescription>
+</surveyText>

@@ -1,0 +1,56 @@
+---
+title: "qp_data_analysis"
+output: html_document
+date: "2024-01-20"
+output:
+  html_document: default
+  pdf_document: default
+editor_options: 
+  chunk_output_type: console
+  
+---
+
+```{r}
+library(lme4)
+library(ggplot2)
+library(party)
+library(tidyverse)
+library(Rmisc)
+library(tidyverse)
+library(here)
+library(vroom)
+library(future.apply)
+
+```
+
+```{r}
+read_csv(file = here("data", "qp_data_raw.csv"))
+
+qp_data <- read_csv(file = here("data", "qp_data_raw.csv"))
+
+spec(qp_data)
+
+?read_csv(file = here("data", "qp_data_raw_1.csv"))
+
+qp_data_1 <- read_csv(file = here("data", "qp_data_raw_1.csv"), show_col_types = FALSE)
+
+qp_data_1 <- vroom(problems(qp_data_1))
+
+problems(qp_data_1)
+
+sapply(qp_data_1, class)
+
+
+spec(qp_data_1)
+
+col_character(qp_data_1)
+
+data_qp_new <- type.convert(qp_data_1, as.is=TRUE)
+
+sapply(data_qp_new, class)
+
+
+```
+
+
+
