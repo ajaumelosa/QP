@@ -40,6 +40,9 @@ summary(qp_data$age)
 
 qp_data$political_orientation <- factor(qp_data$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
+qp_data$mother_tongue <- factor(qp_data$mother_tongue, levels = c("Catalan", "Both", "Spanish", "Other(s)"))
+
+
 
 qp_data$political_orientation <- factor(qp_data$political_orientation, levels = c("Center-Left", "Center-Right", "Centre", "Far left", "Left", "Right"))
 
@@ -77,7 +80,10 @@ gender_summary <- qp_data %>%
     'SD' = sd_age
   )
 
+
 pivot_wider(names_from = gender, values_from = c(total_count, avg_age, sd_age))
+
+print(gender_summary)
 
 knitr::kable(gender_summary)
 
@@ -1672,7 +1678,7 @@ ggplot(
 
 ```
 
-```{r, people should put more effort into using Spanis}
+```{r, people should put more effort into using Spanish}
 
 mod_null_People_should_put_more_effort_into_using_Spanish <- lm(People_should_put_more_effort_into_using_Spanish ~ 1, data = qp_data)
 
@@ -3015,7 +3021,9 @@ qp_data %>%
 qp_data %>%
   filter(mother_tongue != "Other(s)") %>%
   ggplot(aes(x = political_orientation, fill = mother_tongue)) +
-  geom_bar(stat = "count", position = "fill")
+  geom_bar(stat = "count", position = "fill") +
+  labs(y = "Count", fill = "Mother tongue", x = "Political orientation")
+
 
 qp_data %>%
   ggplot(aes(x = political_orientation, fill = mother_tongue)) +
