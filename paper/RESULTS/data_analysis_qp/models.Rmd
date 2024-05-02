@@ -1,0 +1,2183 @@
+---
+title: "models"
+author: "alejandro"
+date: "2024-05-02"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(lme4)
+library(ggplot2)
+library(papaja)
+library(tinylabels)
+library(car)
+library(broom)
+library(emmeans)
+library(reshape2)
+library(writexl)
+library(readxl)
+library(dplyr)
+```
+
+
+```{r}
+mod_null_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1, data = qp_data)
+
+mod_1_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1 + political_orientation, data = qp_data)
+
+mod_2_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_4_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1 + political_orientation + gender + age + level_of_education, data = qp_data)
+
+mod_5_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1 + political_orientation + gender + age + level_of_education + employment, data = qp_data)
+
+mod_6_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1 + political_orientation + gender + age + level_of_education + employment + family_income, data = qp_data)
+
+mod_7_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1 + political_orientation + gender + age + level_of_education + employment + family_income + mother_tongue, data = qp_data)
+
+mod_int_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1, political_orientation:gender:age:level_of_education:employment:family_income:mother_tongue, data = qp_data)
+
+plot(mod_2_lang_identity_1)
+
+
+summary(mod_1_lang_identity_1)
+
+summary(mod_int_lang_identity)
+
+summary(mod_2_lang_identity_1)
+
+summary(mod_3_lang_identity_1)
+
+summary(mod_4_lang_identity_1)
+
+summary(mod_5_lang_identity_1)
+
+summary(mod_6_lang_identity_1)
+
+summary(mod_7_lang_identity_1)
+
+
+anova(mod_null_lang_identity_1,mod_1_lang_identity_1, mod_2_lang_identity_1, mod_3_lang_identity_1, mod_4_lang_identity_1, mod_5_lang_identity_1, mod_6_lang_identity_1, mod_7_lang_identity_1)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_is_an_identity_element_of_the_Balearic_Islands, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Catalan is an identity element of the Balearic Islands", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines")  
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+
+```{r, I like it when people speak Catalan as a function of political orientation}
+
+mod_null_like_use_Catalan <- lm(I_like_that_people_use_Catalan ~ 1, data = qp_data)
+
+mod_1_like_use_Catalan <- lm(I_like_that_people_use_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_like_use_Catalan <- lm(I_like_that_people_use_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_like_use_Catalan <- lm(I_like_that_people_use_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_like_use_Catalan <- lm(I_like_that_people_use_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_like_use_Catalan)
+summary(mod_1_like_use_Catalan)
+summary(mod_2_like_use_Catalan)
+summary(mod_3_like_use_Catalan)
+summary(mod_int_like_use_Catalan)
+
+anova(mod_null_like_use_Catalan, mod_1_like_use_Catalan, mod_2_like_use_Catalan, mod_3_like_use_Catalan, mod_int_like_use_Catalan)
+
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_like_that_people_use_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "I like that people use Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines")  
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))  
+
+```
+
+```{r, I like it when people speak Spanish as a function of political orientation}
+
+mod_null_like_use_Spanish <- lm(I_like_that_people_use_Spanish ~ 1, data = qp_data)
+
+mod_1_like_use_Spanish <- lm(I_like_that_people_use_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_like_use_Spanish <- lm(I_like_that_people_use_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_like_use_Spanish <- lm(I_like_that_people_use_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_like_use_Spanish <- lm(I_like_that_people_use_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_like_use_Spanish)
+summary(mod_1_like_use_Spanish)
+summary(mod_2_like_use_Spanish)
+summary(mod_3_like_use_Spanish)
+summary(mod_int_like_use_Spanish)
+
+anova(mod_null_like_use_Spanish, mod_1_like_use_Spanish, mod_2_like_use_Spanish, mod_3_like_use_Spanish, mod_int_like_use_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_like_that_people_use_Spanish)) + 
+  geom_point() + 
+  geom_boxplot()
+
+
+```
+
+```{r, I like listening to Catalan as a function of political orientation}
+
+mod_null_like_listen_Catalan <- lm(I_like_listening_to_Catalan ~ 1, data = qp_data)
+
+mod_1_like_listen_Catalan <- lm(I_like_listening_to_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_like_listen_Catalan <- lm(I_like_listening_to_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_like_listen_Catalan <- lm(I_like_listening_to_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_like_listen_Catalan <- lm(I_like_listening_to_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_like_listen_Catalan)
+summary(mod_1_like_listen_Catalan)
+summary(mod_2_like_listen_Catalan)
+summary(mod_3_like_listen_Catalan)
+summary(mod_int_like_listen_Catalan)
+
+anova(mod_null_like_listen_Catalan, mod_1_like_listen_Catalan, mod_2_like_listen_Catalan, mod_3_like_listen_Catalan, mod_int_like_listen_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_like_listening_to_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "I like listening to Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines")  
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+
+```{r, I like listening to Spanish as a function of political orientation}
+
+mod_null_like_listen_Spanish <- lm(I_like_listening_to_Spanish ~ 1, data = qp_data)
+
+mod_1_like_listen_Spanish <- lm(I_like_listening_to_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_like_listen_Spanish <- lm(I_like_listening_to_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_like_listen_Spanish <- lm(I_like_listening_to_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_like_listen_Spanish <- lm(I_like_listening_to_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_like_listen_Spanish)
+summary(mod_1_like_listen_Spanish)
+summary(mod_2_like_listen_Spanish)
+summary(mod_3_like_listen_Spanish)
+summary(mod_int_like_listen_Spanish)
+
+anova(mod_null_like_listen_Spanish, mod_1_like_listen_Spanish, mod_2_like_listen_Spanish, mod_3_like_listen_Spanish, mod_int_like_listen_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_like_listening_to_Spanish, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "I like listening to Spanish", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+
+```
+
+```{r, I like to use Catalan as a function of political orientation}
+
+mod_null_I_like_to_use_Catalan <- lm(I_like_to_use_Catalan ~ 1, data = qp_data)
+
+mod_1_I_like_to_use_Catalan <- lm(I_like_to_use_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_I_like_to_use_Catalan <- lm(I_like_to_use_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_I_like_to_use_Catalan <- lm(I_like_to_use_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_I_like_to_use_Catalan <- lm(I_like_to_use_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_I_like_to_use_Catalan)
+summary(mod_1_I_like_to_use_Catalan)
+summary(mod_2_I_like_to_use_Catalan)
+summary(mod_3_I_like_to_use_Catalan)
+summary(mod_int_I_like_to_use_Catalan)
+
+anova(mod_null_I_like_to_use_Catalan, mod_1_I_like_to_use_Catalan, mod_2_I_like_to_use_Catalan, mod_3_I_like_to_use_Catalan, mod_int_I_like_to_use_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_like_to_use_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "I like to use Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines")
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, I like to use Spanish as a function of political orientation}
+
+mod_null_I_like_to_use_Spanish <- lm(I_like_to_use_Spanish ~ 1, data = qp_data)
+
+mod_1_I_like_to_use_Spanish <- lm(I_like_to_use_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_I_like_to_use_Spanish <- lm(I_like_to_use_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_I_like_to_use_Spanish <- lm(I_like_to_use_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_I_like_to_use_Spanish <- lm(I_like_to_use_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_I_like_to_use_Spanish)
+summary(mod_1_I_like_to_use_Spanish)
+summary(mod_2_I_like_to_use_Spanish)
+summary(mod_3_I_like_to_use_Spanish)
+summary(mod_int_I_like_to_use_Spanish)
+
+anova(mod_null_I_like_to_use_Spanish, mod_1_I_like_to_use_Spanish, mod_2_I_like_to_use_Spanish, mod_3_I_like_to_use_Spanish, mod_int_I_like_to_use_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_like_to_use_Spanish)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+```{r, Catalan is a difficult language to learn as a function of political orientation}
+
+mod_null_Catalan_is_a_difficult_language_to_learn <- lm(Catalan_is_a_difficult_language_to_learn ~ 1, data = qp_data)
+
+mod_1_Catalan_is_a_difficult_language_to_learn <- lm(Catalan_is_a_difficult_language_to_learn ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_is_a_difficult_language_to_learn <- lm(Catalan_is_a_difficult_language_to_learn ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_is_a_difficult_language_to_learn <- lm(Catalan_is_a_difficult_language_to_learn ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_is_a_difficult_language_to_learn <- lm(Catalan_is_a_difficult_language_to_learn ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_is_a_difficult_language_to_learn)
+summary(mod_1_Catalan_is_a_difficult_language_to_learn)
+summary(mod_2_Catalan_is_a_difficult_language_to_learn)
+summary(mod_3_Catalan_is_a_difficult_language_to_learn)
+summary(mod_int_Catalan_is_a_difficult_language_to_learn)
+
+anova(mod_null_Catalan_is_a_difficult_language_to_learn, mod_1_Catalan_is_a_difficult_language_to_learn, mod_2_Catalan_is_a_difficult_language_to_learn, mod_3_Catalan_is_a_difficult_language_to_learn, mod_int_Catalan_is_a_difficult_language_to_learn)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_is_a_difficult_language_to_learn)) + 
+  geom_point() + 
+  geom_boxplot()
+
+
+```
+
+
+```{r, Spanish is a difficult language to learn as a function of political orientation}
+
+# Rename the column
+names(qp_data)[names(qp_data) == "Spanish _is_a_difficult_language_to_learn"] <- "Spanish_is_a_difficult_language_to_learn"
+
+mod_null_Spanish_is_a_difficult_language_to_learn <- lm(Spanish_is_a_difficult_language_to_learn ~ 1, data = qp_data)
+
+mod_1_Spanish_is_a_difficult_language_to_learn <- lm(Spanish_is_a_difficult_language_to_learn ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Spanish_is_a_difficult_language_to_learn <- lm(Spanish_is_a_difficult_language_to_learn ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Spanish_is_a_difficult_language_to_learn <- lm(Spanish_is_a_difficult_language_to_learn ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Spanish_is_a_difficult_language_to_learn <- lm(Spanish_is_a_difficult_language_to_learn ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Spanish_is_a_difficult_language_to_learn)
+summary(mod_1_Spanish_is_a_difficult_language_to_learn)
+summary(mod_2_Spanish_is_a_difficult_language_to_learn)
+summary(mod_3_Spanish_is_a_difficult_language_to_learn)
+summary(mod_int_Spanish_is_a_difficult_language_to_learn)
+
+anova(mod_null_Spanish_is_a_difficult_language_to_learn, mod_1_Spanish_is_a_difficult_language_to_learn, mod_2_Spanish_is_a_difficult_language_to_learn, mod_3_Spanish_is_a_difficult_language_to_learn, mod_int_Spanish_is_a_difficult_language_to_learn)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Spanish_is_a_difficult_language_to_learn, fill = political_orientation)) + 
+  geom_point() + 
+  geom_boxplot() +
+  labs(x = "Political orientation", y = "Spanish is a difficult language to learn", fill = "Political Orientation") +
+    scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue"))
+
+```
+
+```{r, Catalan is a beautiful language}
+
+mod_null_Catalan_is_a_beautiful_language<- lm(Catalan_is_a_beautiful_language ~ 1, data = qp_data)
+
+mod_1_Catalan_is_a_beautiful_language <- lm(Catalan_is_a_beautiful_language ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_is_a_beautiful_language <- lm(Catalan_is_a_beautiful_language ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_is_a_beautiful_language <- lm(Catalan_is_a_beautiful_language ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_is_a_beautiful_language <- lm(Catalan_is_a_beautiful_language ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_is_a_beautiful_language)
+summary(mod_1_Catalan_is_a_beautiful_language)
+summary(mod_2_Catalan_is_a_beautiful_language)
+summary(mod_3_Catalan_is_a_beautiful_language)
+summary(mod_int_Catalan_is_a_beautiful_language)
+
+anova(mod_null_Catalan_is_a_beautiful_language, mod_1_Catalan_is_a_beautiful_language, mod_2_Catalan_is_a_beautiful_language, mod_3_Catalan_is_a_beautiful_language, mod_int_Catalan_is_a_beautiful_language)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_is_a_beautiful_language, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Catalan is a beautiful language", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines")
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, Spanish is a beautiful language as a function of political orientation}
+
+mod_null_Spanish_is_a_beautiful_language<- lm(Spanish_is_a_beautiful_language ~ 1, data = qp_data)
+
+mod_1_Spanish_is_a_beautiful_language <- lm(Spanish_is_a_beautiful_language ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Spanish_is_a_beautiful_language <- lm(Spanish_is_a_beautiful_language ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Spanish_is_a_beautiful_language <- lm(Spanish_is_a_beautiful_language ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Spanish_is_a_beautiful_language <- lm(Spanish_is_a_beautiful_language ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Spanish_is_a_beautiful_language)
+summary(mod_1_Spanish_is_a_beautiful_language)
+summary(mod_2_Spanish_is_a_beautiful_language)
+summary(mod_3_Spanish_is_a_beautiful_language)
+summary(mod_int_Spanish_is_a_beautiful_language)
+
+anova(mod_null_Spanish_is_a_beautiful_language, mod_1_Spanish_is_a_beautiful_language, mod_2_Spanish_is_a_beautiful_language, mod_3_Spanish_is_a_beautiful_language, mod_int_Spanish_is_a_beautiful_language)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Spanish_is_a_beautiful_language)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+
+```{r, I try to use Catalan whenever I can as a function of political orientation}
+
+mod_null_I_try_to_use_Catalan_whenever_I_can <- lm(I_try_to_use_Catalan_whenever_I_can ~ 1, data = qp_data)
+
+mod_1_I_try_to_use_Catalan_whenever_I_can <- lm(I_try_to_use_Catalan_whenever_I_can ~ 1 + political_orientation, data = qp_data)
+
+mod_2_I_try_to_use_Catalan_whenever_I_can <- lm(I_try_to_use_Catalan_whenever_I_can ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_I_try_to_use_Catalan_whenever_I_can <- lm(I_try_to_use_Catalan_whenever_I_can ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_I_try_to_use_Catalan_whenever_I_can <- lm(I_try_to_use_Catalan_whenever_I_can ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_I_try_to_use_Catalan_whenever_I_can)
+summary(mod_1_I_try_to_use_Catalan_whenever_I_can)
+summary(mod_2_I_try_to_use_Catalan_whenever_I_can)
+summary(mod_3_I_try_to_use_Catalan_whenever_I_can)
+summary(mod_int_I_try_to_use_Catalan_whenever_I_can)
+
+anova(mod_null_I_try_to_use_Catalan_whenever_I_can, mod_1_I_try_to_use_Catalan_whenever_I_can, mod_2_I_try_to_use_Catalan_whenever_I_can, mod_3_I_try_to_use_Catalan_whenever_I_can, mod_int_I_try_to_use_Catalan_whenever_I_can)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_try_to_use_Catalan_whenever_I_can, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "I try to use Catalan whenever I can", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines")  
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))  
+
+```
+
+
+```{r, I try to use Spanish whenever I can as a function of political orientation}
+
+mod_null_I_try_to_use_Spanish_whenever_I_can <- lm(I_try_to_use_Spanish_whenever_I_can ~ 1, data = qp_data)
+
+mod_1_I_try_to_use_Spanish_whenever_I_can <- lm(I_try_to_use_Spanish_whenever_I_can ~ 1 + political_orientation, data = qp_data)
+
+mod_2_I_try_to_use_Spanish_whenever_I_can <- lm(I_try_to_use_Spanish_whenever_I_can ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_I_try_to_use_Spanish_whenever_I_can <- lm(I_try_to_use_Spanish_whenever_I_can ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_I_try_to_use_Spanish_whenever_I_can <- lm(I_try_to_use_Spanish_whenever_I_can ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_I_try_to_use_Spanish_whenever_I_can)
+summary(mod_1_I_try_to_use_Spanish_whenever_I_can)
+summary(mod_2_I_try_to_use_Spanish_whenever_I_can)
+summary(mod_3_I_try_to_use_Spanish_whenever_I_can)
+summary(mod_int_I_try_to_use_Spanish_whenever_I_can)
+
+anova(mod_null_I_try_to_use_Spanish_whenever_I_can, mod_1_I_try_to_use_Spanish_whenever_I_can, mod_2_I_try_to_use_Spanish_whenever_I_can, mod_3_I_try_to_use_Spanish_whenever_I_can, mod_int_I_try_to_use_Spanish_whenever_I_can)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_try_to_use_Spanish_whenever_I_can, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "I try to use Spanish whenever I can", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+
+```
+
+```{r, It is worth learning Catalan}
+
+mod_null_It_is_worth_learning_Catalan <- lm(It_is_worth_learning_Catalan ~ 1, data = qp_data)
+
+mod_1_It_is_worth_learning_Catalan <- lm(It_is_worth_learning_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_is_worth_learning_Catalan <- lm(It_is_worth_learning_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_is_worth_learning_Catalan <- lm(It_is_worth_learning_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_is_worth_learning_Catalan <- lm(It_is_worth_learning_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_is_worth_learning_Catalan)
+summary(mod_1_It_is_worth_learning_Catalan)
+summary(mod_2_It_is_worth_learning_Catalan)
+summary(mod_3_It_is_worth_learning_Catalan)
+summary(mod_int_It_is_worth_learning_Catalan)
+
+anova(mod_null_It_is_worth_learning_Catalan, mod_1_It_is_worth_learning_Catalan, mod_2_It_is_worth_learning_Catalan, mod_3_It_is_worth_learning_Catalan, mod_int_It_is_worth_learning_Catalan)
+
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_is_worth_learning_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "It is worth learning Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"), 
+    legend.spacing.x = unit(0.5, "lines")  
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, It is worth learning Spanish as a function of political orientation}
+
+mod_null_It_is_worth_learning_Spanish <- lm(It_is_worth_learning_Spanish ~ 1, data = qp_data)
+
+mod_1_It_is_worth_learning_Spanish <- lm(It_is_worth_learning_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_is_worth_learning_Spanish <- lm(It_is_worth_learning_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_is_worth_learning_Spanish <- lm(It_is_worth_learning_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_is_worth_learning_Spanish <- lm(It_is_worth_learning_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_is_worth_learning_Spanish)
+summary(mod_1_It_is_worth_learning_Spanish)
+summary(mod_2_It_is_worth_learning_Spanish)
+summary(mod_3_It_is_worth_learning_Spanish)
+summary(mod_int_It_is_worth_learning_Spanish)
+
+anova(mod_null_It_is_worth_learning_Spanish, mod_1_It_is_worth_learning_Spanish, mod_2_It_is_worth_learning_Spanish, mod_3_It_is_worth_learning_Spanish, mod_int_It_is_worth_learning_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_is_worth_learning_Spanish, fill = political_orientation)) + 
+  geom_point() + 
+  geom_boxplot() +
+  labs(x = "Political orientation", y = "It is worth learning Spanish", fill = "Political Orientation") +
+    scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue"))
+
+
+```
+
+```{r, Catalan is in danger of disappearing in the Balearic Islands}
+
+mod_null_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1, data = qp_data)
+
+mod_1_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+summary(mod_1_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+summary(mod_2_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+summary(mod_3_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+summary(mod_int_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+
+anova(mod_null_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands, mod_1_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands, mod_2_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands, mod_3_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands, mod_int_Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) + 
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Catalan is in danger in the Balearic Islands", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"), 
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, Spanish is in danger of disappearing in the Balearic Islands}
+
+mod_null_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1, data = qp_data)
+
+mod_1_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands <- lm(Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+summary(mod_1_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+summary(mod_2_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+summary(mod_3_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+summary(mod_int_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+
+anova(mod_null_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands, mod_1_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands, mod_2_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands, mod_3_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands, mod_int_Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+```{r, No language is more important than the other political orientation}
+
+mod_null_No_language_is_more_important_than_the_other <- lm(No_language_is_more_important_than_the_other ~ 1, data = qp_data)
+
+mod_1_No_language_is_more_important_than_the_other <- lm(No_language_is_more_important_than_the_other ~ 1 + political_orientation, data = qp_data)
+
+mod_2_No_language_is_more_important_than_the_other <- lm(No_language_is_more_important_than_the_other ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_No_language_is_more_important_than_the_other <- lm(No_language_is_more_important_than_the_other ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_No_language_is_more_important_than_the_other <- lm(No_language_is_more_important_than_the_other ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_No_language_is_more_important_than_the_other)
+summary(mod_1_No_language_is_more_important_than_the_other)
+summary(mod_2_No_language_is_more_important_than_the_other)
+summary(mod_3_No_language_is_more_important_than_the_other)
+summary(mod_int_No_language_is_more_important_than_the_other)
+
+anova(mod_null_No_language_is_more_important_than_the_other, mod_1_No_language_is_more_important_than_the_other, mod_2_No_language_is_more_important_than_the_other, mod_3_No_language_is_more_important_than_the_other, mod_int_No_language_is_more_important_than_the_other)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = No_language_is_more_important_than_the_other)) + 
+  geom_point() + 
+  geom_boxplot()
+
+
+```
+
+```{r, Catalan can become an important language in the European context}
+
+mod_null_Catalan_can_become_an_important_language_in_the_European_context <- lm(Catalan_can_become_an_important_language_in_the_European_context ~ 1, data = qp_data)
+
+mod_1_Catalan_can_become_an_important_language_in_the_European_context <- lm(Catalan_can_become_an_important_language_in_the_European_context ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_can_become_an_important_language_in_the_European_context <- lm(Catalan_can_become_an_important_language_in_the_European_context ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_can_become_an_important_language_in_the_European_context <- lm(Catalan_can_become_an_important_language_in_the_European_context ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_can_become_an_important_language_in_the_European_context <- lm(Catalan_can_become_an_important_language_in_the_European_context ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_can_become_an_important_language_in_the_European_context)
+summary(mod_1_Catalan_can_become_an_important_language_in_the_European_context)
+summary(mod_2_Catalan_can_become_an_important_language_in_the_European_context)
+summary(mod_3_Catalan_can_become_an_important_language_in_the_European_context)
+summary(mod_int_Catalan_can_become_an_important_language_in_the_European_context)
+
+anova(mod_null_Catalan_can_become_an_important_language_in_the_European_context, mod_1_Catalan_can_become_an_important_language_in_the_European_context, mod_2_Catalan_can_become_an_important_language_in_the_European_context, mod_3_Catalan_can_become_an_important_language_in_the_European_context, mod_int_Catalan_can_become_an_important_language_in_the_European_context)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_can_become_an_important_language_in_the_European_context, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Catalan can be important in the European context", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines")
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, Spanish can become an important language in the European context}
+
+mod_null_Spanish_can_become_an_important_language_in_the_European_context <- lm(Spanish_can_become_an_important_language_in_the_European_context ~ 1, data = qp_data)
+
+mod_1_Spanish_can_become_an_important_language_in_the_European_context <- lm(Spanish_can_become_an_important_language_in_the_European_context ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Spanish_can_become_an_important_language_in_the_European_context <- lm(Spanish_can_become_an_important_language_in_the_European_context ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Spanish_can_become_an_important_language_in_the_European_context <- lm(Spanish_can_become_an_important_language_in_the_European_context ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Spanish_can_become_an_important_language_in_the_European_context <- lm(Spanish_can_become_an_important_language_in_the_European_context ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Spanish_can_become_an_important_language_in_the_European_context)
+summary(mod_1_Spanish_can_become_an_important_language_in_the_European_context)
+summary(mod_2_Spanish_can_become_an_important_language_in_the_European_context)
+summary(mod_3_Spanish_can_become_an_important_language_in_the_European_context)
+summary(mod_int_Spanish_can_become_an_important_language_in_the_European_context)
+
+anova(mod_null_Spanish_can_become_an_important_language_in_the_European_context, mod_1_Spanish_can_become_an_important_language_in_the_European_context, mod_2_Spanish_can_become_an_important_language_in_the_European_context, mod_3_Spanish_can_become_an_important_language_in_the_European_context, mod_int_Spanish_can_become_an_important_language_in_the_European_context)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Spanish_can_become_an_important_language_in_the_European_context)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+
+```{r, Sometimes I feel compelled to use Catalan}
+
+mod_null_Sometimes_I_feel_compelled_to_use_Catalan <- lm(Sometimes_I_feel_compelled_to_use_Catalan ~ 1, data = qp_data)
+
+mod_1_Sometimes_I_feel_compelled_to_use_Catalan <- lm(Sometimes_I_feel_compelled_to_use_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Sometimes_I_feel_compelled_to_use_Catalan <- lm(Sometimes_I_feel_compelled_to_use_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Sometimes_I_feel_compelled_to_use_Catalan <- lm(Sometimes_I_feel_compelled_to_use_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Sometimes_I_feel_compelled_to_use_Catalan <- lm(Sometimes_I_feel_compelled_to_use_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Sometimes_I_feel_compelled_to_use_Catalan)
+summary(mod_1_Sometimes_I_feel_compelled_to_use_Catalan)
+summary(mod_2_Sometimes_I_feel_compelled_to_use_Catalan)
+summary(mod_3_Sometimes_I_feel_compelled_to_use_Catalan)
+summary(mod_int_Sometimes_I_feel_compelled_to_use_Catalan)
+
+anova(mod_null_Sometimes_I_feel_compelled_to_use_Catalan, mod_1_Sometimes_I_feel_compelled_to_use_Catalan, mod_2_Sometimes_I_feel_compelled_to_use_Catalan, mod_3_Sometimes_I_feel_compelled_to_use_Catalan, mod_int_Sometimes_I_feel_compelled_to_use_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Sometimes_I_feel_compelled_to_use_Catalan)) + 
+  geom_point() + 
+  geom_boxplot()
+
+
+```
+
+```{r, Sometimes I feel compelled to use Spanish}
+
+mod_null_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1, data = qp_data)
+
+mod_1_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Sometimes_I_feel_compelled_to_use_Spanish)
+summary(mod_1_Sometimes_I_feel_compelled_to_use_Spanish)
+summary(mod_2_Sometimes_I_feel_compelled_to_use_Spanish)
+summary(mod_3_Sometimes_I_feel_compelled_to_use_Spanish)
+summary(mod_int_Sometimes_I_feel_compelled_to_use_Spanish)
+
+anova(mod_null_Sometimes_I_feel_compelled_to_use_Spanish, mod_1_Sometimes_I_feel_compelled_to_use_Spanish, mod_2_Sometimes_I_feel_compelled_to_use_Spanish, mod_3_Sometimes_I_feel_compelled_to_use_Spanish, mod_int_Sometimes_I_feel_compelled_to_use_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Sometimes_I_feel_compelled_to_use_Spanish, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Sometimes I feel compelled to use Spanish", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines")
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+
+```
+
+```{r, It is unpleasant to learn Catalan}
+
+mod_null_It_is_unpleasant_to_learn_Catalan <- lm(It_is_unpleasant_to_learn_Catalan ~ 1, data = qp_data)
+
+mod_1_It_is_unpleasant_to_learn_Catalan <- lm(It_is_unpleasant_to_learn_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_is_unpleasant_to_learn_Catalan <- lm(It_is_unpleasant_to_learn_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_is_unpleasant_to_learn_Catalan <- lm(It_is_unpleasant_to_learn_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_is_unpleasant_to_learn_Catalan <- lm(It_is_unpleasant_to_learn_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_is_unpleasant_to_learn_Catalan)
+summary(mod_1_It_is_unpleasant_to_learn_Catalan)
+summary(mod_2_It_is_unpleasant_to_learn_Catalan)
+summary(mod_3_It_is_unpleasant_to_learn_Catalan)
+summary(mod_int_It_is_unpleasant_to_learn_Catalan)
+
+anova(mod_null_It_is_unpleasant_to_learn_Catalan, mod_1_It_is_unpleasant_to_learn_Catalan, mod_2_It_is_unpleasant_to_learn_Catalan, mod_3_It_is_unpleasant_to_learn_Catalan, mod_int_It_is_unpleasant_to_learn_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_is_unpleasant_to_learn_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "It is unpleasant to learn Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+
+```{r}
+mod_null_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1, data = qp_data)
+
+mod_1_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Sometimes_I_feel_compelled_to_use_Spanish <- lm(Sometimes_I_feel_compelled_to_use_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Sometimes_I_feel_compelled_to_use_Spanish)
+summary(mod_1_Sometimes_I_feel_compelled_to_use_Spanish)
+summary(mod_2_Sometimes_I_feel_compelled_to_use_Spanish)
+summary(mod_3_Sometimes_I_feel_compelled_to_use_Spanish)
+summary(mod_int_Sometimes_I_feel_compelled_to_use_Spanish)
+
+anova(mod_null_Sometimes_I_feel_compelled_to_use_Spanish, mod_1_Sometimes_I_feel_compelled_to_use_Spanish, mod_2_Sometimes_I_feel_compelled_to_use_Spanish, mod_3_Sometimes_I_feel_compelled_to_use_Spanish, mod_int_Sometimes_I_feel_compelled_to_use_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Sometimes_I_feel_compelled_to_use_Spanish)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+```{r, It is unpleasant to learn Spanish}
+
+mod_null_It_is_unpleasant_to_learn_Spanish <- lm(It_is_unpleasant_to_learn_Spanish ~ 1, data = qp_data)
+
+mod_1_It_is_unpleasant_to_learn_Spanish <- lm(It_is_unpleasant_to_learn_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_is_unpleasant_to_learn_Spanish <- lm(It_is_unpleasant_to_learn_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_is_unpleasant_to_learn_Spanish <- lm(It_is_unpleasant_to_learn_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_is_unpleasant_to_learn_Spanish <- lm(It_is_unpleasant_to_learn_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_is_unpleasant_to_learn_Spanish)
+summary(mod_1_It_is_unpleasant_to_learn_Spanish)
+summary(mod_2_It_is_unpleasant_to_learn_Spanish)
+summary(mod_3_It_is_unpleasant_to_learn_Spanish)
+summary(mod_int_It_is_unpleasant_to_learn_Spanish)
+
+anova(mod_null_It_is_unpleasant_to_learn_Spanish, mod_1_It_is_unpleasant_to_learn_Spanish, mod_2_It_is_unpleasant_to_learn_Spanish, mod_3_It_is_unpleasant_to_learn_Spanish, mod_int_It_is_unpleasant_to_learn_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_is_unpleasant_to_learn_Spanish)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+
+```{r, It is boring to learn Catalan}
+
+mod_null_It_is_boring_to_learn_Catalan <- lm(It_is_boring_to_learn_Catalan ~ 1, data = qp_data)
+
+mod_1_It_is_boring_to_learn_Catalan <- lm(It_is_boring_to_learn_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_is_boring_to_learn_Catalan <- lm(It_is_boring_to_learn_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_is_boring_to_learn_Catalan <- lm(It_is_boring_to_learn_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_is_boring_to_learn_Catalan <- lm(It_is_boring_to_learn_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_is_boring_to_learn_Catalan)
+summary(mod_1_It_is_boring_to_learn_Catalan)
+summary(mod_2_It_is_boring_to_learn_Catalan)
+summary(mod_3_It_is_boring_to_learn_Catalan)
+summary(mod_int_It_is_boring_to_learn_Catalan)
+
+anova(mod_null_It_is_boring_to_learn_Catalan, mod_1_It_is_boring_to_learn_Catalan, mod_2_It_is_boring_to_learn_Catalan, mod_3_It_is_boring_to_learn_Catalan, mod_int_It_is_boring_to_learn_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_is_boring_to_learn_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "It is boring to learn Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, Learning Spanish is boring}
+
+mod_null_Learning_Spanish_is_boring <- lm(Learning_Spanish_is_boring ~ 1, data = qp_data)
+
+mod_1_Learning_Spanish_is_boring <- lm(Learning_Spanish_is_boring ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Learning_Spanish_is_boring <- lm(Learning_Spanish_is_boring ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Learning_Spanish_is_boring <- lm(Learning_Spanish_is_boring ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Learning_Spanish_is_boring <- lm(Learning_Spanish_is_boring ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Learning_Spanish_is_boring)
+summary(mod_1_Learning_Spanish_is_boring)
+summary(mod_2_Learning_Spanish_is_boring)
+summary(mod_3_Learning_Spanish_is_boring)
+summary(mod_int_Learning_Spanish_is_boring)
+
+anova(mod_null_Learning_Spanish_is_boring, mod_1_Learning_Spanish_is_boring, mod_2_Learning_Spanish_is_boring, mod_3_Learning_Spanish_is_boring, mod_int_Learning_Spanish_is_boring)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Learning_Spanish_is_boring)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+```{r, People should put more effort into using Catalan}
+
+mod_null_People_should_put_more_effort_into_using_Catalan <- lm(People_should_put_more_effort_into_using_Catalan ~ 1, data = qp_data)
+
+mod_1_People_should_put_more_effort_into_using_Catalan <- lm(People_should_put_more_effort_into_using_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_People_should_put_more_effort_into_using_Catalan <- lm(People_should_put_more_effort_into_using_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_People_should_put_more_effort_into_using_Catalan <- lm(People_should_put_more_effort_into_using_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_People_should_put_more_effort_into_using_Catalan <- lm(People_should_put_more_effort_into_using_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_People_should_put_more_effort_into_using_Catalan)
+summary(mod_1_People_should_put_more_effort_into_using_Catalan)
+summary(mod_2_People_should_put_more_effort_into_using_Catalan)
+summary(mod_3_People_should_put_more_effort_into_using_Catalan)
+summary(mod_int_People_should_put_more_effort_into_using_Catalan)
+
+anova(mod_null_People_should_put_more_effort_into_using_Catalan, mod_1_People_should_put_more_effort_into_using_Catalan, mod_2_People_should_put_more_effort_into_using_Catalan, mod_3_People_should_put_more_effort_into_using_Catalan, mod_int_People_should_put_more_effort_into_using_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = People_should_put_more_effort_into_using_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "People should put more effort into using Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"), 
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))  
+
+```
+
+```{r, people should put more effort into using Spanish}
+
+mod_null_People_should_put_more_effort_into_using_Spanish <- lm(People_should_put_more_effort_into_using_Spanish ~ 1, data = qp_data)
+
+mod_1_People_should_put_more_effort_into_using_Spanish <- lm(People_should_put_more_effort_into_using_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_People_should_put_more_effort_into_using_Spanish <- lm(People_should_put_more_effort_into_using_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_People_should_put_more_effort_into_using_Spanish <- lm(People_should_put_more_effort_into_using_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_People_should_put_more_effort_into_using_Spanish <- lm(People_should_put_more_effort_into_using_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_People_should_put_more_effort_into_using_Spanish)
+summary(mod_1_People_should_put_more_effort_into_using_Spanish)
+summary(mod_2_People_should_put_more_effort_into_using_Spanish)
+summary(mod_3_People_should_put_more_effort_into_using_Spanish)
+summary(mod_int_People_should_put_more_effort_into_using_Spanish)
+
+anova(mod_null_People_should_put_more_effort_into_using_Spanish, mod_1_People_should_put_more_effort_into_using_Spanish, mod_2_People_should_put_more_effort_into_using_Spanish, mod_3_People_should_put_more_effort_into_using_Spanish, mod_int_People_should_put_more_effort_into_using_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = People_should_put_more_effort_into_using_Spanish, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "People should put more effort into using Spanish", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"), 
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, I live in the Balearic Islands and I have to know study and use Catalan}
+
+# Rename the column
+names(qp_data)[names(qp_data) == "I_live_in_the_Balearic_Islands_and_I have_to_know_study_and_use_Catalan"] <- "I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan"
+
+mod_null_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan ~ 1, data = qp_data)
+
+mod_1_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan)
+summary(mod_1_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan)
+summary(mod_2_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan)
+summary(mod_3_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan)
+summary(mod_int_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan)
+
+anova(mod_null_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan, mod_1_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan, mod_2_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan, mod_3_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan, mod_int_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "I need to know, study, and use Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, I live in the Balearic Islands and I have to know study and use Spanish}
+
+mod_null_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish ~ 1, data = qp_data)
+
+mod_1_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish <- lm(I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish)
+summary(mod_1_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish)
+summary(mod_2_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish)
+summary(mod_3_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish)
+summary(mod_int_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish)
+
+anova(mod_null_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish, mod_1_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish, mod_2_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish, mod_3_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish, mod_int_I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+```{r, Catalan is a language that sounds bad}
+
+mod_null_Catalan_is_a_language_that_sounds_bad <- lm(Catalan_is_a_language_that_sounds_bad ~ 1, data = qp_data)
+
+mod_1_Catalan_is_a_language_that_sounds_bad <- lm(Catalan_is_a_language_that_sounds_bad ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_is_a_language_that_sounds_bad <- lm(Catalan_is_a_language_that_sounds_bad ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_is_a_language_that_sounds_bad <- lm(Catalan_is_a_language_that_sounds_bad ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_is_a_language_that_sounds_bad <- lm(Catalan_is_a_language_that_sounds_bad ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_is_a_language_that_sounds_bad)
+summary(mod_1_Catalan_is_a_language_that_sounds_bad)
+summary(mod_2_Catalan_is_a_language_that_sounds_bad)
+summary(mod_3_Catalan_is_a_language_that_sounds_bad)
+summary(mod_int_Catalan_is_a_language_that_sounds_bad)
+
+anova(mod_null_Catalan_is_a_language_that_sounds_bad, mod_1_Catalan_is_a_language_that_sounds_bad, mod_2_Catalan_is_a_language_that_sounds_bad, mod_3_Catalan_is_a_language_that_sounds_bad, mod_int_Catalan_is_a_language_that_sounds_bad)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_is_a_language_that_sounds_bad)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+
+```{r, Spanish is a language that sounds bad}
+
+mod_null_Spanish_is_a_language_that_sounds_bad <- lm(Spanish_is_a_language_that_sounds_bad ~ 1, data = qp_data)
+
+mod_1_Spanish_is_a_language_that_sounds_bad <- lm(Spanish_is_a_language_that_sounds_bad ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Spanish_is_a_language_that_sounds_bad <- lm(Spanish_is_a_language_that_sounds_bad ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Spanish_is_a_language_that_sounds_bad <- lm(Spanish_is_a_language_that_sounds_bad ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Spanish_is_a_language_that_sounds_bad <- lm(Spanish_is_a_language_that_sounds_bad ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Spanish_is_a_language_that_sounds_bad)
+summary(mod_1_Spanish_is_a_language_that_sounds_bad)
+summary(mod_2_Spanish_is_a_language_that_sounds_bad)
+summary(mod_3_Spanish_is_a_language_that_sounds_bad)
+summary(mod_int_Spanish_is_a_language_that_sounds_bad)
+
+anova(mod_null_Spanish_is_a_language_that_sounds_bad, mod_1_Spanish_is_a_language_that_sounds_bad, mod_2_Spanish_is_a_language_that_sounds_bad, mod_3_Spanish_is_a_language_that_sounds_bad, mod_int_Spanish_is_a_language_that_sounds_bad)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Spanish_is_a_language_that_sounds_bad)) + 
+  geom_point() + 
+  geom_boxplot()
+
+
+```
+
+```{r, It bothers me when a stranger chats with me in Catalan}
+
+mod_null_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Catalan ~ 1, data = qp_data)
+
+mod_1_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan)
+summary(mod_1_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan)
+summary(mod_2_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan)
+summary(mod_3_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan)
+summary(mod_int_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan)
+
+anova(mod_null_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan, mod_1_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan, mod_2_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan, mod_3_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan, mod_int_It_bothers_me_when_a_stranger_chats_with_me_in_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_bothers_me_when_a_stranger_chats_with_me_in_Catalan)) + 
+  geom_point() + 
+  geom_boxplot()
+
+
+```
+
+```{r}
+mod_null_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Spanish ~ 1, data = qp_data)
+
+mod_1_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish <- lm(It_bothers_me_when_a_stranger_chats_with_me_in_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish)
+summary(mod_1_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish)
+summary(mod_2_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish)
+summary(mod_3_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish)
+summary(mod_int_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish)
+
+anova(mod_null_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish, mod_1_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish, mod_2_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish, mod_3_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish, mod_int_It_bothers_me_when_a_stranger_chats_with_me_in_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_bothers_me_when_a_stranger_chats_with_me_in_Spanish)) + 
+  geom_point() + 
+  geom_boxplot()
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = age,
+    y = It_bothers_me_when_a_stranger_chats_with_me_in_Spanish)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+```{r}
+mod_null_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish <- lm(It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish ~ 1, data = qp_data)
+
+mod_1_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish <- lm(It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish <- lm(It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish <- lm(It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish <- lm(It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish)
+summary(mod_1_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish)
+summary(mod_2_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish)
+summary(mod_3_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish)
+summary(mod_int_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish)
+
+anova(mod_null_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish, mod_1_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish, mod_2_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish, mod_3_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish, mod_int_It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Not good manners to respond in Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines")  
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r}
+mod_null_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan <- lm(It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan ~ 1, data = qp_data)
+
+mod_1_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan <- lm(It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan <- lm(It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan <- lm(It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan <- lm(It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan)
+summary(mod_1_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan)
+summary(mod_2_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan)
+summary(mod_3_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan)
+summary(mod_int_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan)
+
+anova(mod_null_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan, mod_1_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan, mod_2_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan, mod_3_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan, mod_int_It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+```{r}
+mod_null_Catalan_is_as_important_as_English <- lm(Catalan_is_as_important_as_English ~ 1, data = qp_data)
+
+mod_1_Catalan_is_as_important_as_English <- lm(Catalan_is_as_important_as_English ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_is_as_important_as_English <- lm(Catalan_is_as_important_as_English ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_is_as_important_as_English <- lm(Catalan_is_as_important_as_English ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_is_as_important_as_English <- lm(Catalan_is_as_important_as_English ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_is_as_important_as_English)
+summary(mod_1_Catalan_is_as_important_as_English)
+summary(mod_2_Catalan_is_as_important_as_English)
+summary(mod_3_Catalan_is_as_important_as_English)
+summary(mod_int_Catalan_is_as_important_as_English)
+
+anova(mod_null_Catalan_is_as_important_as_English, mod_1_Catalan_is_as_important_as_English, mod_2_Catalan_is_as_important_as_English, mod_3_Catalan_is_as_important_as_English, mod_int_Catalan_is_as_important_as_English)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_is_as_important_as_English, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Catalan is as important as English", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"), 
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))  
+
+
+```
+
+```{r}
+mod_null_Spanish_is_as_important_as_English <- lm(Spanish_is_as_important_as_English ~ 1, data = qp_data)
+
+mod_1_Spanish_is_as_important_as_English <- lm(Spanish_is_as_important_as_English ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Spanish_is_as_important_as_English <- lm(Spanish_is_as_important_as_English ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Spanish_is_as_important_as_English <- lm(Spanish_is_as_important_as_English ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Spanish_is_as_important_as_English <- lm(Spanish_is_as_important_as_English ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Spanish_is_as_important_as_English)
+summary(mod_1_Spanish_is_as_important_as_English)
+summary(mod_2_Spanish_is_as_important_as_English)
+summary(mod_3_Spanish_is_as_important_as_English)
+summary(mod_int_Spanish_is_as_important_as_English)
+
+anova(mod_null_Spanish_is_as_important_as_English, mod_1_Spanish_is_as_important_as_English, mod_2_Spanish_is_as_important_as_English, mod_3_Spanish_is_as_important_as_English, mod_int_Spanish_is_as_important_as_English)
+
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Spanish_is_as_important_as_English, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Spanish is as important as English", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"), 
+    legend.spacing.x = unit(0.5, "lines")  
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))  
+
+```
+
+```{r, I f I have children I would like them to speak Catalan}
+
+mod_null_If_I_have_children_I_would_like_them_to_speak_Catalan <- lm(If_I_have_children_I_would_like_them_to_speak_Catalan ~ 1, data = qp_data)
+
+mod_1_If_I_have_children_I_would_like_them_to_speak_Catalan <- lm(If_I_have_children_I_would_like_them_to_speak_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_If_I_have_children_I_would_like_them_to_speak_Catalan <- lm(If_I_have_children_I_would_like_them_to_speak_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_If_I_have_children_I_would_like_them_to_speak_Catalan <- lm(If_I_have_children_I_would_like_them_to_speak_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_If_I_have_children_I_would_like_them_to_speak_Catalan <- lm(If_I_have_children_I_would_like_them_to_speak_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_If_I_have_children_I_would_like_them_to_speak_Catalan)
+summary(mod_1_If_I_have_children_I_would_like_them_to_speak_Catalan)
+summary(mod_2_If_I_have_children_I_would_like_them_to_speak_Catalan)
+summary(mod_3_If_I_have_children_I_would_like_them_to_speak_Catalan)
+summary(mod_int_If_I_have_children_I_would_like_them_to_speak_Catalan)
+
+anova(mod_null_If_I_have_children_I_would_like_them_to_speak_Catalan, mod_1_If_I_have_children_I_would_like_them_to_speak_Catalan, mod_2_If_I_have_children_I_would_like_them_to_speak_Catalan, mod_3_If_I_have_children_I_would_like_them_to_speak_Catalan, mod_int_If_I_have_children_I_would_like_them_to_speak_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = If_I_have_children_I_would_like_them_to_speak_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "If I had children I would like them to speak Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r}
+mod_null_If_I_have_children_I_would_like_them_to_speak_Spanish <- lm(If_I_have_children_I_would_like_them_to_speak_Spanish ~ 1, data = qp_data)
+
+mod_1_If_I_have_children_I_would_like_them_to_speak_Spanish <- lm(If_I_have_children_I_would_like_them_to_speak_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_If_I_have_children_I_would_like_them_to_speak_Spanish <- lm(If_I_have_children_I_would_like_them_to_speak_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_If_I_have_children_I_would_like_them_to_speak_Spanish <- lm(If_I_have_children_I_would_like_them_to_speak_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_If_I_have_children_I_would_like_them_to_speak_Spanish <- lm(If_I_have_children_I_would_like_them_to_speak_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_If_I_have_children_I_would_like_them_to_speak_Spanish)
+summary(mod_1_If_I_have_children_I_would_like_them_to_speak_Spanish)
+summary(mod_2_If_I_have_children_I_would_like_them_to_speak_Spanish)
+summary(mod_3_If_I_have_children_I_would_like_them_to_speak_Spanish)
+summary(mod_int_If_I_have_children_I_would_like_them_to_speak_Spanish)
+
+anova(mod_null_If_I_have_children_I_would_like_them_to_speak_Spanish, mod_1_If_I_have_children_I_would_like_them_to_speak_Spanish, mod_2_If_I_have_children_I_would_like_them_to_speak_Spanish, mod_3_If_I_have_children_I_would_like_them_to_speak_Spanish, mod_int_If_I_have_children_I_would_like_them_to_speak_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = If_I_have_children_I_would_like_them_to_speak_Spanish)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+```{r, Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan}
+
+mod_null_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan <- lm(Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan ~ 1, data = qp_data)
+
+mod_1_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan <- lm(Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan <- lm(Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan <- lm(Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan <- lm(Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan)
+summary(mod_1_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan)
+summary(mod_2_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan)
+summary(mod_3_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan)
+summary(mod_int_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan)
+
+anova(mod_null_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan, mod_1_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan, mod_2_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan, mod_3_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan, mod_int_Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "No need to learn Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines")  
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))  
+
+```
+
+
+```{r, It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan}
+
+mod_null_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan ~ 1, data = qp_data)
+
+mod_1_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan)
+summary(mod_1_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan)
+summary(mod_2_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan)
+summary(mod_3_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan)
+summary(mod_int_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan)
+
+anova(mod_null_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan, mod_1_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan, mod_2_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan, mod_3_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan, mod_int_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+
+```{r, It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish}
+
+mod_null_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish ~ 1, data = qp_data)
+
+mod_1_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish <- lm(It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish)
+summary(mod_1_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish)
+summary(mod_2_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish)
+summary(mod_3_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish)
+summary(mod_int_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish)
+
+anova(mod_null_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish, mod_1_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish, mod_2_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish, mod_3_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish, mod_int_It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) + 
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Mandatory to take 50% of the subjects in Spanish", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"), 
+    legend.spacing.x = unit(0.5, "lines")  
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+
+```
+
+```{r, Catalan is a rural language}
+
+mod_null_Catalan_is_a_rural_language <- lm(Catalan_is_a_rural_language ~ 1, data = qp_data)
+
+mod_1_Catalan_is_a_rural_language <- lm(Catalan_is_a_rural_language ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_is_a_rural_language <- lm(Catalan_is_a_rural_language ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_is_a_rural_language <- lm(Catalan_is_a_rural_language ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_is_a_rural_language <- lm(Catalan_is_a_rural_language ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_is_a_rural_language)
+summary(mod_1_Catalan_is_a_rural_language)
+summary(mod_2_Catalan_is_a_rural_language)
+summary(mod_3_Catalan_is_a_rural_language)
+summary(mod_int_Catalan_is_a_rural_language)
+
+anova(mod_null_Catalan_is_a_rural_language, mod_1_Catalan_is_a_rural_language, mod_2_Catalan_is_a_rural_language, mod_3_Catalan_is_a_rural_language, mod_int_Catalan_is_a_rural_language)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_is_a_rural_language)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+
+```{r, Spanish is more fashionable than Catalan}
+
+mod_null_Spanish_is_more_fashionable_than_Catalan <- lm(Spanish_is_more_fashionable_than_Catalan ~ 1, data = qp_data)
+
+mod_1_Spanish_is_more_fashionable_than_Catalan <- lm(Spanish_is_more_fashionable_than_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Spanish_is_more_fashionable_than_Catalan <- lm(Spanish_is_more_fashionable_than_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Spanish_is_more_fashionable_than_Catalan <- lm(Spanish_is_more_fashionable_than_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Spanish_is_more_fashionable_than_Catalan <- lm(Spanish_is_more_fashionable_than_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Spanish_is_more_fashionable_than_Catalan)
+summary(mod_1_Spanish_is_more_fashionable_than_Catalan)
+summary(mod_2_Spanish_is_more_fashionable_than_Catalan)
+summary(mod_3_Spanish_is_more_fashionable_than_Catalan)
+summary(mod_int_Spanish_is_more_fashionable_than_Catalan)
+
+anova(mod_null_Spanish_is_more_fashionable_than_Catalan, mod_1_Spanish_is_more_fashionable_than_Catalan, mod_2_Spanish_is_more_fashionable_than_Catalan, mod_3_Spanish_is_more_fashionable_than_Catalan, mod_int_Spanish_is_more_fashionable_than_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Spanish_is_more_fashionable_than_Catalan)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+```{r, For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish}
+
+mod_null_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish <- lm(For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish ~ 1, data = qp_data)
+
+mod_1_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish <- lm(For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish <- lm(For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish <- lm(For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish <- lm(For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish)
+summary(mod_1_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish)
+summary(mod_2_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish)
+summary(mod_3_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish)
+summary(mod_int_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish)
+
+anova(mod_null_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish, mod_1_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish, mod_2_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish, mod_3_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish, mod_int_For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish,
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "It is important for healthcare staff to learn Catalan") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+
+```{r}
+mod_null_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan <- lm(For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan ~ 1, data = qp_data)
+
+mod_1_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan <- lm(For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan <- lm(For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan <- lm(For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan <- lm(For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan)
+summary(mod_1_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan)
+summary(mod_2_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan)
+summary(mod_3_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan)
+summary(mod_int_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan)
+
+anova(mod_null_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan, mod_1_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan, mod_2_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan, mod_3_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan, mod_int_For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+```{r, Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job}
+
+mod_null_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1, data = qp_data)
+
+mod_1_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+summary(mod_1_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+summary(mod_2_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+summary(mod_3_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+summary(mod_int_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+
+anova(mod_null_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job, mod_1_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job, mod_2_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job, mod_3_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job, mod_int_Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+```{r}
+
+# Rename the column
+names(qp_data)[names(qp_data) == "Studying_Spsnish_will_be_very_useful_for_me_in_the_future_to_find_a_job"] <- "Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job"
+
+mod_null_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1, data = qp_data)
+
+mod_1_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job <- lm(Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+summary(mod_1_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+summary(mod_2_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+summary(mod_3_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+summary(mod_int_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+
+anova(mod_null_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job, mod_1_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job, mod_2_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job, mod_3_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job, mod_int_Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Studying_Spanish_will_be_very_useful_for_me_in_the_future_to_find_a_job)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+```{r, It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands}
+
+mod_null_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands <- lm(It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands ~ 1, data = qp_data)
+
+mod_1_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands <- lm(It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands ~ 1 + political_orientation, data = qp_data)
+
+mod_2_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands <- lm(It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands <- lm(It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands <- lm(It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands)
+summary(mod_1_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands)
+summary(mod_2_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands)
+summary(mod_3_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands)
+summary(mod_int_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands)
+
+anova(mod_null_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands, mod_1_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands, mod_2_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands, mod_3_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands, mod_int_It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Need of Catalan to integrate in the Balearic Islands", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),  
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+
+```
+
+```{r, Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands}
+
+mod_null_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1, data = qp_data)
+
+mod_1_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+summary(mod_1_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+summary(mod_2_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+summary(mod_3_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+summary(mod_int_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+
+anova(mod_null_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands, mod_1_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands, mod_2_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands, mod_3_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands, mod_int_Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Catalan should predominate in the Balearic Islands", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines")
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands}
+
+mod_null_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1, data = qp_data)
+
+mod_1_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands <- lm(Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+summary(mod_1_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+summary(mod_2_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+summary(mod_3_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+summary(mod_int_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+
+anova(mod_null_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands, mod_1_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands, mod_2_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands, mod_3_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands, mod_int_Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands)) + 
+  geom_point() + 
+  geom_boxplot()
+
+```
+
+```{r, Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands}
+
+mod_null_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1, data = qp_data)
+
+mod_1_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+summary(mod_1_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+summary(mod_2_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+summary(mod_3_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+summary(mod_int_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+
+anova(mod_null_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands, mod_1_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands, mod_2_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands, mod_3_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands, mod_int_Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Mandatory to take 50% of the subjects in Spanish", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+
+```
+
+```{r, Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands}
+
+mod_null_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1, data = qp_data)
+
+mod_1_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands <- lm(Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+summary(mod_1_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+summary(mod_2_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+summary(mod_3_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+summary(mod_int_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+
+anova(mod_null_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands, mod_1_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands, mod_2_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands, mod_3_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands, mod_int_Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands, fill = political_orientation)) + 
+  geom_point() + 
+  geom_boxplot() +
+  labs(x = "Political orientation", y = "Spanish should be a volunatry subject in schools in the Balearic Islands", fill = "Political Orientation") +
+    scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue"))
+
+```
+
+```{r, An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan}
+
+mod_null_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan <- lm(An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan ~ 1, data = qp_data)
+
+mod_1_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan <- lm(An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan <- lm(An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan <- lm(An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan <- lm(An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan)
+summary(mod_1_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan)
+summary(mod_2_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan)
+summary(mod_3_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan)
+summary(mod_int_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan)
+
+anova(mod_null_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan, mod_1_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan, mod_2_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan, mod_3_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan, mod_int_An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "An outsider will find it less difficult to learn Spanish", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+```
+
+```{r, All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish}
+
+mod_null_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish <- lm(All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish ~ 1, data = qp_data)
+
+mod_1_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish <- lm(All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish <- lm(All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish <- lm(All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish <- lm(All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish)
+summary(mod_1_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish)
+summary(mod_2_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish)
+summary(mod_3_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish)
+summary(mod_int_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish)
+
+anova(mod_null_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish, mod_1_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish, mod_2_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish, mod_3_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish, mod_int_All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish, fill = political_orientation)) + 
+  geom_point() + 
+  geom_boxplot() +
+  labs(x = "Political orientation", y = "People living in the Balearic Islands should know Catalan and Spanish", fill = "Political Orientation") +
+    scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue"))
+
+```
+
+
+```{r, Fewer_and_fewer_people_know_Catalan}
+
+mod_null_Fewer_and_fewer_people_know_Catalan <- lm(Fewer_and_fewer_people_know_Catalan ~ 1, data = qp_data)
+
+mod_1_Fewer_and_fewer_people_know_Catalan <- lm(Fewer_and_fewer_people_know_Catalan ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Fewer_and_fewer_people_know_Catalan <- lm(Fewer_and_fewer_people_know_Catalan ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Fewer_and_fewer_people_know_Catalan <- lm(Fewer_and_fewer_people_know_Catalan ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Fewer_and_fewer_people_know_Catalan <- lm(Fewer_and_fewer_people_know_Catalan ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Fewer_and_fewer_people_know_Catalan)
+summary(mod_1_Fewer_and_fewer_people_know_Catalan)
+summary(mod_2_Fewer_and_fewer_people_know_Catalan)
+summary(mod_3_Fewer_and_fewer_people_know_Catalan)
+summary(mod_int_Fewer_and_fewer_people_know_Catalan)
+
+anova(mod_null_Fewer_and_fewer_people_know_Catalan, mod_1_Fewer_and_fewer_people_know_Catalan, mod_2_Fewer_and_fewer_people_know_Catalan, mod_3_Fewer_and_fewer_people_know_Catalan, mod_int_Fewer_and_fewer_people_know_Catalan)
+
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Fewer_and_fewer_people_know_Catalan, 
+    fill = political_orientation)) + 
+  geom_point(size = 1) +  
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Fewer and fewer people know Catalan", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"), 
+    legend.key.width = unit(1.5, "lines"),
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+
+```
+
+
+```{r}
+mod_null_Fewer_and_fewer_people_know_Spanish <- lm(Fewer_and_fewer_people_know_Spanish ~ 1, data = qp_data)
+
+mod_1_Fewer_and_fewer_people_know_Spanish <- lm(Fewer_and_fewer_people_know_Spanish ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Fewer_and_fewer_people_know_Spanish <- lm(Fewer_and_fewer_people_know_Spanish ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Fewer_and_fewer_people_know_Spanish <- lm(Fewer_and_fewer_people_know_Spanish ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Fewer_and_fewer_people_know_Spanish <- lm(Fewer_and_fewer_people_know_Spanish ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Fewer_and_fewer_people_know_Spanish)
+summary(mod_1_Fewer_and_fewer_people_know_Spanish)
+summary(mod_2_Fewer_and_fewer_people_know_Spanish)
+summary(mod_3_Fewer_and_fewer_people_know_Spanish)
+summary(mod_int_Fewer_and_fewer_people_know_Spanish)
+
+anova(mod_null_Fewer_and_fewer_people_know_Spanish, mod_1_Fewer_and_fewer_people_know_Spanish, mod_2_Fewer_and_fewer_people_know_Spanish, mod_3_Fewer_and_fewer_people_know_Spanish, mod_int_Fewer_and_fewer_people_know_Spanish)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Fewer_and_fewer_people_know_Spanish)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+```{r, Catalan_serves_for_some_areas_and_Spanish_for_others}
+
+mod_null_Catalan_serves_for_some_areas_and_Spanish_for_others <- lm(Catalan_serves_for_some_areas_and_Spanish_for_others ~ 1, data = qp_data)
+
+mod_1_Catalan_serves_for_some_areas_and_Spanish_for_others <- lm(Catalan_serves_for_some_areas_and_Spanish_for_others ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_serves_for_some_areas_and_Spanish_for_others <- lm(Catalan_serves_for_some_areas_and_Spanish_for_others ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_serves_for_some_areas_and_Spanish_for_others <- lm(Catalan_serves_for_some_areas_and_Spanish_for_others ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_serves_for_some_areas_and_Spanish_for_others <- lm(Catalan_serves_for_some_areas_and_Spanish_for_others ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_serves_for_some_areas_and_Spanish_for_others)
+summary(mod_1_Catalan_serves_for_some_areas_and_Spanish_for_others)
+summary(mod_2_Catalan_serves_for_some_areas_and_Spanish_for_others)
+summary(mod_3_Catalan_serves_for_some_areas_and_Spanish_for_others)
+summary(mod_int_Catalan_serves_for_some_areas_and_Spanish_for_others)
+
+anova(mod_null_Catalan_serves_for_some_areas_and_Spanish_for_others, mod_1_Catalan_serves_for_some_areas_and_Spanish_for_others, mod_2_Catalan_serves_for_some_areas_and_Spanish_for_others, mod_3_Catalan_serves_for_some_areas_and_Spanish_for_others, mod_int_Catalan_serves_for_some_areas_and_Spanish_for_others)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_serves_for_some_areas_and_Spanish_for_others)) + 
+  geom_point() + 
+  geom_boxplot()
+```
+
+```{r, Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration}
+
+mod_null_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration <- lm(Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration ~ 1, data = qp_data)
+
+mod_1_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration <- lm(Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration ~ 1 + political_orientation, data = qp_data)
+
+mod_2_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration <- lm(Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration ~ 1 + political_orientation + gender, data = qp_data)
+
+mod_3_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration <- lm(Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration ~ 1 + political_orientation + gender + age, data = qp_data)
+
+mod_int_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration <- lm(Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration ~ 1 + political_orientation + gender + age + political_orientation:gender:age, data = qp_data)
+
+summary(mod_null_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration)
+summary(mod_1_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration)
+summary(mod_2_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration)
+summary(mod_3_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration)
+summary(mod_int_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration)
+
+anova(mod_null_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration, mod_1_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration, mod_2_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration, mod_3_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration, mod_int_Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration)
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation,
+    y = Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration
+    fill = political_orientation)) + 
+  geom_point(size = 1) +
+  stat_summary(fun.data = mean_se, geom = "pointrange", pch = 23, size = 1) +
+  labs(x = "Political orientation", y = "Requiremen to hold a job in the public administration", fill = "Political Orientation") +
+  scale_fill_manual(values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue")) +
+  theme(
+    legend.key.size = unit(1, "lines"),  
+    legend.key.width = unit(1.5, "lines"), 
+    legend.spacing.x = unit(0.5, "lines") 
+  ) +
+  guides(fill = guide_legend(override.aes = list(size = 0.5)))
+
+
+```

@@ -1,0 +1,419 @@
+---
+title: "plots"
+author: "alejandro"
+date: "2024-05-02"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(tidyverse)
+library(lme4)
+library(ggplot2)
+library(papaja)
+library(tinylabels)
+library(car)
+library(broom)
+library(emmeans)
+library(reshape2)
+library(writexl)
+library(readxl)
+library(dplyr)
+```
+
+# Plots for QP - Language attitudes
+
+```{r}
+
+# Proficiency in Catalan and Spanish
+
+qp_data |> 
+  select(catalan_proficiency_understand:spanish_proficiency_write) |>
+  pivot_longer(
+    col = catalan_proficiency_understand:spanish_proficiency_write, 
+    names_to = "Skills", 
+    values_to = "avg"
+  ) |>
+  separate(Skills, into = c("language", "Skills"), sep = 7) |>
+  mutate(Skills = stringr::str_remove(Skills, "\\_proficiency\\_")) |>
+  mutate(language = case_when(
+    language == "catalan" ~ "Catalan",
+    language == "spanish" ~ "Spanish",
+    TRUE ~ "Prop"
+  )) |>
+  group_by(language, Skills) |>
+  count(avg) |>
+  mutate(prop = n / 99) |>
+  ggplot() +
+  aes(x = Skills, y = prop, fill = language) +
+  geom_bar(stat = "identity", position = "dodge")
+
+
+```
+
+
+```{r}
+
+# Family income
+
+qp_data %>%
+  filter(family_income != "I prefer not to say") %>%
+  group_by(gender, family_income) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = gender, y = count, fill = family_income)) +
+  geom_bar(stat = "identity", position = "fill") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+```{r}
+
+# Political orientation
+
+ggplot(
+  data = qp_data, 
+  aes(
+    x = political_orientation, 
+    fill = political_orientation)) + 
+  geom_bar() +
+  scale_x_discrete(labels = c("Far left" = "Far-Left")) +
+  scale_fill_manual(
+    values = c("indianred2", "indianred2", "indianred2", "cornflowerblue", "cornflowerblue", "cornflowerblue"),
+    name = "Political orientation") +  # Set the legend title
+  labs(y = "Count", x = "Political orientation")
+
+```
+
+```{r}
+
+# Mother tongue as a function of political orientation
+
+qp_data %>%
+  filter(mother_tongue != "Other(s)") %>%
+  ggplot(aes(x = political_orientation, fill = mother_tongue)) +
+  geom_bar(stat = "count", position = "fill") +
+  labs(y = "Count", fill = "Mother tongue", x = "Political orientation")
+
+```
+
+# Other plots not important for QP - Language uses
+
+```{r}
+
+# Imcomplete statements
+
+qp_data %>%
+  ggplot(
+    aes(x = Balearic_Islands_official_language, fill = gender)) +
+  geom_bar(position = "dodge", stat = "count")
+
+qp_data %>%
+  group_by(Balearic_Islands_official_language, gender) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = Balearic_Islands_official_language, y = count, fill = gender)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+qp_data %>%
+  ggplot(
+    aes(x = Balearic_Islands_should_speak, fill = gender)) +
+  geom_bar(position = "dodge", stat = "count")
+
+qp_data %>%
+  group_by(Balearic_Islands_should_speak, gender) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = Balearic_Islands_should_speak, y = count, fill = gender)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+qp_data %>%
+  ggplot(
+    aes(x = Balearic_Islands_language_public_administration, fill = gender)) +
+  geom_bar(position = "dodge", stat = "count")
+
+qp_data %>%
+  group_by(Balearic_Islands_language_public_administration, gender) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = Balearic_Islands_language_public_administration, y = count, fill = gender)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+qp_data %>%
+  ggplot(
+    aes(x = Balearic_Islands_language_health_care, fill = gender)) +
+  geom_bar(position = "dodge", stat = "count")
+
+qp_data %>%
+  group_by(Balearic_Islands_language_health_care, gender) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = Balearic_Islands_language_health_care, y = count, fill = gender)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+qp_data %>%
+  ggplot(
+    aes(x = Balearic_Islands_language_media, fill = gender)) +
+  geom_bar(position = "dodge", stat = "count")
+
+qp_data %>%
+  group_by(Balearic_Islands_language_media, gender) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = Balearic_Islands_language_media, y = count, fill = gender)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+qp_data %>%
+  ggplot(
+    aes(x = Balearic_Islands_language_institutional_acts, fill = gender)) +
+  geom_bar(position = "dodge", stat = "count")
+
+qp_data %>%
+  group_by(Balearic_Islands_language_institutional_acts, gender) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = Balearic_Islands_language_institutional_acts, y = count, fill = gender)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+qp_data %>%
+  ggplot(
+    aes(x = Balearic_Islands_host_language_immigrants, fill = gender)) +
+  geom_bar(position = "dodge", stat = "count")
+
+qp_data %>%
+  group_by(Balearic_Islands_host_language_immigrants, gender) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = Balearic_Islands_host_language_immigrants, y = count, fill = gender)) +
+  geom_bar(stat = "identity", position = "stack") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+```{r}
+
+# Language used with different people
+
+qp_data %>%
+  filter(language_used_with_father != "Others") %>%
+  ggplot(aes(x = language_used_with_father, fill = gender)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_father != "Others") %>%
+  ggplot(aes(x = gender, fill = language_used_with_father)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_mother != "Others") %>%
+  filter(language_used_with_mother != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_mother)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_sibilings != "Others") %>%
+  filter(language_used_with_sibilings != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_sibilings)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_grandparents != "Others") %>%
+  filter(language_used_with_grandparents != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_grandparents)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_friends != "Others") %>%
+  filter(language_used_with_friends != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_friends)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_neighbours != "Others") %>%
+  filter(language_used_with_neighbours != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_neighbours)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_partner != "Others") %>%
+  filter(language_used_with_partner != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_partner)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_relatives != "Others") %>%
+  filter(language_used_with_relatives != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_relatives)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_teachers != "Others") %>%
+  filter(language_used_with_teachers != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_teachers)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_classmates != "Others") %>%
+  filter(language_used_with_classmates != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_classmates)) +
+  geom_bar(stat = "count", position = "dodge")
+
+
+qp_data %>%
+  filter(language_used_with_coworkers != "Others") %>%
+  filter(language_used_with_coworkers != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_coworkers)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_immigrants != "Others") %>%
+  filter(language_used_with_immigrants != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_immigrants)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_used_with_children != "Others") %>%
+  filter(language_used_with_children != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_used_with_children)) +
+  geom_bar(stat = "count", position = "dodge")
+
+
+```
+
+
+```{r}
+
+# Language used in different contexts
+
+qp_data %>%
+  filter(language_watch_TV != "Others") %>%
+  filter(language_watch_TV != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_watch_TV)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_read != "Others") %>%
+  filter(language_read != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_read)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_music != "Others") %>%
+  filter(language_music != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_music)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_radio != "Others") %>%
+  filter(language_radio != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_radio)) +
+  geom_bar(stat = "count", position = "dodge")
+
+
+qp_data %>%
+  filter(language_movies != "Others") %>%
+  filter(language_movies != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_movies)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_small_business != "Others") %>%
+  filter(language_small_business != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_small_business)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_large_stores != "Others") %>%
+  filter(language_large_stores != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_large_stores)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_financial_entities != "Others") %>%
+  filter(language_financial_entities != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_financial_entities)) +
+  geom_bar(stat = "count", position = "dodge")
+
+
+qp_data %>%
+  filter(language_administration != "Others") %>%
+  filter(language_administration != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_administration)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_health_care != "Others") %>%
+  filter(language_health_care != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_health_care)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_home != "Others") %>%
+  filter(language_home != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_home)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_work != "Others") %>%
+  filter(language_work != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_work)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_school != "Others") %>%
+  filter(language_school != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_school)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_count != "Others") %>%
+  filter(language_count != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_count)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_angry != "Others") %>%
+  filter(language_angry != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_angry)) +
+  geom_bar(stat = "count", position = "dodge")
+
+
+qp_data %>%
+  filter(language_social_networks != "Others") %>%
+  filter(language_social_networks != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_social_networks)) +
+  geom_bar(stat = "count", position = "dodge")
+
+
+qp_data %>%
+  filter(language_public_transportation != "Others") %>%
+  filter(language_public_transportation != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_public_transportation)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_phone != "Others") %>%
+  filter(language_phone != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_phone)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_taking_notes != "Others") %>%
+  filter(language_taking_notes != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_taking_notes)) +
+  geom_bar(stat = "count", position = "dodge")
+
+qp_data %>%
+  filter(language_law_enforcement != "Others") %>%
+  filter(language_law_enforcement != "N/A") %>%
+  ggplot(aes(x = gender, fill = language_law_enforcement)) +
+  geom_bar(stat = "count", position = "dodge")
+
+```
