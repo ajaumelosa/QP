@@ -22,6 +22,29 @@ library(dplyr)
 
 
 ```{r}
+
+# Loading dataset
+
+qp_data_raw_1 <- read_excel("~/Library/Mobile Documents/com~apple~CloudDocs/rutgers/phd/second_year/QP/paper/RESULTS/data/qp_data_raw_1.xls")
+
+View(qp_data_raw_1)
+
+qp_data <- qp_data_raw_1[-(100:126),]
+
+qp_data$age<-as.numeric(qp_data$age)
+
+summary(qp_data$age)
+
+qp_data$age_arrive_in_Spain<-as.numeric(qp_data$age_arrive_in_Spain)
+
+qp_data$political_orientation <- factor(qp_data$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+qp_data$mother_tongue <- factor(qp_data$mother_tongue, levels = c("Catalan", "Both", "Spanish", "Other(s)"))
+
+```
+
+
+```{r}
 mod_null_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1, data = qp_data)
 
 mod_1_lang_identity_1 <- lm(Catalan_is_an_identity_element_of_the_Balearic_Islands ~ 1 + political_orientation, data = qp_data)

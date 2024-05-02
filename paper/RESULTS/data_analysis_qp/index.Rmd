@@ -31,6 +31,8 @@ View(qp_data_raw_1)
 
 qp_data <- qp_data_raw_1[-(100:126),]
 
+qp_data$age<-as.numeric(qp_data$age)
+
 summary(qp_data$age)
 
 qp_data$age_arrive_in_Spain<-as.numeric(qp_data$age_arrive_in_Spain)
