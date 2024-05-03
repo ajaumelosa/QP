@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="JVC">
+<meta name="dcterms.date" content="2024-05-03">
+
+<title>Alternative analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="alt_analysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="alt_analysis_files/libs/quarto-html/quarto.js"></script>
+<script src="alt_analysis_files/libs/quarto-html/popper.min.js"></script>
+<script src="alt_analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="alt_analysis_files/libs/quarto-html/anchor.min.js"></script>
+<link href="alt_analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="alt_analysis_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="alt_analysis_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="alt_analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="alt_analysis_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Alternative analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>JVC </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 3, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This is a proof of concept of the other type of analysis I mentioned today. The way it works it simple. You can suppress the intercept in a linear model if you want to. If you do this and one of your predictors is a categorical factor, it will estimate the mean for each level of the factor (if you have notes from class, we learned about this in the lecture on coding strategies for categorical predictors). So, long story short, you can suppress the intercept in your model and fit the interaction between <code>political_orientation</code> and <code>question</code>. You will get an estimate for every level of <code>political_orientation</code> for each question. This won’t give you any comparisons. You will have to do all of those post-hoc (but you were doing that anyway). So… let’s load some libraries:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggplot2"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"readxl"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"dplyr"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"janitor"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"glue"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyr"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"stringr"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"forcats"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"here"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tibble"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggdist"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"brms"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we load the data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>qp_data_raw_1 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="fu">here</span>(<span class="st">"../data/qp_data_raw_1.xls"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For this example, I am only going to select the relevant columns of the data frame and I am going to rename all of the questions (the labels are really long). This isn’t really practical, but it makes it easier for you to see how this works.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data and pivot longer</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dat_temp <span class="ot">&lt;-</span> qp_data_raw_1 <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    political_orientation,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    i_like_that_people_use_catalan<span class="sc">:</span>catalan_is_an_identity_element_of_the_balearic_islands) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(qp_data_raw_1)), <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(<span class="st">"political_orientation"</span>, <span class="st">"id"</span>), </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"question"</span>, </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"val"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(val), question <span class="sc">!=</span> <span class="dv">1</span>) </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create tibble of names and alternative labels</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>alt_question_labels <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">question =</span> dat_temp<span class="sc">$</span>question <span class="sc">|&gt;</span> <span class="fu">unique</span>(), </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">q_alt =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">60</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">q_alt =</span> <span class="fu">str_pad</span>(q_alt, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">pad =</span> <span class="st">"0"</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Add alternative labels to data frame</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat_temp <span class="sc">|&gt;</span> </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(alt_question_labels, <span class="at">by =</span> <span class="st">"question"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can visualize the raw data with the newly arranged set-up, but we will ignore <code>political orientation</code> for now:</p>
+<div class="cell fig-cap-location-top">
+<div class="sourceCode cell-code" id="cb4" data-cap-location="top"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">q_alt =</span> <span class="fu">fct_reorder</span>(q_alt, val, max)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> val, <span class="at">y =</span> q_alt) <span class="sc">+</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.data =</span> mean_cl_boot, <span class="at">geom =</span> <span class="st">"pointrange"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-raw-data" class="quarto-figure quarto-figure-center quarto-float anchored" data-cap-location="top">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-raw-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Raw means and 95% bootstrapped CI for each question.
+</figcaption>
+<div aria-describedby="fig-raw-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="alt_analysis_files/figure-html/fig-raw-data-1.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>You can see how this allows us to calculate a mean for each question. Now we will fit a model (as described above, but still ignoring <code>political_orientation</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mod_0 <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  val <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> q_alt, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">threads =</span> <span class="fu">threading</span>(<span class="dv">2</span>), </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">here</span>(<span class="st">"mod_0"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>mod_0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: gaussian 
+  Links: mu = identity; sigma = identity 
+Formula: val ~ 0 + q_alt 
+   Data: dat (Number of observations: 5940) 
+  Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+         total post-warmup draws = 4000
+
+Regression Coefficients:
+        Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+q_alt01    87.72      3.32    81.37    94.44 1.00     7181     2682
+q_alt02    77.40      3.25    71.01    83.66 1.00     6221     2874
+q_alt03    87.55      3.34    80.87    94.11 1.00     5252     3071
+q_alt04    81.79      3.19    75.73    87.97 1.00     5649     3130
+q_alt05    79.37      3.24    72.91    85.89 1.00     6346     3260
+q_alt06    79.47      3.15    73.25    85.62 1.00     5967     2947
+q_alt07    36.05      3.18    29.91    42.27 1.00     6063     3009
+q_alt08    30.49      3.21    24.13    36.95 1.00     6413     2755
+q_alt09    81.56      3.15    75.19    87.58 1.00     6534     2846
+q_alt10    86.57      3.26    80.28    92.78 1.00     6271     3297
+q_alt11    72.94      3.21    66.58    79.28 1.00     6599     3101
+q_alt12    61.89      3.23    55.66    68.38 1.00     6379     2679
+q_alt13    83.45      3.35    76.96    89.87 1.00     6850     2896
+q_alt14    89.18      3.27    82.79    95.63 1.00     5315     2711
+q_alt15    64.25      3.27    58.00    70.68 1.00     5912     2838
+q_alt16    10.55      3.15     4.50    16.71 1.00     6563     3157
+q_alt17    75.53      3.28    69.03    81.90 1.00     5929     2852
+q_alt18    52.14      3.20    46.00    58.55 1.00     6317     2992
+q_alt19    79.38      3.22    73.10    85.87 1.00     7210     3090
+q_alt20    23.76      3.20    17.61    30.01 1.00     5054     2740
+q_alt21    50.83      3.27    44.43    57.17 1.00     5681     3051
+q_alt22    10.13      3.20     3.79    16.36 1.00     5792     3141
+q_alt23     8.83      3.28     2.53    15.20 1.00     5739     3032
+q_alt24    16.69      3.27    10.18    23.13 1.00     6013     3273
+q_alt25    14.67      3.28     8.28    21.06 1.00     5803     2876
+q_alt26    69.98      3.30    63.51    76.40 1.00     6264     2749
+q_alt27    30.44      3.23    24.13    36.86 1.00     7153     2914
+q_alt28    81.67      3.28    75.18    88.25 1.00     5599     3053
+q_alt29    64.60      3.36    58.26    70.95 1.00     6381     2969
+q_alt30     8.16      3.19     1.87    14.36 1.00     5741     2808
+q_alt31     8.00      3.19     1.69    14.42 1.00     7095     2665
+q_alt32     8.18      3.23     1.98    14.39 1.00     5960     3202
+q_alt33    11.23      3.24     4.69    17.46 1.00     6177     3202
+q_alt34    35.10      3.23    28.92    41.26 1.00     5680     3041
+q_alt35    33.46      3.21    27.09    39.60 1.00     5267     2865
+q_alt36    44.24      3.22    37.72    50.46 1.00     5464     3074
+q_alt37    71.26      3.23    64.98    77.55 1.00     6002     2474
+q_alt38    87.53      3.19    81.24    93.86 1.00     5884     3088
+q_alt39    84.84      3.29    78.50    91.40 1.00     6031     3076
+q_alt40    20.92      3.28    14.51    27.33 1.00     5253     3136
+q_alt41    68.85      3.29    62.43    75.26 1.00     6371     2731
+q_alt42    45.86      3.20    39.48    51.93 1.00     5939     3203
+q_alt43    11.15      3.27     4.74    17.80 1.00     5618     2937
+q_alt44    39.29      3.23    32.96    45.70 1.00     6357     3169
+q_alt45    27.91      3.26    21.54    34.36 1.00     7200     3305
+q_alt46    42.63      3.20    36.40    49.15 1.00     5623     2867
+q_alt47    52.59      3.26    46.08    59.13 1.00     6070     3097
+q_alt48    63.66      3.18    57.48    69.88 1.00     5539     3149
+q_alt49    66.53      3.19    60.23    72.89 1.00     5697     2875
+q_alt50    61.78      3.21    55.42    67.94 1.00     6760     3146
+q_alt51    26.74      3.31    20.28    33.06 1.00     4929     2847
+q_alt52    15.86      3.23     9.48    22.26 1.00     5524     3162
+q_alt53    15.23      3.17     8.89    21.25 1.00     4682     3260
+q_alt54    38.17      3.27    31.81    44.77 1.00     7179     3180
+q_alt55    74.78      3.31    68.41    81.28 1.00     6294     2720
+q_alt56    69.01      3.22    62.66    75.43 1.00     5845     3002
+q_alt57    11.86      3.25     5.47    18.12 1.00     6986     2894
+q_alt58    15.82      3.23     9.57    22.10 1.00     6684     3169
+q_alt59    63.02      3.28    56.61    69.50 1.00     6974     2923
+q_alt60    82.02      3.14    75.96    88.07 1.00     6162     3129
+
+Further Distributional Parameters:
+      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sigma    32.14      0.30    31.58    32.73 1.00     5689     3097
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>We can plot the raw means and the posterior estimates from the model together. This is a good way to see how the model does essentially the same thing.</p>
+<div class="cell fig-cap-location-top">
+<div class="sourceCode cell-code" id="cb7" data-cap-location="top"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(mod_0) <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"b_"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(), </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"question"</span>, </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"estimate"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">question =</span> <span class="fu">str_remove</span>(question, <span class="st">"b_q_alt"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> estimate, <span class="at">y =</span> question) <span class="sc">+</span> </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">position =</span> <span class="fu">position_nudge</span>(<span class="at">y =</span> <span class="fl">0.3</span>), <span class="at">color =</span> <span class="st">"#cc0033"</span>) <span class="sc">+</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat, </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> val, <span class="at">y =</span> q_alt), </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun.data =</span> mean_cl_boot, </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">"pointrange"</span>, </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_nudge</span>(<span class="at">y =</span> <span class="sc">-</span><span class="fl">0.3</span>), </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"darkblue"</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-mod-0" class="quarto-figure quarto-figure-center quarto-float anchored" data-cap-location="top">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-mod-0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Posterior means with 95% and 66% CrI (red) along with raw means and 95% bootstrapped CI (blue).
+</figcaption>
+<div aria-describedby="fig-mod-0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="alt_analysis_files/figure-html/fig-mod-0-1.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Before doing the same thing with <code>political_orientation</code>, it is worth mentioning that this isn’t <em>really</em> the best model. Specifically, we have data that are bounded between 0 and 100. As is, the model likelihood is gaussian, which means it assumes that the data generating process can range from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span>, but we know that the data only ranges from 0 to 100. In theory we want a likelihood that takes this into account. The answer is beta regression (essentially just changing the likelihood to the beta distribution), but we will leave that for another day. Here is our compromise:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mod_1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  val <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> q_alt<span class="sc">:</span>political_orientation, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">threads =</span> <span class="fu">threading</span>(<span class="dv">2</span>), </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">here</span>(<span class="st">"mod_1"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Instead of printing the model summary, I will generate the longest table you have ever seen:</p>
+<div id="tbl-wtf" class="cell anchored">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(mod_1) <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"b_"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(), </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"question"</span>, </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"estimate"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(question, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"question"</span>, <span class="st">"political_orientation"</span>), <span class="at">sep =</span> <span class="st">":"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">question =</span> <span class="fu">str_remove</span>(question, <span class="st">"b_q_alt"</span>), </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">political_orientation =</span> <span class="fu">str_remove</span>(</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      political_orientation, <span class="st">"political_orientation"</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(question, political_orientation) <span class="sc">|&gt;</span> </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median_qi</span>(estimate) <span class="sc">|&gt;</span> </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_if</span>(is.numeric, round, <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Question =</span> question, </span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Political orientation</span><span class="st">`</span> <span class="ot">=</span> political_orientation, </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median (HDI)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">glue</span>(<span class="st">"{estimate} [{.lower}, {.upper}]"</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"l"</span>, <span class="st">"r"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Question</th>
+<th style="text-align: left;">Political orientation</th>
+<th style="text-align: right;">Median (HDI)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">01</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">91.738 [78.662, 105.033]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">01</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">74.197 [56.354, 91.896]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">01</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">64.173 [36.494, 91.786]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">01</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">100.064 [77.543, 122.353]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">01</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">92.364 [83.789, 100.795]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">01</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">71.818 [49.023, 93.509]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">02</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">79.664 [66.01, 92.88]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">02</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">87.327 [69.855, 104.643]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">02</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">77.476 [50.177, 105.135]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">02</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">67.108 [44.444, 89.707]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">02</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">75.075 [66.225, 83.583]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">02</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">80.449 [58.654, 102.512]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">03</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">91.368 [78.904, 104.004]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">03</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">76.702 [59.205, 93.949]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">03</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">63.312 [36.055, 90.435]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">03</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">100.003 [77.991, 122.224]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">03</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">93.088 [83.944, 102.117]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">03</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">62.957 [40.498, 85.631]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">04</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">81.781 [68.812, 95.495]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">04</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">93.866 [76.15, 111.507]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">04</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">82.903 [55.877, 109.091]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">04</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">76.796 [53.28, 101.371]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">04</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">78.549 [69.734, 87.026]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">04</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">87.375 [64.39, 110.21]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">80.791 [66.883, 94.177]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">57.787 [40.04, 75.319]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">56.244 [30.648, 83.209]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">99.914 [77.644, 122.047]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">88.772 [80.199, 97.341]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">44.19 [19.636, 68.786]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">06</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">74.72 [61.391, 87.448]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">06</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">97.637 [80.277, 114.647]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">06</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">82.051 [55.504, 108.344]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">06</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">61.971 [38.95, 85.48]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">06</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">78.186 [69.509, 86.89]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">06</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">87.136 [64.233, 109.764]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">07</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">47.842 [34.321, 61.112]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">07</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">32.271 [15.527, 49.161]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">07</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">23.171 [-4.809, 49.878]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">07</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">27.559 [4.786, 50.266]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">07</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">33.212 [24.294, 42.217]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">07</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">45.695 [23.312, 68.006]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">08</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">39.179 [26.173, 52.745]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">08</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">34.62 [17.663, 51.889]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">08</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">22.947 [-4.927, 49.921]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">08</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">18.711 [-4.55, 41.693]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">08</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">28.306 [19.706, 37.116]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">08</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">29.362 [5.264, 54.055]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">89.366 [76.022, 102.935]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">60.875 [44.054, 78.271]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">61.639 [35.541, 87.736]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">97.241 [75.165, 120.744]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">87.049 [78.208, 95.648]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">55.064 [31.902, 77.881]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">86.607 [73.358, 100.544]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">95.232 [78.113, 112.656]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">77.632 [51.711, 103.366]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">83.77 [60.735, 106.985]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">87.797 [79.082, 96.422]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">74.108 [51.347, 96.538]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">78.185 [64.225, 91.64]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">46.447 [29.477, 63.334]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">45.237 [18.47, 72.057]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">94.113 [71.394, 117.072]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">81.522 [72.421, 90.982]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">43.513 [20.619, 65.394]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">56.451 [43.316, 69.785]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">98.87 [82.523, 115.992]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">51.313 [24.535, 78.204]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">44.449 [21.786, 67.004]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">55.427 [46.673, 64.315]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">84.168 [61.878, 106.909]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">79.847 [66.072, 93.064]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">70.51 [52.626, 88.263]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">56.249 [28.507, 83.785]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">100.07 [78.159, 122.238]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">91.98 [83.395, 100.857]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">60.188 [37.338, 82.66]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">85.586 [71.786, 99.978]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">99.112 [81.484, 116.163]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">79.999 [52.611, 107.336]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">92.994 [69.814, 115.054]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">89.989 [81.779, 98.172]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">78.986 [56.511, 101.573]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">72.615 [59.676, 85.836]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">31.872 [14.387, 49.256]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">13.528 [-13.564, 40.331]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">97.95 [74.416, 120.823]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">70.772 [62.173, 79.359]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">54.415 [31.13, 78.039]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">5.42 [-8.546, 19.465]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">8.265 [-8.607, 25.407]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">15.092 [-11.568, 40.651]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">3.742 [-19.453, 27.426]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">10.561 [2.029, 18.959]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">33.802 [11.204, 55.988]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">75.946 [61.603, 90.012]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">89.021 [71.476, 107.028]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">92.156 [65.696, 118.942]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">66.854 [44.158, 89.598]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">72.32 [63.648, 80.983]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">70.224 [47.938, 92.499]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">51.227 [38.167, 64.632]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">28.253 [11.086, 45.545]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">25.818 [0.868, 52.076]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">78.706 [56.526, 101.332]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">60.483 [51.889, 69.28]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">29.696 [7.735, 51.529]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">86.558 [73.305, 100.044]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">79.724 [63.079, 96.978]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">84.729 [58.207, 111.436]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">93.871 [69.489, 116.848]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">76.965 [68.141, 85.577]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">58.221 [35.132, 80.987]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">18.028 [3.818, 31.874]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">27.341 [9.819, 45.06]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">23.131 [-3.575, 50.829]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">10.574 [-12.401, 33.283]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">22.564 [13.73, 31.043]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">55.758 [32.607, 78.446]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">50.527 [37.513, 64.121]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">8.784 [-9.04, 26.695]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">28.288 [1.572, 54.05]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">82.521 [60.561, 105.305]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">63.47 [54.861, 71.926]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">21.958 [-1.286, 45.191]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">12.48 [-1.468, 25.883]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">17.908 [-0.082, 36.247]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">9.464 [-17.176, 36.451]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">2.413 [-19.715, 25.469]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">6.057 [-2.734, 14.772]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">26.067 [3.261, 48.829]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">10.417 [-2.816, 23.442]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">7.168 [-10.662, 24.834]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">5.258 [-21.683, 31.739]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">2.218 [-21.889, 25.794]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">8.465 [-0.026, 17.202]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">17.621 [-4.875, 40.8]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">20.632 [6.998, 34.11]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">30.163 [12.434, 47.838]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">39.627 [12.993, 66.803]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">2.113 [-21.197, 25.177]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">10.443 [2.105, 18.775]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">23.16 [-0.287, 46.072]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">13.291 [0.198, 26.761]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">15.324 [-2.331, 32.703]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">22.321 [-4.915, 49.648]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">3.326 [-19.877, 26.612]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">15.109 [5.945, 23.797]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">20.618 [-1.287, 43.878]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">74.612 [61.208, 87.856]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">45.671 [29.055, 62.555]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">36.178 [9.56, 62.722]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">98.378 [75.086, 121.414]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">76.857 [68.491, 85.468]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">46.814 [23.737, 70.485]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">22.981 [9.891, 36.378]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">54.939 [36.887, 72.825]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">37.799 [10.815, 63.665]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">20.991 [-1.495, 44.305]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">24.546 [15.711, 33.337]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">27</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">52.659 [30.315, 75.281]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">28</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">86.374 [72.631, 99.862]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">28</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">61.897 [43.514, 79.395]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">28</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">57.139 [30.331, 83.95]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">28</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">100.198 [76.668, 122.979]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">28</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">87.569 [78.863, 95.998]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">28</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">61.06 [39.03, 84.039]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">62.005 [48.71, 75.486]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">77.535 [61.026, 94.704]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">92.069 [64.479, 118.993]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">57.302 [34.836, 80.441]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">62.557 [53.61, 71.097]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">29</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">51.869 [29.225, 74.993]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">30</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">10.154 [-3.255, 23.502]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">30</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">17.388 [0.297, 34.558]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">30</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">4.404 [-22.475, 30.674]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">30</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">1.87 [-21.96, 25.014]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">30</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">6.241 [-2.666, 15.281]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">30</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">9.052 [-13.616, 32.006]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">7.73 [-5.87, 21.489]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">16.879 [-0.607, 34.33]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">3.65 [-21.43, 31.045]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">1.823 [-20.788, 24.427]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">7.816 [-1.117, 16.666]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">4.944 [-18.272, 28.429]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">9.408 [-4.21, 23.365]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">16.963 [0.083, 33.734]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">2.703 [-25.387, 30.135]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">0.991 [-21.876, 23.916]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">5.606 [-3.174, 14.88]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">18.74 [-4.189, 42.003]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">14.847 [1.594, 28.362]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">8.656 [-9.374, 26.151]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">2.798 [-23.854, 30.307]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">20.688 [-2.5, 43.06]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">10.994 [2.48, 19.607]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">4.05 [-18.581, 27.194]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">43.153 [29.31, 57.25]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">68.776 [50.801, 86.302]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">32.564 [5.048, 60.755]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">16.453 [-6.441, 40.245]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">22.258 [13.253, 31.042]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">63.817 [41.149, 87.075]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">48.676 [35.451, 62.574]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">55.082 [38.259, 71.772]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">22.861 [-3.722, 49.965]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">17.347 [-5.628, 40.144]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">23.485 [15.104, 31.911]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">43.692 [21.297, 66.921]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">20.73 [7.586, 34.172]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">28.757 [12.185, 45.659]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">33.764 [6.47, 60.927]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">82.291 [59.454, 104.607]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">56.825 [47.996, 65.777]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">22.193 [-1.602, 45.483]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">47.574 [34.052, 60.897]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">91.57 [73.691, 109.127]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">66.091 [38.529, 92.883]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">81.862 [58.473, 104.193]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">74.843 [66.42, 83.471]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">72.746 [49.536, 96.489]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">38</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">86.09 [72.375, 99.557]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">38</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">77.17 [59.875, 95.277]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">38</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">93.675 [67.666, 120.73]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">38</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">99.998 [77.719, 121.97]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">38</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">93.11 [84.443, 101.597]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">38</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">53.813 [31.178, 76.796]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">39</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">86.466 [73.422, 99.781]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">39</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">100.083 [83.306, 117.31]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">39</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">94.166 [67.053, 120.702]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">39</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">78.671 [55.819, 101.811]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">39</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">81.244 [73.019, 89.647]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">39</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">77.183 [53.891, 100.218]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">8.1 [-5.657, 21.82]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">46.037 [28.203, 63.212]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">36.564 [9.124, 63.659]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">7.114 [-15.688, 30.072]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">18.274 [9.623, 26.891]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">35.723 [13.396, 57.767]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">73.253 [60.486, 86.018]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">50.49 [32.908, 67.928]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">61.241 [32.633, 88.466]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">83.698 [61.461, 106.174]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">73.268 [64.733, 81.579]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">48.552 [26.582, 71.011]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">48.538 [34.731, 61.58]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">74.804 [57.121, 92.156]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">63.286 [36.804, 89.561]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">11.649 [-11.21, 34.014]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">37.002 [28.046, 45.776]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">71.171 [48.419, 94.177]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">43</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">10.938 [-2.258, 24.222]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">43</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">17.859 [0.99, 35.437]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">43</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">2.138 [-25.093, 29.147]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">43</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">1.818 [-21.735, 25.026]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">43</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">10.401 [1.77, 18.803]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">43</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">20.702 [-2.143, 44.026]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">42.205 [28.357, 55.828]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">23.768 [6.771, 40.363]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">20.109 [-8.141, 48.127]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">48.122 [25.177, 71.072]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">39.331 [30.792, 47.942]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">62.53 [39.029, 85.573]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">25.127 [11.712, 38.7]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">12.914 [-4.467, 30.445]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">11.264 [-15.164, 38.634]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">60.346 [37.852, 82.5]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">30.731 [22.166, 39.42]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">22.11 [-1.192, 44.747]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">27.87 [14.128, 41.317]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">71.661 [54.505, 88.682]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">39.68 [14.135, 66.426]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">27.961 [4.558, 51.469]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">40.764 [31.671, 49.276]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">65.727 [43.184, 89.712]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">44.589 [31.198, 58.575]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">31.077 [14.295, 48.871]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">46.711 [19.562, 74.633]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">56.419 [34.22, 79.099]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">63.815 [55.152, 72.217]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">36.275 [13.158, 58.897]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">62.997 [49.067, 76.339]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">74.888 [56.94, 92.606]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">61.023 [34.665, 87.354]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">75.17 [52.551, 97.823]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">59.929 [51.27, 68.489]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">62.505 [40.003, 85.315]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">61.369 [47.782, 75.272]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">45.263 [27.542, 62.621]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">56.457 [30.648, 82.991]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">94.861 [71.492, 117.851]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">73.637 [65.032, 82.341]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">48.014 [26.58, 70.584]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">68.558 [55.616, 82.223]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">27.51 [9.915, 45.45]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">25.344 [-2.917, 53.327]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">93.995 [72.18, 117.417]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">71.864 [63.299, 80.327]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">26.112 [2.605, 48.33]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">27.738 [14.341, 40.982]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">34.296 [16.83, 51.477]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">17.754 [-9.359, 45.566]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">17.254 [-6.259, 40.248]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">22.824 [14.005, 31.413]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">55.159 [31.606, 78.123]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">52</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">12.199 [-1.243, 25.367]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">52</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">21.983 [4.196, 39.332]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">52</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">2.368 [-23.72, 28.069]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">52</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">1.164 [-22.293, 24.774]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">52</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">15.086 [6.289, 23.355]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">52</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">46.38 [24.302, 68.223]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">25.654 [12.144, 39.158]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">4.465 [-13.428, 21.636]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">1.893 [-25.912, 28.222]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">1.32 [-21.074, 24.265]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">16.679 [7.868, 25.372]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">18.004 [-5.307, 41.704]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">36.416 [22.054, 50.464]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">61.201 [42.901, 78.951]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">35 [7.944, 62.282]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">22.393 [-0.71, 45.087]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">34.734 [26.103, 43.423]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">45.951 [23.485, 68.711]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">55</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">78.643 [65.051, 92.274]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">55</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">53.27 [35.232, 70.779]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">55</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">45.354 [19.303, 72.436]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">55</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">82.325 [58.408, 106.375]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">55</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">85.28 [76.246, 93.947]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">55</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">41.55 [18.703, 64.342]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">80.707 [66.984, 93.611]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">50.058 [32.262, 67.883]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">27.669 [0.633, 53.562]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">99.958 [76.043, 122.696]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">71.049 [62.712, 79.408]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">56</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">52.993 [29.036, 76.559]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">15.865 [2.643, 28.685]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">10.921 [-7.098, 27.829]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">3.668 [-22.51, 30.498]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">7.117 [-15.423, 30.294]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">9.481 [1.207, 18.116]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">28.81 [5.493, 50.601]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">19.737 [5.719, 33.57]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">11.573 [-5.597, 28.961]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">3.968 [-22.727, 30.155]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">1.544 [-21.383, 24.414]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">16.792 [7.835, 25.614]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">26.784 [4.613, 49.12]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">66.164 [52.624, 80.15]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">25.768 [8.219, 43.156]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">44.77 [18.387, 71.403]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">99.881 [77.676, 122.73]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">72.914 [64.229, 81.666]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">59</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">26.465 [2.443, 50.059]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">60</td>
+<td style="text-align: left;">CenterMLeft</td>
+<td style="text-align: right;">86.24 [73.004, 100.06]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">60</td>
+<td style="text-align: left;">CenterMRight</td>
+<td style="text-align: right;">58.253 [40.839, 75.847]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">60</td>
+<td style="text-align: left;">Centre</td>
+<td style="text-align: right;">62.985 [36.011, 89.086]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">60</td>
+<td style="text-align: left;">Farleft</td>
+<td style="text-align: right;">99.876 [77.487, 123.426]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">60</td>
+<td style="text-align: left;">Left</td>
+<td style="text-align: right;">87.772 [79.457, 96.524]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">60</td>
+<td style="text-align: left;">Right</td>
+<td style="text-align: right;">66.484 [44.148, 88.296]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>There it is. Your entire QP analysis in less than 100 lines of code. Sidenote: I just thought of this yesterday. Otherwise, I would have suggested it sooner. No need to do any of this now, but I think it would be a good idea for the diss.</p>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
