@@ -141,6 +141,13 @@ options(digits = 4)
 
 # Political orientation and language attitudes
 
+<div style="position: absolute; top: 110px; center: 0;">
+    <img src="images/pic_11.jpg" width="300" />
+</div>
+
+---
+# Political orientation and language attitudes
+
 * In favor of Spanish
 
 <div style="position: absolute; top: 190px; center: 0;">
@@ -169,6 +176,11 @@ options(digits = 4)
 
 ---
 
+<div style="position: absolute; top: 80px; center: 0;">
+    <img src="images/pic_10.jpg" width="400" />
+</div>
+
+---
 # Research Questions
 
 <br>
@@ -235,7 +247,7 @@ options(digits = 4)
 
 ```{r, echo=FALSE, message=FALSE, fig.align='center'}
 
-qp_data_raw_1 <- read_excel("~/Library/Mobile Documents/com~apple~CloudDocs/rutgers/phd/second_year/QP/paper/RESULTS/qp_data_raw_1.xlsx")
+qp_data_raw_1 <- read_excel("~/Library/Mobile Documents/com~apple~CloudDocs/rutgers/phd/second_year/QP/paper/RESULTS/data/qp_data_raw_1.xls")
 
 qp_data <- qp_data_raw_1[-(100:126),]
 
