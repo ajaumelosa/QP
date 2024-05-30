@@ -1,0 +1,192 @@
+---
+title: "Alternative analysis"
+author: "JVC"
+date: today
+output: html
+execute: 
+  warning: false
+  message: false
+---
+
+This is a proof of concept of the other type of analysis I mentioned today. 
+The way it works it simple. 
+You can suppress the intercept in a linear model if you want to. 
+If you do this and one of your predictors is a categorical factor, it will estimate the mean for each level of the factor (if you have notes from class, we learned about this in the lecture on coding strategies for categorical predictors). 
+So, long story short, you can suppress the intercept in your model and fit the interaction between `political_orientation` and `question`. 
+You will get an estimate for every level of `political_orientation` for each question. 
+This won't give you any comparisons. 
+You will have to do all of those post-hoc (but you were doing that anyway). 
+So... let's load some libraries: 
+
+```{r}
+#| label: load-libs
+library("ggplot2")
+library("readxl")
+library("dplyr")
+library("janitor")
+library("glue")
+library("tidyr")
+library("stringr")
+library("forcats")
+library("here")
+library("tibble")
+library("ggdist")
+library("brms")
+```
+
+Now we load the data: 
+
+```{r}
+#| label: load-data
+qp_data_raw_1 <- read_excel(here("../data/qp_data_raw_1.xls")) |> 
+  clean_names() 
+```
+
+
+For this example, I am only going to select the relevant columns of the data frame and I am going to rename all of the questions (the labels are really long). 
+This isn't really practical, but it makes it easier for you to see how this works. 
+```{r}
+#| label: tidy-up
+# Load data and pivot longer
+dat_temp <- qp_data_raw_1 |> 
+  select(
+    political_orientation,
+    i_like_that_people_use_catalan:catalan_is_an_identity_element_of_the_balearic_islands) |> 
+  mutate(id = seq(1, nrow(qp_data_raw_1)), 1) |> 
+  pivot_longer(
+    cols = -c("political_orientation", "id"), 
+    names_to = "question", 
+    values_to = "val"
+    ) |> 
+  filter(!is.na(val), question != 1) 
+
+# Create tibble of names and alternative labels
+alt_question_labels <- tibble(
+  question = dat_temp$question |> unique(), 
+  q_alt = 1:60
+  ) |> 
+  mutate(
+    q_alt = str_pad(q_alt, width = 2, pad = "0")
+  )
+
+# Add alternative labels to data frame
+dat <- dat_temp |> 
+  left_join(alt_question_labels, by = "question") 
+```
+
+
+We can visualize the raw data with the newly arranged set-up, but we will ignore `political orientation` for now: 
+
+```{r}
+#| label: fig-raw-data
+#| out-width: "100%"
+#| fig-height: 8
+#| fig-cap-location: top
+#| fig-cap: Raw means and 95% bootstrapped CI for each question.
+
+dat |> 
+  mutate(q_alt = fct_reorder(q_alt, val, max)) |> 
+  ggplot() + 
+  aes(x = val, y = q_alt) + 
+  stat_summary(fun.data = mean_cl_boot, geom = "pointrange")
+```
+
+You can see how this allows us to calculate a mean for each question. 
+Now we will fit a model (as described above, but still ignoring `political_orientation`). 
+
+```{r}
+#| label: mod-0
+mod_0 <- brm(
+  val ~ 0 + q_alt, 
+  data = dat, 
+  cores = 4, chains = 4, threads = threading(2), 
+  file = here("mod_0")
+)
+
+mod_0
+```
+
+We can plot the raw means and the posterior estimates from the model together. 
+This is a good way to see how the model does essentially the same thing. 
+
+```{r}
+#| label: fig-mod-0
+#| out-width: "100%"
+#| fig-height: 10
+#| fig-cap-location: top
+#| fig-cap: Posterior means with 95% and 66% CrI (red) along with raw means and 95% bootstrapped CI (blue).
+
+as_tibble(mod_0) |> 
+  select(starts_with("b_")) |> 
+  pivot_longer(
+    cols = everything(), 
+    names_to = "question", 
+    values_to = "estimate"
+  ) |> 
+  mutate(question = str_remove(question, "b_q_alt")) |> 
+  ggplot() + 
+  aes(x = estimate, y = question) + 
+  stat_pointinterval(position = position_nudge(y = 0.3), color = "#cc0033") + 
+  stat_summary(
+    data = dat, 
+    aes(x = val, y = q_alt), 
+    fun.data = mean_cl_boot, 
+    geom = "pointrange", 
+    position = position_nudge(y = -0.3), 
+    color = "darkblue"
+    )
+```
+
+Before doing the same thing with `political_orientation`, it is worth mentioning that this isn't *really* the best model. 
+Specifically, we have data that are bounded between 0 and 100. 
+As is, the model likelihood is gaussian, which means it assumes that the data generating process can range from $-\infty$ to $\infty$, but we know that the data only ranges from 0 to 100. 
+In theory we want a likelihood that takes this into account. 
+The answer is beta regression (essentially just changing the likelihood to the beta distribution), but we will leave that for another day. 
+Here is our compromise: 
+
+
+```{r}
+#| label: mod-1
+mod_1 <- brm(
+  val ~ 0 + q_alt:political_orientation, 
+  data = dat, 
+  cores = 4, chains = 4, threads = threading(2), 
+  file = here("mod_1")
+)
+```
+
+Instead of printing the model summary, I will generate the longest table you have ever seen: 
+
+```{r}
+#| label: tbl-wtf
+
+as_tibble(mod_1) |> 
+  select(starts_with("b_")) |> 
+  pivot_longer(
+    cols = everything(), 
+    names_to = "question", 
+    values_to = "estimate"
+  ) |> 
+  separate(question, into = c("question", "political_orientation"), sep = ":") |> 
+  mutate(
+    question = str_remove(question, "b_q_alt"), 
+    political_orientation = str_remove(
+      political_orientation, "political_orientation"
+    )
+  ) |> 
+  group_by(question, political_orientation) |> 
+  median_qi(estimate) |> 
+  mutate_if(is.numeric, round, digits = 3) |> 
+  transmute(
+    Question = question, 
+    `Political orientation` = political_orientation, 
+    `Median (HDI)` = glue("{estimate} [{.lower}, {.upper}]")
+  ) |> 
+  knitr::kable(align = c("l", "l", "r"))
+```
+
+There it is. 
+Your entire QP analysis in less than 100 lines of code. 
+Sidenote: I just thought of this yesterday. 
+Otherwise, I would have suggested it sooner. 
+No need to do any of this now, but I think it would be a good idea for the diss. 
