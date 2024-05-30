@@ -19,6 +19,7 @@ library(reshape2)
 library(writexl)
 library(readxl)
 library(dplyr)
+library(here)
 ```
 
 ```{r}
@@ -89,4 +90,225 @@ qp_data_identity_separated <- qp_data %>%
 view(qp_data_identity_separated)
 
 ```
+
+```{r}
+
+qp_data_tidy <- qp_data %>%
+  mutate(id = sprintf("pa%03d", row_number())) %>%
+  relocate("id", .before = gender) %>%
+  select(-survey_language_used, -country_birth, -other_country_birth, -age_arrive_in_Spain, -ethnic_origin, -type_school, -other_mother_tongue) %>%
+  mutate(Palmesan = ifelse(grepl("Palmesan", identity), "Yes", "No"),
+         Mallorcan = ifelse(grepl("Mallorcan", identity), "Yes", "No"),
+         Balearic = ifelse(grepl("Balearic", identity), "Yes", "No"),
+         Catalan = ifelse(grepl("Catalan", identity), "Yes", "No"),
+         Catalan_countries = ifelse(grepl("Catalan countries", identity), "Yes", "No"),
+         Spanish = ifelse(grepl("Spanish", identity), "Yes", "No"),
+         European = ifelse(grepl("European", identity), "Yes", "No")) %>%
+  select(-identity) %>%
+  relocate("Palmesan", .after = family_income) %>%
+  relocate("Mallorcan", .after = Palmesan) %>%
+  relocate("Balearic", .after = Mallorcan) %>%
+  relocate("Catalan", .after = Balearic) %>%
+  relocate("Catalan_countries", .after = Catalan) %>%
+  relocate("Spanish", .after = Catalan_countries) %>%
+  relocate("European", .after = Spanish) %>%
+  pivot_longer(
+    cols = I_like_that_people_use_Catalan:Catalan_is_an_identity_element_of_the_Balearic_Islands,
+    names_to = "statement",
+    values_to = "value",
+    values_drop_na = TRUE) %>%
+  mutate(statement_language = ifelse(grepl("No_language_is_more_important_than_the_other", statement), "Both",
+                                     ifelse(grepl("Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan", statement), "Spanish",
+                                     ifelse(grepl("For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan", statement), "Spanish",
+                                     ifelse(grepl("Studying_Spsnish_will_be_very_useful_for_me_in_the_future_to_find_a_job", statement), "Spanish",
+                                     ifelse(grepl("An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan", statement), "Both",
+                                     ifelse(grepl("All_people_living_in_the_Balearic_Islands_should_know_Catalan_and_Spanish", statement), "Both",
+                                     ifelse(grepl("Catalan_serves_for_some_areas_and_Spanish_for_others", statement), "Both",
+                                     ifelse(grepl("It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan", statement), "Spanish",
+                                     ifelse(grepl("Spanish_is_more_fashionable_than_Catalan", statement), "Spanish",
+                                     ifelse(grepl("Catalan", statement), "Catalan", 
+                                     ifelse(grepl("Spanish", statement), "Spanish", NA)))))))))))) %>%
+  write_csv(here("data", "data_final.csv"))
+
+```
+
+# Create subsets
+
+```{r}
+
+data_final <- read.csv(here("data", "data_final.csv"))
+
+```
+
+```{r}
+# subset preference cat
+
+desired_statements_preference_cat <- c("I_like_that_people_use_Catalan", "I_like_listening_to_Catalan
+", "I_like_to_use_Catalan", "Sometimes_I_feel_compelled_to_use_Catalan", "It_is_not_good_manners_to_answer_in_Catalan_to_someone_who_speaks_to_you_in_Spanish", "If_I_have_children_I_would_like_them_to_speak_Catalan")
+
+subset_preference_cat <- data_final %>%
+  filter(statement %in% desired_statements_preference_cat) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_preference_cat.csv"))
+```
+
+
+```{r}
+# subset preference esp
+
+desired_statements_preference_esp <- c("I_like_that_people_use_Spanish", "I_like_listening_to_Spanish
+", "I_like_to_use_Spanish", "Sometimes_I_feel_compelled_to_use_Spanish", "It_is_not_good_manners_to_answer_in_Spanish_to_someone_who_speaks_Catalan", "If_I_have_children_I_would_like_them_to_speak_Spanish")
+
+subset_preference_esp <- data_final %>%
+  filter(statement %in% desired_statements_preference_esp) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_preference_esp.csv"))
+
+```
+
+```{r}
+
+# subset difficulty enjoyment cat
+
+desired_statements_difficulty_enjoyment_cat <- c("Catalan_is_a_difficult_language_to_learn", "Catalan_is_a_beautiful_language", "I_try_to_use_Catalan_whenever_I_can", "It_is_unpleasant_to_learn_Catalan", "It_is_boring_to_learn_Catalan", "Catalan_is_a_language_that_sounds_bad", "It_bothers_me_when_a_stranger_chats_with_me_in_Catalan")
+
+subset_difficulty_enjoyment_cat <- data_final %>%
+  filter(statement %in% desired_statements_difficulty_enjoyment_cat) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_difficulty_enjoyment_cat.csv"))
+
+
+```
+
+```{r}
+
+# subset difficulty enjoyment esp
+
+desired_statements_difficulty_enjoyment_esp <- c("Spanish _is_a_difficult_language_to_learn", "Spanish_is_a_beautiful_language", "I_try_to_use_Spanish_whenever_I_can", "It_is_unpleasant_to_learn_Spanish", "Learning_Spanish_is_boring", "Spanish_is_a_language_that_sounds_bad", "It_bothers_me_when_a_stranger_chats_with_me_in_Spanish", "An_outsider_will_find_it_less_difficult_to_learn_Spanish_than_Catalan")
+
+subset_difficulty_enjoyment_esp <- data_final %>%
+  filter(statement %in% desired_statements_difficulty_enjoyment_esp) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_difficulty_enjoyment_esp.csv"))
+
+
+```
+
+```{r}
+
+# subset importance and usefulness cat
+
+desired_statements_importance_usefulness_cat <- c("It_is_worth_learning_Catalan", "Catalan_can_become_an_important_language_in_the_European_context", "Catalan_is_as_important_as_English", "Catalan_is_a_rural_language", "Studying_Catalan_will_be_very_useful_for_me_in_the_future_to_find_a_job",  "Catalan_serves_for_some_areas_and_Spanish_for_others")
+
+subset_importance_usefulness_cat <- data_final %>%
+  filter(statement %in% desired_statements_importance_usefulness_cat) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_importance_usefulness_cat.csv"))
+
+```
+
+```{r}
+
+# subset importance and usefulness esp
+
+desired_statements_importance_usefulness_esp <- c("It_is_worth_learning_Spanish", "Spanish_can_become_an_important_language_in_the_European_context", "Spanish_is_as_important_as_English", "Spanish_is_more_fashionable_than_Catalan", "Studying_Spsnish_will_be_very_useful_for_me_in_the_future_to_find_a_job")
+
+subset_importance_usefulness_esp <- data_final %>%
+  filter(statement %in% desired_statements_importance_usefulness_esp) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_importance_usefulness_esp.csv"))
+
+```
+
+```{r}
+
+# subset policy and integration cat
+
+desired_statements_policy_integration_cat <- c("It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Catalan", "For_healthcare_staff_it_is_more_important_to_know_Catalan_than_Spanish", "It_is_necessary_to_learn_Catalan_to_fully_integrate_in_the_Balearic_Islands", "Catalan_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands", "Catalan_must_be_a_requirement_to_hold_a_job_in_the_public_administration")
+
+subset_policy_integration_cat <- data_final %>%
+  filter(statement %in% desired_statements_policy_integration_cat) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_policy_integration_cat.csv"))
+
+```
+
+```{r}
+
+# subset policy and integration esp
+
+desired_statements_policy_integration_esp <- c("It_should_be_mandatory_for_all_students_from_the_Balearic_Islands_to_take_at_least_50_of_their_subjects_in_Spanish", "For_healthcare_staff_it_is_more_important_to_know_Spanish_than_Catalan", "Since_we_all_speak_Spanish_it_is_not_necessary_that_people_who_come_from_other_Autonomous_Communities_or_Spanish_speaking_countries_learn_Catalan", "Spanish_should_be_a_voluntary_subject_in_schools_and_high_schools_in_the_Balearic_Islands")
+
+subset_policy_integration_esp <- data_final %>%
+  filter(statement %in% desired_statements_policy_integration_esp) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_policy_integration_esp.csv"))
+
+```
+
+```{r}
+
+# subset cultural and identity cat
+
+desired_statements_cultural_identity_cat <- c("I_live_in_the_Balearic_Islands_and_I have_to_know_study_and_use_Catalan", "Catalan_is_the_language_that_should_predominate_in_the_Balearic_Islands", "Catalan_is_an_identity_element_of_the_Balearic_Islands")
+
+subset_cultural_identity_cat <- data_final %>%
+  filter(statement %in% desired_statements_cultural_identity_cat) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_cultural_identity_cat.csv"))
+
+```
+
+```{r}
+
+# subset cultural and identity esp
+
+desired_statements_cultural_identity_esp <- c("I_live_in_the_Balearic_Islands_and_I_have_to_know_study_and_use_Spanish", "Spanish_is_the_language_that_should_predominate_in_the_Balearic_Islands")
+
+subset_cultural_identity_esp <- data_final %>%
+  filter(statement %in% desired_statements_cultural_identity_esp) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_cultural_identity_esp.csv"))
+
+```
+
+```{r}
+
+# subset population trends cat
+
+desired_statements_population_trends_cat <- c("Catalan_is_in_danger_of_disappearing_in_the_Balearic_Islands", "People_should_put_more_effort_into_using_Catalan", "Fewer_and_fewer_people_know_Catalan")
+
+subset_population_trends_cat <- data_final %>%
+  filter(statement %in% desired_statements_population_trends_cat) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_population_trends_cat.csv"))
+
+```
+
+```{r}
+
+# subset population trends esp
+
+desired_statements_population_trends_esp <- c("Spanish_is_in_danger_of_disappearing_in_the_Balearic_Islands", "People_should_put_more_effort_into_using_Spanish", "Fewer_and_fewer_people_know_Spanish")
+
+subset_population_trends_esp <- data_final %>%
+  filter(statement %in% desired_statements_population_trends_esp) %>%
+  relocate("statement", .after = languages_studied) %>%
+  relocate("value", .after = statement) %>%
+  write_csv(here("data", "subsets", "subset_population_trends_esp.csv"))
+
+```
+
+
 

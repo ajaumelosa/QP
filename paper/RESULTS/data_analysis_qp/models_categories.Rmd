@@ -1,0 +1,450 @@
+---
+title: "models_united"
+author: "alejandro"
+date: "2024-05-20"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+
+# Loading packages
+
+library(here)
+library(lme4)
+library(tidyverse)
+library(Matrix)
+```
+
+```{r}
+
+# Loading data sets
+
+## Language preference Catalan
+
+subset_preference_cat <- read.csv(here("data", "subsets", "subset_preference_cat.csv"))
+
+subset_preference_cat_sep <- subset_preference_cat %>%
+  separate(id, into = c("no","id"), sep = 4)
+
+subset_preference_cat_sep$id <- as.numeric(subset_preference_cat_sep$id)
+
+subset_preference_cat_sep$political_orientation <- factor(subset_preference_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+## Language preference Spanish
+
+
+subset_preference_esp <- read.csv(here("data", "subsets", "subset_preference_esp.csv"))
+
+subset_preference_esp_sep <- subset_preference_esp %>%
+  separate(id, into = c("no","id"), sep = 4)
+
+subset_preference_esp_sep$id <- as.numeric(subset_preference_esp_sep$id)
+
+
+subset_preference_esp_sep$political_orientation <- factor(subset_preference_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+## Language difficulty and enjoyment Catalan
+
+
+subset_difficulty_enjoyment_cat <- read.csv(here("data", "subsets", "subset_difficulty_enjoyment_cat.csv"))
+
+subset_difficulty_enjoyment_cat_sep <- subset_difficulty_enjoyment_cat %>%
+  separate(id, into = c("no","id"), sep = 4)
+
+subset_difficulty_enjoyment_cat_sep$id <- as.numeric(subset_difficulty_enjoyment_cat_sep$id)
+
+subset_difficulty_enjoyment_cat_sep$political_orientation <- factor(subset_difficulty_enjoyment_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+
+## Language difficulty and enjoyment Spanish
+
+
+subset_difficulty_enjoyment_esp <- read.csv(here("data", "subsets", "subset_difficulty_enjoyment_esp.csv"))
+
+subset_difficulty_enjoyment_esp_sep <- subset_difficulty_enjoyment_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_difficulty_enjoyment_esp_sep$id <- as.numeric(subset_difficulty_enjoyment_esp_sep$id)
+
+subset_difficulty_enjoyment_esp_sep$political_orientation <- factor(subset_difficulty_enjoyment_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+
+## Language importance and usefulness Catalan
+
+subset_importance_usefulness_cat <- read.csv(here("data", "subsets", "subset_importance_usefulness_cat.csv"))
+
+subset_importance_usefulness_cat_sep <- subset_importance_usefulness_cat %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_importance_usefulness_cat_sep$id <- as.numeric(subset_importance_usefulness_cat_sep$id)
+
+subset_importance_usefulness_cat_sep$political_orientation <- factor(subset_importance_usefulness_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+## Language importance and usefulness Spanish
+
+subset_importance_usefulness_esp <- read.csv(here("data", "subsets", "subset_importance_usefulness_esp.csv"))
+
+subset_importance_usefulness_esp_sep <- subset_importance_usefulness_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_importance_usefulness_esp_sep$id <- as.numeric(subset_importance_usefulness_esp_sep$id)
+
+subset_importance_usefulness_esp_sep$political_orientation <- factor(subset_importance_usefulness_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+
+## Language policy and integration Catalan
+
+subset_policy_integration_cat <- read.csv(here("data", "subsets", "subset_policy_integration_cat.csv"))
+
+subset_policy_integration_cat_sep <- subset_policy_integration_cat %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_policy_integration_cat_sep$id <- as.numeric(subset_policy_integration_cat_sep$id)
+
+subset_policy_integration_cat_sep$political_orientation <- factor(subset_policy_integration_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+
+## Language policy and integration Spanish
+
+subset_policy_integration_esp <- read.csv(here("data", "subsets", "subset_policy_integration_esp.csv"))
+
+subset_policy_integration_esp_sep <- subset_policy_integration_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_policy_integration_esp_sep$id <- as.numeric(subset_policy_integration_esp_sep$id)
+
+subset_policy_integration_esp_sep$political_orientation <- factor(subset_policy_integration_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+
+## Cultural and identity aspects Catalan
+
+subset_cultural_identity_cat <- read.csv(here("data", "subsets", "subset_cultural_identity_cat.csv"))
+
+subset_cultural_identity_cat_sep <- subset_cultural_identity_cat %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_cultural_identity_cat_sep$id <- as.numeric(subset_cultural_identity_cat_sep$id)
+
+subset_cultural_identity_cat_sep$political_orientation <- factor(subset_cultural_identity_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+
+
+## Cultural and identity aspects Spanish
+
+subset_cultural_identity_esp <- read.csv(here("data", "subsets", "subset_cultural_identity_esp.csv"))
+
+subset_cultural_identity_esp_sep <- subset_cultural_identity_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_cultural_identity_esp_sep$id <- as.numeric(subset_cultural_identity_esp_sep$id)
+
+subset_cultural_identity_esp_sep$political_orientation <- factor(subset_cultural_identity_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+
+
+## Population trends Catalan
+
+subset_population_trends_cat <- read.csv(here("data", "subsets", "subset_population_trends_cat.csv"))
+
+subset_population_trends_cat_sep <- subset_population_trends_cat %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_population_trends_cat_sep$id <- as.numeric(subset_population_trends_cat_sep$id)
+
+subset_population_trends_cat_sep$political_orientation <- factor(subset_population_trends_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+
+
+## Population trends Spanish
+
+subset_population_trends_esp <- read.csv(here("data", "subsets", "subset_population_trends_esp.csv"))
+
+subset_population_trends_esp_sep <- subset_population_trends_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_population_trends_esp_sep$id <- as.numeric(subset_population_trends_esp_sep$id)
+
+subset_population_trends_esp_sep$political_orientation <- factor(subset_population_trends_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+
+```
+
+
+```{r}
+
+# Models
+
+## Model 1 - Language Preference Catalan
+
+### With lmer
+
+mod_0_preference_cat <- lmer(value ~ 1 + (1 | id), data = subset_preference_cat_sep)
+
+mod_1_preference_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_preference_cat_sep)
+
+### With lm
+
+mod_0_preference_cat <- lm(value ~ 1 + (1 | id), data = subset_preference_cat_sep)
+
+mod_1_preference_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_preference_cat_sep)
+
+summary(mod_0_preference_cat)
+summary(mod_1_preference_cat)
+
+anova(mod_0_preference_cat, mod_1_preference_cat)
+
+
+## Model 2 - Language Preference Spanish
+
+### With lmer
+
+mod_0_preference_esp <- lmer(value ~ 1 + (1 | id), data = subset_preference_esp_sep)
+
+mod_1_preference_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_preference_esp_sep)
+
+### With lm
+
+mod_0_preference_esp <- lm(value ~ 1 + (1 | id), data = subset_preference_esp_sep)
+
+mod_1_preference_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_preference_esp_sep)
+
+summary(mod_0_preference_esp)
+summary(mod_1_preference_esp)
+
+anova(mod_0_preference_esp, mod_1_preference_esp)
+
+
+## Model 3 - Language Difficulty and Enjoyment Catalan
+
+### With lmer
+
+mod_0_diff_enj_cat <- lmer(value ~ 1 + (1 | id), data = subset_difficulty_enjoyment_cat_sep)
+
+mod_1_diff_enj_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_difficulty_enjoyment_cat_sep)
+
+### With lm
+
+mod_0_diff_enj_cat <- lm(value ~ 1 + (1 | id), data = subset_difficulty_enjoyment_cat_sep)
+
+mod_1_diff_enj_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_difficulty_enjoyment_cat_sep)
+
+summary(mod_0_diff_enj_cat)
+summary(mod_1_diff_enj_cat)
+
+anova(mod_0_diff_enj_cat, mod_1_diff_enj_cat)
+
+
+
+## Model 4 - Language Difficulty and Enjoyment Spanish
+
+### With lmer
+
+mod_0_diff_enj_esp <- lmer(value ~ 1 + (1 | id), data = subset_difficulty_enjoyment_esp_sep)
+
+mod_1_diff_enj_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_difficulty_enjoyment_esp_sep)
+
+### With lm (SIGNIFICANT)
+
+mod_0_diff_enj_esp <- lm(value ~ 1 + (1 | id), data = subset_difficulty_enjoyment_esp_sep)
+
+mod_1_diff_enj_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_difficulty_enjoyment_esp_sep)
+
+summary(mod_0_diff_enj_esp)
+summary(mod_1_diff_enj_esp)
+
+anova(mod_0_diff_enj_esp, mod_1_diff_enj_esp)
+
+
+
+## Model 5 - Language Importance and Usefulness Catalan
+
+### With lmer
+
+mod_0_imp_use_cat <- lmer(value ~ 1 + (1 | id), data = subset_importance_usefulness_cat_sep)
+
+mod_1_imp_use_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_importance_usefulness_cat_sep)
+
+### With lm (SIGNIFICANT)
+
+mod_0_imp_use_cat <- lm(value ~ 1 + (1 | id), data = subset_importance_usefulness_cat_sep)
+
+mod_1_imp_use_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_importance_usefulness_cat_sep)
+
+summary(mod_0_imp_use_cat)
+summary(mod_1_imp_use_cat)
+
+anova(mod_0_imp_use_cat, mod_1_imp_use_cat)
+
+
+
+## Model 6 - Language Importance and Usefulness Spanish
+
+### With lmer
+
+mod_0_imp_use_esp <- lmer(value ~ 1 + (1 | id), data = subset_importance_usefulness_esp_sep)
+
+mod_1_imp_use_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_importance_usefulness_esp_sep)
+
+### With lm
+
+mod_0_imp_use_esp <- lm(value ~ 1 + (1 | id), data = subset_importance_usefulness_esp_sep)
+
+mod_1_imp_use_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_importance_usefulness_esp_sep)
+
+
+summary(mod_0_imp_use_esp)
+summary(mod_1_imp_use_esp)
+
+anova(mod_0_imp_use_esp, mod_1_imp_use_esp)
+
+
+## Model 7 - Language policy and integration Catalan
+
+### With lmer
+
+mod_0_pol_int_cat <- lmer(value ~ 1 + (1 | id), data = subset_policy_integration_cat_sep)
+
+mod_1_pol_int_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_policy_integration_cat_sep)
+
+### With lm (SIGNIFICANT)
+
+mod_0_pol_int_cat <- lm(value ~ 1 + (1 | id), data = subset_policy_integration_cat_sep)
+
+mod_1_pol_int_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_policy_integration_cat_sep)
+
+
+summary(mod_0_pol_int_cat)
+summary(mod_1_pol_int_cat)
+
+anova(mod_0_pol_int_cat, mod_1_pol_int_cat)
+
+
+## Model 8 - Language policy and integration Spanish
+
+### With lmer
+
+mod_0_pol_int_esp <- lmer(value ~ 1 + (1 | id), data = subset_policy_integration_esp_sep)
+
+mod_1_pol_int_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_policy_integration_esp_sep)
+
+### With lm (SIGNIFICANT)
+
+mod_0_pol_int_esp <- lm(value ~ 1 + (1 | id), data = subset_policy_integration_esp_sep)
+
+mod_1_pol_int_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_policy_integration_esp_sep)
+
+
+summary(mod_0_pol_int_esp)
+summary(mod_1_pol_int_esp)
+
+anova(mod_0_pol_int_cat, mod_1_pol_int_cat)
+
+
+## Model 9 - Cultural and identity aspects Catalan
+
+### With lmer
+
+mod_0_cul_ide_cat <- lmer(value ~ 1 + (1 | id), data = subset_cultural_identity_cat_sep)
+
+mod_1_cul_ide_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_cultural_identity_cat_sep)
+
+### With lm (SIGNIFICANT)
+
+mod_0_cul_ide_cat <- lm(value ~ 1 + (1 | id), data = subset_cultural_identity_cat_sep)
+
+mod_1_cul_ide_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_cultural_identity_cat_sep)
+
+
+summary(mod_0_cul_ide_cat)
+summary(mod_1_cul_ide_cat)
+
+anova(mod_0_cul_ide_cat, mod_1_cul_ide_cat)
+
+
+
+
+## Model 10 - Cultural and identity aspects Spanish
+
+### With lmer
+
+mod_0_cul_ide_esp <- lmer(value ~ 1 + (1 | id), data = subset_cultural_identity_esp_sep)
+
+mod_1_cul_ide_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_cultural_identity_esp_sep)
+
+### With lm
+
+mod_0_cul_ide_esp <- lm(value ~ 1 + (1 | id), data = subset_cultural_identity_esp_sep)
+
+mod_1_cul_ide_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_cultural_identity_esp_sep)
+
+
+summary(mod_0_cul_ide_esp)
+summary(mod_1_cul_ide_esp)
+
+anova(mod_0_cul_ide_esp, mod_1_cul_ide_esp)
+
+
+
+## Model 11 - Population trends Catalan
+
+### With lmer
+
+mod_0_pop_tre_cat <- lmer(value ~ 1 + (1 | id), data = subset_population_trends_cat_sep)
+
+mod_1_pop_tre_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_population_trends_cat_sep)
+
+### With lm (SIGNIFICANT)
+
+mod_0_pop_tre_cat <- lm(value ~ 1 + (1 | id), data = subset_population_trends_cat_sep)
+
+mod_1_pop_tre_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_population_trends_cat_sep)
+
+
+summary(mod_0_pop_tre_cat)
+summary(mod_1_pop_tre_cat)
+
+anova(mod_0_pop_tre_cat, mod_1_pop_tre_cat)
+
+
+## Model 12 - Population trends Spanish
+
+### With lmer
+
+mod_0_pop_tre_esp <- lmer(value ~ 1 + (1 | id), data = subset_population_trends_esp_sep)
+
+mod_1_pop_tre_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_population_trends_esp_sep)
+
+### With lm (SIGNIFICANT)
+
+mod_0_pop_tre_esp <- lm(value ~ 1 + (1 | id), data = subset_population_trends_esp_sep)
+
+mod_1_pop_tre_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_population_trends_esp_sep)
+
+
+summary(mod_0_pop_tre_esp)
+summary(mod_1_pop_tre_esp)
+
+anova(mod_0_pop_tre_esp, mod_1_pop_tre_esp)
+
+```
+
+```{r}
+
+## Question: should I have a random intercept for "statement"?
+
+```
+
+
+
+
