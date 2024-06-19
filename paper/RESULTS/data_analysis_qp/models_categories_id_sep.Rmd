@@ -1,0 +1,116 @@
+---
+title: "Code to separate ID in subsets"
+author: "alejandro"
+date: "2024-06-18"
+output: html_document
+---
+```{r}
+subset_preference_cat_sep <- subset_preference_cat %>%
+  separate(id, into = c("no","id"), sep = 4)
+
+subset_preference_cat_sep$id <- as.numeric(subset_preference_cat_sep$id)
+
+subset_preference_cat_sep$political_orientation <- factor(subset_preference_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_preference_esp_sep <- subset_preference_esp %>%
+  separate(id, into = c("no","id"), sep = 4)
+
+subset_preference_esp_sep$id <- as.numeric(subset_preference_esp_sep$id)
+
+
+subset_preference_esp_sep$political_orientation <- factor(subset_preference_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_difficulty_enjoyment_cat_sep <- subset_difficulty_enjoyment_cat %>%
+  separate(id, into = c("no","id"), sep = 4)
+
+subset_difficulty_enjoyment_cat_sep$id <- as.numeric(subset_difficulty_enjoyment_cat_sep$id)
+
+subset_difficulty_enjoyment_cat_sep$political_orientation <- factor(subset_difficulty_enjoyment_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_difficulty_enjoyment_esp_sep <- subset_difficulty_enjoyment_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_difficulty_enjoyment_esp_sep$id <- as.numeric(subset_difficulty_enjoyment_esp_sep$id)
+
+subset_difficulty_enjoyment_esp_sep$political_orientation <- factor(subset_difficulty_enjoyment_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_importance_usefulness_cat_sep <- subset_importance_usefulness_cat %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_importance_usefulness_cat_sep$id <- as.numeric(subset_importance_usefulness_cat_sep$id)
+
+subset_importance_usefulness_cat_sep$political_orientation <- factor(subset_importance_usefulness_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+
+```{r}
+subset_importance_usefulness_esp_sep <- subset_importance_usefulness_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_importance_usefulness_esp_sep$id <- as.numeric(subset_importance_usefulness_esp_sep$id)
+
+subset_importance_usefulness_esp_sep$political_orientation <- factor(subset_importance_usefulness_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_policy_integration_cat_sep <- subset_policy_integration_cat %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_policy_integration_cat_sep$id <- as.numeric(subset_policy_integration_cat_sep$id)
+
+subset_policy_integration_cat_sep$political_orientation <- factor(subset_policy_integration_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_policy_integration_esp_sep <- subset_policy_integration_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_policy_integration_esp_sep$id <- as.numeric(subset_policy_integration_esp_sep$id)
+
+subset_policy_integration_esp_sep$political_orientation <- factor(subset_policy_integration_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_cultural_identity_cat_sep <- subset_cultural_identity_cat %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_cultural_identity_cat_sep$id <- as.numeric(subset_cultural_identity_cat_sep$id)
+
+subset_cultural_identity_cat_sep$political_orientation <- factor(subset_cultural_identity_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_cultural_identity_esp_sep <- subset_cultural_identity_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_cultural_identity_esp_sep$id <- as.numeric(subset_cultural_identity_esp_sep$id)
+
+subset_cultural_identity_esp_sep$political_orientation <- factor(subset_cultural_identity_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_population_trends_cat_sep <- subset_population_trends_cat %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_population_trends_cat_sep$id <- as.numeric(subset_population_trends_cat_sep$id)
+
+subset_population_trends_cat_sep$political_orientation <- factor(subset_population_trends_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+
+```{r}
+subset_population_trends_esp_sep <- subset_population_trends_esp %>%
+  separate(id, into = c("no", "id"), sep = 4)
+
+subset_population_trends_esp_sep$id <- as.numeric(subset_population_trends_esp_sep$id)
+
+subset_population_trends_esp_sep$political_orientation <- factor(subset_population_trends_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+```
+

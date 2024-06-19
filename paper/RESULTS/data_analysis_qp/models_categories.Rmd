@@ -15,6 +15,7 @@ library(here)
 library(lme4)
 library(tidyverse)
 library(Matrix)
+library(ggplot2)
 ```
 
 ```{r}
@@ -25,12 +26,7 @@ library(Matrix)
 
 subset_preference_cat <- read.csv(here("data", "subsets", "subset_preference_cat.csv"))
 
-subset_preference_cat_sep <- subset_preference_cat %>%
-  separate(id, into = c("no","id"), sep = 4)
-
-subset_preference_cat_sep$id <- as.numeric(subset_preference_cat_sep$id)
-
-subset_preference_cat_sep$political_orientation <- factor(subset_preference_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+subset_preference_cat$political_orientation <- factor(subset_preference_cat$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Language preference Spanish
@@ -38,13 +34,7 @@ subset_preference_cat_sep$political_orientation <- factor(subset_preference_cat_
 
 subset_preference_esp <- read.csv(here("data", "subsets", "subset_preference_esp.csv"))
 
-subset_preference_esp_sep <- subset_preference_esp %>%
-  separate(id, into = c("no","id"), sep = 4)
-
-subset_preference_esp_sep$id <- as.numeric(subset_preference_esp_sep$id)
-
-
-subset_preference_esp_sep$political_orientation <- factor(subset_preference_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+subset_preference_esp$political_orientation <- factor(subset_preference_esp$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Language difficulty and enjoyment Catalan
@@ -52,13 +42,7 @@ subset_preference_esp_sep$political_orientation <- factor(subset_preference_esp_
 
 subset_difficulty_enjoyment_cat <- read.csv(here("data", "subsets", "subset_difficulty_enjoyment_cat.csv"))
 
-subset_difficulty_enjoyment_cat_sep <- subset_difficulty_enjoyment_cat %>%
-  separate(id, into = c("no","id"), sep = 4)
-
-subset_difficulty_enjoyment_cat_sep$id <- as.numeric(subset_difficulty_enjoyment_cat_sep$id)
-
-subset_difficulty_enjoyment_cat_sep$political_orientation <- factor(subset_difficulty_enjoyment_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
-
+subset_difficulty_enjoyment_cat$political_orientation <- factor(subset_difficulty_enjoyment_cat$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Language difficulty and enjoyment Spanish
@@ -66,117 +50,63 @@ subset_difficulty_enjoyment_cat_sep$political_orientation <- factor(subset_diffi
 
 subset_difficulty_enjoyment_esp <- read.csv(here("data", "subsets", "subset_difficulty_enjoyment_esp.csv"))
 
-subset_difficulty_enjoyment_esp_sep <- subset_difficulty_enjoyment_esp %>%
-  separate(id, into = c("no", "id"), sep = 4)
-
-subset_difficulty_enjoyment_esp_sep$id <- as.numeric(subset_difficulty_enjoyment_esp_sep$id)
-
-subset_difficulty_enjoyment_esp_sep$political_orientation <- factor(subset_difficulty_enjoyment_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
-
+subset_difficulty_enjoyment_esp$political_orientation <- factor(subset_difficulty_enjoyment_esp$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Language importance and usefulness Catalan
 
 subset_importance_usefulness_cat <- read.csv(here("data", "subsets", "subset_importance_usefulness_cat.csv"))
 
-subset_importance_usefulness_cat_sep <- subset_importance_usefulness_cat %>%
-  separate(id, into = c("no", "id"), sep = 4)
-
-subset_importance_usefulness_cat_sep$id <- as.numeric(subset_importance_usefulness_cat_sep$id)
-
-subset_importance_usefulness_cat_sep$political_orientation <- factor(subset_importance_usefulness_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+subset_importance_usefulness_cat$political_orientation <- factor(subset_importance_usefulness_cat$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Language importance and usefulness Spanish
 
 subset_importance_usefulness_esp <- read.csv(here("data", "subsets", "subset_importance_usefulness_esp.csv"))
 
-subset_importance_usefulness_esp_sep <- subset_importance_usefulness_esp %>%
-  separate(id, into = c("no", "id"), sep = 4)
-
-subset_importance_usefulness_esp_sep$id <- as.numeric(subset_importance_usefulness_esp_sep$id)
-
-subset_importance_usefulness_esp_sep$political_orientation <- factor(subset_importance_usefulness_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
-
+subset_importance_usefulness_esp$political_orientation <- factor(subset_importance_usefulness_esp$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Language policy and integration Catalan
 
 subset_policy_integration_cat <- read.csv(here("data", "subsets", "subset_policy_integration_cat.csv"))
 
-subset_policy_integration_cat_sep <- subset_policy_integration_cat %>%
-  separate(id, into = c("no", "id"), sep = 4)
-
-subset_policy_integration_cat_sep$id <- as.numeric(subset_policy_integration_cat_sep$id)
-
-subset_policy_integration_cat_sep$political_orientation <- factor(subset_policy_integration_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
-
+subset_policy_integration_cat$political_orientation <- factor(subset_policy_integration_cat$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Language policy and integration Spanish
 
 subset_policy_integration_esp <- read.csv(here("data", "subsets", "subset_policy_integration_esp.csv"))
 
-subset_policy_integration_esp_sep <- subset_policy_integration_esp %>%
-  separate(id, into = c("no", "id"), sep = 4)
-
-subset_policy_integration_esp_sep$id <- as.numeric(subset_policy_integration_esp_sep$id)
-
-subset_policy_integration_esp_sep$political_orientation <- factor(subset_policy_integration_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
-
+subset_policy_integration_esp$political_orientation <- factor(subset_policy_integration_esp$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Cultural and identity aspects Catalan
 
 subset_cultural_identity_cat <- read.csv(here("data", "subsets", "subset_cultural_identity_cat.csv"))
 
-subset_cultural_identity_cat_sep <- subset_cultural_identity_cat %>%
-  separate(id, into = c("no", "id"), sep = 4)
-
-subset_cultural_identity_cat_sep$id <- as.numeric(subset_cultural_identity_cat_sep$id)
-
-subset_cultural_identity_cat_sep$political_orientation <- factor(subset_cultural_identity_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
-
-
+subset_cultural_identity_cat$political_orientation <- factor(subset_cultural_identity_cat$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Cultural and identity aspects Spanish
 
 subset_cultural_identity_esp <- read.csv(here("data", "subsets", "subset_cultural_identity_esp.csv"))
 
-subset_cultural_identity_esp_sep <- subset_cultural_identity_esp %>%
-  separate(id, into = c("no", "id"), sep = 4)
-
-subset_cultural_identity_esp_sep$id <- as.numeric(subset_cultural_identity_esp_sep$id)
-
-subset_cultural_identity_esp_sep$political_orientation <- factor(subset_cultural_identity_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
-
-
+subset_cultural_identity_esp$political_orientation <- factor(subset_cultural_identity_esp$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Population trends Catalan
 
 subset_population_trends_cat <- read.csv(here("data", "subsets", "subset_population_trends_cat.csv"))
 
-subset_population_trends_cat_sep <- subset_population_trends_cat %>%
-  separate(id, into = c("no", "id"), sep = 4)
-
-subset_population_trends_cat_sep$id <- as.numeric(subset_population_trends_cat_sep$id)
-
-subset_population_trends_cat_sep$political_orientation <- factor(subset_population_trends_cat_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
-
+subset_population_trends_cat$political_orientation <- factor(subset_population_trends_cat$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 
 ## Population trends Spanish
 
 subset_population_trends_esp <- read.csv(here("data", "subsets", "subset_population_trends_esp.csv"))
 
-subset_population_trends_esp_sep <- subset_population_trends_esp %>%
-  separate(id, into = c("no", "id"), sep = 4)
-
-subset_population_trends_esp_sep$id <- as.numeric(subset_population_trends_esp_sep$id)
-
-subset_population_trends_esp_sep$political_orientation <- factor(subset_population_trends_esp_sep$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
+subset_population_trends_esp$political_orientation <- factor(subset_population_trends_esp$political_orientation, levels = c("Far left", "Left", "Center-Left", "Centre", "Center-Right", "Right"))
 
 ```
 
@@ -185,59 +115,69 @@ subset_population_trends_esp_sep$political_orientation <- factor(subset_populati
 
 # Models
 
-## Model 1 - Language Preference Catalan
+## Model 1 - Language Preference Catalan (NOT SIGNIFICANT)
 
-### With lmer
+mod_0_preference_cat <- lmer(value ~ 1 + (1 | statement), data = subset_preference_cat)
 
-mod_0_preference_cat <- lmer(value ~ 1 + (1 | id), data = subset_preference_cat_sep)
+mod_1_preference_cat <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_preference_cat)
 
-mod_1_preference_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_preference_cat_sep)
-
-### With lm
-
-mod_0_preference_cat <- lm(value ~ 1 + (1 | id), data = subset_preference_cat_sep)
-
-mod_1_preference_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_preference_cat_sep)
 
 summary(mod_0_preference_cat)
 summary(mod_1_preference_cat)
 
 anova(mod_0_preference_cat, mod_1_preference_cat)
 
+### ChatGPT interpretation
 
-## Model 2 - Language Preference Spanish
+Interpretation
 
-### With lmer
+Intercept: The baseline agreement level (65.514) is relatively high, indicating a general tendency toward agreement among the population for the reference group.
 
-mod_0_preference_esp <- lmer(value ~ 1 + (1 | id), data = subset_preference_esp_sep)
+Political Orientation Effects:
 
-mod_1_preference_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_preference_esp_sep)
+The coefficients for political orientations (Left, Center-Left, Centre, Center-Right, Right) are not statistically significant (p-values would need to be calculated, but t values are all < 2). This suggests that the political orientation does not have a strong or statistically significant effect on language attitudes in this sample. The largest negative coefficient is for Centre, suggesting a tendency for this group to agree less, but it is also not significant.
+Random Effects:
 
-### With lm
+The variance associated with statement (938.3) is quite large, indicating that differences among the statements themselves significantly contribute to variability in agreement levels.
+The residual variance (1020.5) suggests there’s still a considerable amount of unexplained variability beyond political orientation and statement differences.
 
-mod_0_preference_esp <- lm(value ~ 1 + (1 | id), data = subset_preference_esp_sep)
 
-mod_1_preference_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_preference_esp_sep)
+
+## Model 2 - Language Preference Spanish (NOT SIGNIFICANT)
+
+mod_0_preference_esp <- lmer(value ~ 1 + (1 | statement), data = subset_preference_esp)
+
+mod_1_preference_esp <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_preference_esp)
 
 summary(mod_0_preference_esp)
 summary(mod_1_preference_esp)
 
 anova(mod_0_preference_esp, mod_1_preference_esp)
 
+# ChatGPT Interpretation
 
-## Model 3 - Language Difficulty and Enjoyment Catalan
+Intercept
 
-### With lmer
+The intercept indicates that the baseline group (reference political orientation) tends to have an agreement level of around 61.5714 out of 100. This suggests a moderate to high level of agreement on average.
+Political Orientation Effects
 
-mod_0_diff_enj_cat <- lmer(value ~ 1 + (1 | id), data = subset_difficulty_enjoyment_cat_sep)
+Left: The effect of being Left is an increase in agreement level by 2.6994 points, but this is not statistically significant (low t-value).
+Center-Left: Similarly, Center-Left increases agreement by 6.4686 points but is not significant.
+Centre: This group shows a slight decrease in agreement (-0.6114), which is also not significant.
+Center-Right: The largest positive effect at 8.0952 points higher agreement, but still not statistically significant.
+Right: Small increase of 0.5429 points, also not significant.
+These results suggest that there is no strong evidence of political orientation significantly influencing agreement levels with statements about Catalan and Spanish.
 
-mod_1_diff_enj_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_difficulty_enjoyment_cat_sep)
+Random Effects
 
-### With lm
+The substantial variance associated with statement implies that different statements elicit different agreement levels independently of the participants political orientation. This is consistent with the idea that some statements are naturally more agreeable or controversial.
 
-mod_0_diff_enj_cat <- lm(value ~ 1 + (1 | id), data = subset_difficulty_enjoyment_cat_sep)
 
-mod_1_diff_enj_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_difficulty_enjoyment_cat_sep)
+## Model 3 - Language difficulty and enjoyment Catalan (NOT SIGNIFICANT)
+
+mod_0_diff_enj_cat <- lmer(value ~ 1 + (1 | statement), data = subset_difficulty_enjoyment_cat)
+
+mod_1_diff_enj_cat <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_difficulty_enjoyment_cat)
 
 summary(mod_0_diff_enj_cat)
 summary(mod_1_diff_enj_cat)
@@ -245,20 +185,26 @@ summary(mod_1_diff_enj_cat)
 anova(mod_0_diff_enj_cat, mod_1_diff_enj_cat)
 
 
+### ChatGPT interpretation
 
-## Model 4 - Language Difficulty and Enjoyment Spanish
+Intercept
 
-### With lmer
+The intercept suggests that the baseline group (likely Far Left or another reference category) has an average agreement level of 32.3878 out of 100 on the difficulty and enjoyment of Catalan. This indicates moderate agreement on average.
+Political Orientation Effects
 
-mod_0_diff_enj_esp <- lmer(value ~ 1 + (1 | id), data = subset_difficulty_enjoyment_esp_sep)
+Left: The effect of being Left is a small, non-significant increase in agreement level by 0.4932 points.
+Center-Left: Shows a significant increase in agreement level by 5.8408 points, suggesting more positive attitudes toward the difficulty and enjoyment of Catalan.
+Centre: This group shows a significant decrease in agreement by -5.7878 points, indicating less positive attitudes compared to the baseline.
+Center-Right: Shows a small, non-significant decrease in agreement by -0.6139 points.
+Right: Also shows a small, non-significant decrease in agreement by -0.7755 points.
+These results suggest that participants who are politically aligned to the center-left tend to have higher agreement levels with statements about the difficulty and enjoyment of Catalan, while those aligned with the center tend to have lower agreement levels.
 
-mod_1_diff_enj_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_difficulty_enjoyment_esp_sep)
 
-### With lm (SIGNIFICANT)
+## Model 4 - Language difficuloty and enjoyment Spanish (SIGNIFICANT)
 
-mod_0_diff_enj_esp <- lm(value ~ 1 + (1 | id), data = subset_difficulty_enjoyment_esp_sep)
+mod_0_diff_enj_esp <- lmer(value ~ 1 + (1 | statement), data = subset_difficulty_enjoyment_esp)
 
-mod_1_diff_enj_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_difficulty_enjoyment_esp_sep)
+mod_1_diff_enj_esp <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_difficulty_enjoyment_esp)
 
 summary(mod_0_diff_enj_esp)
 summary(mod_1_diff_enj_esp)
@@ -266,42 +212,59 @@ summary(mod_1_diff_enj_esp)
 anova(mod_0_diff_enj_esp, mod_1_diff_enj_esp)
 
 
+### ChatGPT interpretation
 
-## Model 5 - Language Importance and Usefulness Catalan
+Intercept
 
-### With lmer
+The intercept suggests that the baseline group (likely Far Left or another reference category) has an average agreement level of 24.625 out of 100 on the difficulty and enjoyment of Spanish. This indicates moderate agreement on average.
+Political Orientation Effects
 
-mod_0_imp_use_cat <- lmer(value ~ 1 + (1 | id), data = subset_importance_usefulness_cat_sep)
+Left: The effect of being Left is an increase in agreement level by 6.464 points, which is marginally significant.
+Center-Left: Shows a significant increase in agreement level by 8.538 points, suggesting more positive attitudes toward the difficulty and enjoyment of Spanish.
+Centre: This group shows a small, non-significant increase in agreement by 2.975 points.
+Center-Right: Shows a significant increase in agreement by 17.604 points, indicating very positive attitudes compared to the baseline.
+Right: Also shows a significant increase in agreement by 10.554 points.
+These results suggest that participants who are politically aligned to the center-right tend to have notably higher agreement levels with statements about the difficulty and enjoyment of Spanish, while those aligned with the center and left also show positive but less pronounced effects.
 
-mod_1_imp_use_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_importance_usefulness_cat_sep)
 
-### With lm (SIGNIFICANT)
 
-mod_0_imp_use_cat <- lm(value ~ 1 + (1 | id), data = subset_importance_usefulness_cat_sep)
+## Model 5 - Language Importance and Usefulness Catalan (SIGNIFICANT)
 
-mod_1_imp_use_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_importance_usefulness_cat_sep)
+mod_0_imp_use_cat <- lmer(value ~ 1 + (1 | statement), data = subset_importance_usefulness_cat)
+
+mod_1_imp_use_cat <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_importance_usefulness_cat)
 
 summary(mod_0_imp_use_cat)
 summary(mod_1_imp_use_cat)
 
 anova(mod_0_imp_use_cat, mod_1_imp_use_cat)
 
+### ChatGPT interpretation
+
+Intercept
+
+The intercept suggests that the baseline group (likely Far Left or another reference category) has an average agreement level of 53.500 out of 100. This indicates moderate agreement with statements about the importance and usefulness of Catalan on average.
+Political Orientation Effects
+
+Left: The effect of being Left is a small, non-significant decrease in agreement level by -3.472 points.
+Center-Left: Shows a significant decrease in agreement level by -15.633 points, suggesting less positive attitudes toward the importance and usefulness of Catalan.
+Centre: This group shows a significant and substantial decrease in agreement by -25.400 points, indicating a notably lower agreement compared to the baseline.
+Center-Right: Also shows a significant decrease in agreement by -22.153 points.
+Right: Indicates a decrease in agreement by -20.786 points, which is significant.
+These results suggest that participants who are politically aligned to the right, center-right, center, and center-left tend to have lower agreement levels with statements regarding the importance and usefulness of Catalan compared to the baseline group.
+
+Random Effects
+
+The variance associated with statement indicates that different statements about Catalan have different baseline levels of agreement. This is consistent with the idea that some statements are more likely to be agreed with than others, regardless of political orientation.
 
 
-## Model 6 - Language Importance and Usefulness Spanish
 
-### With lmer
 
-mod_0_imp_use_esp <- lmer(value ~ 1 + (1 | id), data = subset_importance_usefulness_esp_sep)
+## Model 6 - Language Importance and Usefulness Spanish (NOT SIGNIFICANT)
 
-mod_1_imp_use_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_importance_usefulness_esp_sep)
+mod_0_imp_use_esp <- lmer(value ~ 1 + (1 | statement), data = subset_importance_usefulness_esp)
 
-### With lm
-
-mod_0_imp_use_esp <- lm(value ~ 1 + (1 | id), data = subset_importance_usefulness_esp_sep)
-
-mod_1_imp_use_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_importance_usefulness_esp_sep)
-
+mod_1_imp_use_esp <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_importance_usefulness_esp)
 
 summary(mod_0_imp_use_esp)
 summary(mod_1_imp_use_esp)
@@ -309,20 +272,27 @@ summary(mod_1_imp_use_esp)
 anova(mod_0_imp_use_esp, mod_1_imp_use_esp)
 
 
-## Model 7 - Language policy and integration Catalan
+### ChatGPT interpretation 
 
-### With lmer
+Intercept
 
-mod_0_pol_int_cat <- lmer(value ~ 1 + (1 | id), data = subset_policy_integration_cat_sep)
+The intercept suggests that the baseline group (likely Far Left or another reference category) has an average agreement level of 78.371 out of 100 on the importance and usefulness of Spanish. This indicates generally positive attitudes toward Spanish in this context.
+Political Orientation Effects
 
-mod_1_pol_int_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_policy_integration_cat_sep)
+Left: Participants aligned with the Left orientation show a decrease in agreement level by 10.171 points, though marginally significant, indicating less positive attitudes compared to the baseline.
+Center-Left: This group shows a significant decrease in agreement by 13.381 points, suggesting less positive attitudes toward the importance and usefulness of Spanish.
+Centre: Similar to Center-Left, participants aligned with the Centre orientation show a significant decrease in agreement by 16.011 points.
+Center-Right: Shows a smaller, non-significant decrease in agreement by 4.471 points.
+Right: Also shows a decrease in agreement by 11.286 points, which is marginally significant.
+These results suggest that participants aligned with the Center and Left political orientations tend to have less positive attitudes toward the importance and usefulness of Spanish compared to those aligned with the baseline (likely Far Left) group. The random effects model confirms that different statements elicit varying levels of agreement, independent of political orientation, reflecting the nuanced nature of attitudes toward Spanish in Palma de Mallorca.
 
-### With lm (SIGNIFICANT)
 
-mod_0_pol_int_cat <- lm(value ~ 1 + (1 | id), data = subset_policy_integration_cat_sep)
 
-mod_1_pol_int_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_policy_integration_cat_sep)
+## Model 7 - Language policy and integration Catalan (SIGNIFICAN)
 
+mod_0_pol_int_cat <- lmer(value ~ 1 + (1 | statement), data = subset_policy_integration_cat)
+
+mod_1_pol_int_cat <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_policy_integration_cat)
 
 summary(mod_0_pol_int_cat)
 summary(mod_1_pol_int_cat)
@@ -330,20 +300,23 @@ summary(mod_1_pol_int_cat)
 anova(mod_0_pol_int_cat, mod_1_pol_int_cat)
 
 
-## Model 8 - Language policy and integration Spanish
+### ChatGPT interpreation
 
-### With lmer
+Intercept
 
-mod_0_pol_int_esp <- lmer(value ~ 1 + (1 | id), data = subset_policy_integration_esp_sep)
+The intercept suggests that the baseline group (likely Far Left or another reference category) has an average agreement level of 68.029 out of 100 on language policy and integration regarding Catalan. This indicates generally positive attitudes toward this aspect of language policy.
+Political Orientation Effects
 
-mod_1_pol_int_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_policy_integration_esp_sep)
+Left: Participants aligned with the Left orientation show a decrease in agreement, indicating less positive attitudes toward language policy and integration regarding Catalan compared to the baseline.
+Center-Left, Centre, Center-Right, Right: These groups also show significant decreases in agreement, with Center-Right and Right showing the largest decreases, suggesting progressively less positive attitudes toward language policy and integration regarding Catalan.
+These results suggest that political orientation significantly influences attitudes toward language policy and integration regarding Catalan among the population of Palma de Mallorca. The random effects model confirms that different statements about Catalan language policy elicit varying levels of agreement, independent of political orientation, reflecting the nuanced nature of attitudes in this context.
 
-### With lm (SIGNIFICANT)
 
-mod_0_pol_int_esp <- lm(value ~ 1 + (1 | id), data = subset_policy_integration_esp_sep)
+## Model 8 - Language policy and integration Spanish (SIGNIFICANT)
 
-mod_1_pol_int_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_policy_integration_esp_sep)
+mod_0_pol_int_esp <- lmer(value ~ 1 + (1 | statement), data = subset_policy_integration_esp)
 
+mod_1_pol_int_esp <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_policy_integration_esp)
 
 summary(mod_0_pol_int_esp)
 summary(mod_1_pol_int_esp)
@@ -351,97 +324,93 @@ summary(mod_1_pol_int_esp)
 anova(mod_0_pol_int_cat, mod_1_pol_int_cat)
 
 
-## Model 9 - Cultural and identity aspects Catalan
+### ChatGPT interpretation
 
-### With lmer
+Intercept
 
-mod_0_cul_ide_cat <- lmer(value ~ 1 + (1 | id), data = subset_cultural_identity_cat_sep)
+The intercept suggests that the baseline group (likely Far Left or another reference category) has an average agreement level of 12.071 out of 100 on language policy and integration regarding Spanish. This indicates generally neutral attitudes toward this aspect of language policy.
+Political Orientation Effects
 
-mod_1_cul_ide_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_cultural_identity_cat_sep)
+Left: Participants aligned with the Left orientation show increased agreement, indicating more positive attitudes toward language policy and integration regarding Spanish compared to the baseline.
+Center-Left, Centre, Center-Right, Right: These groups show progressively higher levels of agreement, with Center-Right and Right showing the highest levels of agreement. This suggests increasingly positive attitudes toward language policy and integration regarding Spanish among these political orientations.
+These results highlight the significant influence of political orientation on attitudes toward language policy and integration regarding Spanish among the population of Palma de Mallorca. The random effects model confirms that different statements about Spanish language policy elicit varying levels of agreement, independent of political orientation, reflecting the nuanced nature of attitudes in this context.
 
-### With lm (SIGNIFICANT)
 
-mod_0_cul_ide_cat <- lm(value ~ 1 + (1 | id), data = subset_cultural_identity_cat_sep)
+## Model 9 - Cultural and identity aspects Catalan (SIGNIFICANT)
 
-mod_1_cul_ide_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_cultural_identity_cat_sep)
+mod_0_cul_ide_cat <- lmer(value ~ 1 + (1 | statement), data = subset_cultural_identity_cat)
 
+mod_1_cul_ide_cat <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_cultural_identity_cat)
 
 summary(mod_0_cul_ide_cat)
 summary(mod_1_cul_ide_cat)
 
 anova(mod_0_cul_ide_cat, mod_1_cul_ide_cat)
 
+### ChatGPT Interpretation
+
+Intercept
+
+The intercept suggests that the baseline group (likely Far Left or another reference category) has an average agreement level of 98.095 out of 100 on cultural and identity aspects related to Catalan. This indicates generally high positive attitudes toward these aspects.
+Political Orientation Effects
+
+Left: Participants aligned with the Left orientation show decreased agreement, indicating less positive attitudes toward cultural and identity aspects related to Catalan compared to the baseline.
+Center-Left, Centre, Center-Right, Right: These groups show progressively lower levels of agreement, with Center, Center-Right, and Right showing significantly less positive attitudes compared to the baseline. This suggests increasingly negative attitudes toward cultural and identity aspects related to Catalan among these political orientations.
+These results highlight the significant influence of political orientation on attitudes toward cultural and identity aspects related to Catalan among the population of Palma de Mallorca. The random effects model confirms that different statements about these aspects elicit varying levels of agreement, independent of political orientation, reflecting the nuanced nature of attitudes in this context.
 
 
+## Model 10 - Cultural and identity aspects Spanish (NOT SIGNIFICANT)
 
-## Model 10 - Cultural and identity aspects Spanish
+mod_0_cul_ide_esp <- lmer(value ~ 1 + (1 | statement), data = subset_cultural_identity_esp)
 
-### With lmer
-
-mod_0_cul_ide_esp <- lmer(value ~ 1 + (1 | id), data = subset_cultural_identity_esp_sep)
-
-mod_1_cul_ide_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_cultural_identity_esp_sep)
-
-### With lm
-
-mod_0_cul_ide_esp <- lm(value ~ 1 + (1 | id), data = subset_cultural_identity_esp_sep)
-
-mod_1_cul_ide_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_cultural_identity_esp_sep)
-
+mod_1_cul_ide_esp <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_cultural_identity_esp)
 
 summary(mod_0_cul_ide_esp)
 summary(mod_1_cul_ide_esp)
 
 anova(mod_0_cul_ide_esp, mod_1_cul_ide_esp)
 
+Intercept
+
+The intercept suggests that the baseline group (likely Far Left or another reference category) has an average agreement level of 37.571 out of 100 on cultural and identity aspects related to Spanish. This indicates moderate positive attitudes toward these aspects.
+Political Orientation Effects
+
+Left: Participants aligned with the Left orientation show a slight increase in agreement, but this effect is not statistically significant.
+Center-Left, Centre, Center-Right, Right: These groups show progressively higher levels of agreement, with Center, Center-Right, and Right showing significantly higher agreement compared to the baseline. This suggests increasingly positive attitudes toward cultural and identity aspects related to Spanish among these political orientations.
+These results highlight the influence of political orientation on attitudes toward cultural and identity aspects related to Spanish among the population of Palma de Mallorca. The random effects model confirms that different statements about these aspects elicit varying levels of agreement, independent of political orientation, reflecting the nuanced nature of attitudes in this context.
 
 
-## Model 11 - Population trends Catalan
 
-### With lmer
+## Model 11 - Population trends Catalan (SIGNIFICANT) - But singularity issue
 
-mod_0_pop_tre_cat <- lmer(value ~ 1 + (1 | id), data = subset_population_trends_cat_sep)
+mod_0_pop_tre_cat <- lmer(value ~ 1 + (1 | statement), data = subset_population_trends_cat)
 
-mod_1_pop_tre_cat <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_population_trends_cat_sep)
-
-### With lm (SIGNIFICANT)
-
-mod_0_pop_tre_cat <- lm(value ~ 1 + (1 | id), data = subset_population_trends_cat_sep)
-
-mod_1_pop_tre_cat <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_population_trends_cat_sep)
-
+mod_1_pop_tre_cat <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_population_trends_cat)
 
 summary(mod_0_pop_tre_cat)
 summary(mod_1_pop_tre_cat)
 
 anova(mod_0_pop_tre_cat, mod_1_pop_tre_cat)
 
+### ChatGPT interpretation
 
-## Model 12 - Population trends Spanish
+Your analysis indicates that political orientation significantly influences attitudes toward Catalan among the population of Palma de Mallorca. Participants aligned with more left-leaning orientations tend to have lower agreement levels toward Catalan compared to those aligned with the baseline group. The models interpretation is robust regarding fixed effects, but the absence of random effects variability for statement warrants further investigation into model fit and structure. Future steps should focus on refining the model, checking assumptions, and exploring alternative specifications to better understand attitudes toward Catalan in this context.
 
-### With lmer
 
-mod_0_pop_tre_esp <- lmer(value ~ 1 + (1 | id), data = subset_population_trends_esp_sep)
+## Model 12 - Population trends Spanish (SIGNIFICANT)
 
-mod_1_pop_tre_esp <- lmer(value ~ 1 + political_orientation + (1 | id), data = subset_population_trends_esp_sep)
+mod_0_pop_tre_esp <- lmer(value ~ 1 + (1 | statement), data = subset_population_trends_esp)
 
-### With lm (SIGNIFICANT)
-
-mod_0_pop_tre_esp <- lm(value ~ 1 + (1 | id), data = subset_population_trends_esp_sep)
-
-mod_1_pop_tre_esp <- lm(value ~ 1 + political_orientation + (1 | id), data = subset_population_trends_esp_sep)
-
+mod_1_pop_tre_esp <- lmer(value ~ 1 + political_orientation + (1 | statement), data = subset_population_trends_esp)
 
 summary(mod_0_pop_tre_esp)
 summary(mod_1_pop_tre_esp)
 
 anova(mod_0_pop_tre_esp, mod_1_pop_tre_esp)
 
-```
+### ChatGPT interpretation
 
-```{r}
-
-## Question: should I have a random intercept for "statement"?
+Your analysis indicates that political orientation significantly influences attitudes toward Spanish among the population of Palma de Mallorca. Right-leaning orientations are associated with higher agreement levels toward Spanish, whereas left-leaning orientations do not significantly influence attitudes toward Spanish compared to the baseline group. The model provides insights into how political orientation shapes attitudes toward Spanish, though further investigation into model fit and structure is recommended to ensure robust findings.
 
 ```
 
